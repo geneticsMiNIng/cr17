@@ -1,0 +1,20 @@
+Package: cr07
+Type: Package
+Title: What the Package Does (Title Case)
+Version: 0.1.0
+Author: Magda Młynarczyk
+Maintainer: The package maintainer <yourself@somewhere.net>
+Description: More about what it does (maybe more than one line)
+    Use four spaces when indenting paragraphs within the Description.
+License: What license is it under?
+Encoding: UTF-8
+LazyData: true
+Depends:
+    ggplot2 (>= 2.2.1),
+    survival (>= 2.41-3),
+    cmprsk (>= 2.2-7),
+    dplyr (>= 0.5.0),
+    gridExtra (>= 2.2.1),
+    knitr (>= 1.14),
+    R (>= 3.3.2)
+RoxygenNote: 6.0.1
