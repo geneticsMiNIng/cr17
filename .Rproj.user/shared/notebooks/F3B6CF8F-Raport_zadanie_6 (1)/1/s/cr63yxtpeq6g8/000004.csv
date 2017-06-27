@@ -1,0 +1,4 @@
+"0","AIC <- c(""Model"", ""LogModel"", ""BoxModel"", ""LogTransModel"")"
+"0","AIC <- cbind(AIC, c(AIC(Model), AIC(LogModel),AIC(BoxModel2), AIC(LogTransModel)))"
+"0","colnames(AIC) <- c(""nazwa modelu"", ""R squared"")"
+"0","kable(AIC, caption = ""Wartości AIC dla rozważanych modeli"")"

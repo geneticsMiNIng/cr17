@@ -1,0 +1,7 @@
+"0","library(dplyr)"
+"0","library(ggplot2)"
+"0","library(MASS)"
+"0","library(knitr)"
+"0","setwd(""C:\\Users\\Magda\\Documents\\GitHub\\Projekt-Pisa2015\\Faza 3 i 4"")"
+"2","The working directory was changed to C:/Users/Magda/Documents/GitHub/Projekt-Pisa2015/Faza 3 i 4 inside a notebook chunk. The working directory will be reset when the chunk is finished running. Use the knitr root.dir option in the setup chunk to change the the working directory for notebook chunks."
+"0","load(""dane_nowe.rda"")"

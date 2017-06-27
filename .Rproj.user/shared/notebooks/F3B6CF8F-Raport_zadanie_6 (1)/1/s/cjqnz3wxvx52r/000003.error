@@ -1,0 +1,1 @@
+{"frames":[{"character_number":0,"end_character_number":0,"end_line_number":0,"file":"","func":"substr(dane_matematyka$item_short, 2, 4)","line_number":0}],"message":"Error in substr(dane_matematyka$item_short, 2, 4) : \n  object 'dane_matematyka' not found\n"}

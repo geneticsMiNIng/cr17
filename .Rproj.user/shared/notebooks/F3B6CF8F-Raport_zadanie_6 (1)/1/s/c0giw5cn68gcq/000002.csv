@@ -1,0 +1,2 @@
+"0","Model <- lm(czas_zadania~zadanie*pozycja_zadania+id_kwestionariusza+mies_ur+id_kraju*plec+wyk_m_lsd*wyk_o_lsd+gr_zawod_m+gr_zawod_o+stat_m+stat_o, data = dane_nowe)"
+"0","wsp <- boxcox(Model)"
