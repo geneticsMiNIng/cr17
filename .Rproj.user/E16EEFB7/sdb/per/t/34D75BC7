@@ -1,0 +1,20 @@
+{
+    "collab_server" : "",
+    "contents" : "\n#' @title Competing Risks Models Summary.\n#' @name crSummary\n#' @description The function generates summariezed raport including\n#' p-values of testing differences between groups and visualisation of survival\n#' and cumulative incidences curves.\n#' @param time name of a column indicating time of an event or follow-up, must be numeric.\n#' @param risk name of a column indicating type of event, can be numeric or factor/character.\n#' @param group nam of a column indicating grouping variable, can be numeric or factor/character.\n#' @param data data.frame, data.table or matrix containing time, risk and group columns.\n#' @param cens value of 'risk' indicating censored observation (default 0).\n#' @param target point in time, in which the confidence bounds should be plotted.\n#' @param type type of survival curve to be fitted. Possible values are \"kaplan-meier\" (default), \"fleming-harrington\" or \"fh2\".\n#' @param conf.int level of two sided confidence interval.\n#' @param conf.type type of confidence interval. Possilble values: \"none\", \"plain\", \"log\" (default), \"log-log\".\n#' @return Results of functions implemented in the package summarised in an one-page raport.\n#' @export\n#' @examples crSummary(time = \"time\", risk = \"event\", group = \"gender\", data = LUAD, cens = \"alive\", target = 1200, type = \"kaplan-meier\", conf.int = 0.95, conf.type = \"log\")\n#' @importFrom gridExtra grid.arrange rbind.gtable tableGrob\n#' @importFrom grid textGrob\n\n\ncrSummary <- function(time,\n                        risk,\n                        group,\n                        data,\n                        target,\n                        cens = 0,\n                        rho = 0,\n                        type = \"kaplan-meier\",\n                        conf.int = 0.95,\n                        conf.type = \"log\"\n){\n\n    fit <- fitSurvival(time, risk, group, data, cens, type, conf.int, conf.type)\n    ci <- fitCuminc(time, risk, group, data, cens)\n\n    lrtSurvTest <- lrtSurvival(time, risk, group, data, cens, rho)\n    cumincTest <- testCuminc(ci)\n\n\n    fitCox <- fitCox(time, risk, group, data, cens)\n    CoxSurvTest <- testCox(fitCox)\n\n    fitReg <- fitReg(time, risk, group, data, cens)\n    CoxCompTest <-  regTest(fitReg, conf.int)\n\n    #Plots\n    plotSurvCurves <- plotSurvival(fit, target)\n    plotCumFun <- plotCuminc(ci, risk, group, target)\n\n    #tables\n    riskTable <- riskTab(fit)\n    # for(i in 1:length(riskTable)){\n    #     assign(paste(\"riskTab\", i, sep = \"\"), riskTable[[i]])\n    # }\n    eventTable <- eventTab(fit, ci, risk, group)\n    # for(i in 1:length(eventTable)){\n    #     assign(paste(\"eventTab\", i, sep = \"\"), eventTable[[i]])\n    # }\n\n\n\n    Test1 <- rbind(lrtSurvTest, CoxSurvTest)\n    Test2 <- rbind(cumincTest, CoxCompTest)\n\n    #Tests\n    Tests <- arrangeGrob(tableGrob(Test1, theme = ttheme_minimal()),\n                         tableGrob(Test2, theme = ttheme_minimal()),\n                         top =  textGrob(\"Tests of differences betweeen groups\",\n                                         vjust = 3,\n                                         gp = gpar(fontface = \"bold\")),\n                         ncol = 2)\n\n\n    lay <- rbind(c(1,2),\n                 c(1,2),\n                 c(1,2),\n                 c(3,4),\n                 c(5,5),\n                 c(5,5))\n\n    grid.arrange(plotSurvCurves,\n                 plotCumFun,\n                 riskTable,\n                 eventTable,\n                 Tests,\n                 layout_matrix = lay)\n\n}\n",
+    "created" : 1499164295261.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "573511576",
+    "id" : "34D75BC7",
+    "lastKnownWriteTime" : 1499174534,
+    "last_content_update" : 1499174534579,
+    "path" : "~/GitHub/mgr/kod/package/cr17/R/crSummary.R",
+    "project_path" : "R/crSummary.R",
+    "properties" : {
+    },
+    "relative_order" : 1,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}

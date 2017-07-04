@@ -2,13 +2,20 @@
 % Please edit documentation in R/riskTab.R
 \name{riskTab}
 \alias{riskTab}
-\title{number at risk table}
+\title{Number at risk tablew}
 \usage{
 riskTab(fit)
 }
 \arguments{
-\item{fit}{fitSurvival object}
+\item{fit}{a result of fitSurvival function.}
+}
+\value{
+A grob with n tables, where n is number of risks. Each table contains number of observations ar risk in each group in given time points (the time points correspond to breaks at x-axis of plots with survival curves).
 }
 \description{
-tables of numbers at risk
+The function creates tables for each risk with number of observation at risk in given time in groups.
+}
+\examples{
+fitS <- fitSurvival(time = "time", risk = "event", group = "gender", data = LUAD, cens = "alive", type = "kaplan-meier", conf.int = 0.95, conf.type = "log")
+riskTab(fit = fitS)
 }

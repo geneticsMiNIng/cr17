@@ -2,27 +2,22 @@
 % Please edit documentation in R/plotSurvival.R
 \name{plotSurvival}
 \alias{plotSurvival}
-\title{ploting}
+\title{Survival curves}
 \usage{
 plotSurvival(fit, target)
 }
 \arguments{
-\item{time}{time must be numeric}
+\item{fit}{a result of fitSurvival function.}
 
-\item{status}{can be numeric or factor/character}
-
-\item{group}{can be numeric or factor/character}
-
-\item{data}{can be data frame or matrix}
-
-\item{type}{"kaplan-meier", "fleming-harrington" or "fh2"}
-
-\item{conf.int}{level of two sided conf int}
-
-\item{conf.type}{"none", "plain", "log" (default), "log-log}
-
-\item{error}{"greenwood (default)', "tsiatis", "aalen}
+\item{target}{point in time, in which the confidence bounds should be plotted.}
+}
+\value{
+a ggplot containing n graphs, where n is number of risks. Each graphs represents survival curves for given risk. One curve corresponds to one group.
 }
 \description{
-The function plots the survival curves for both risks and within all groups
+The function plots survival curves for each risk and group.
+}
+\examples{
+fitS <- fitSurvival(time = "time", risk = "event", group = "gender", data = LUAD, cens = "alive", type = "kaplan-meier", conf.int = 0.95, conf.type = "log")
+plotSurvival(fit = fitS, target = 1200)
 }

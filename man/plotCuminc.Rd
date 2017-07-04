@@ -2,25 +2,26 @@
 % Please edit documentation in R/plotCuminc.R
 \name{plotCuminc}
 \alias{plotCuminc}
-\title{making cuminc data for plotting and testing}
+\title{Cumulative incidences curves}
 \usage{
 plotCuminc(ci, risk, group, target)
 }
 \arguments{
-\item{risk}{can be numeric or factor/character}
+\item{ci}{a result of function fitCuminc.}
 
-\item{group}{can be numeric or factor/character}
+\item{risk}{name of a column indicating type of event, can be numeric or factor/character.}
 
-\item{target}{conf intervals point}
+\item{group}{name of a column indicating group variable, can be numeric or factor/character.}
 
-\item{time}{time must be numeric}
-
-\item{data}{can be data frame or matrix}
-
-\item{conf.int}{level of two sided conf int}
-
-\item{conf.type}{"none", "plain", "log" (default), "log-log}
+\item{target}{point in time, in which the confidence bounds should be plotted.}
+}
+\value{
+a ggplot containing n graphs, where n is number of risks. Each graphs represents cumulative incidence curves for given risk in each group.
 }
 \description{
-list with cumulative incidences and a test of differences between them
+The function plots cumulative incidences curves for each risk and group.
+}
+\examples{
+fitC <- fitCuminc(time = "time", risk = "event", group = "gender", data = LUAD, cens = "alive")
+plotCuminc(ci = fitC, risk = "event", group = "gender", target = 1200)
 }

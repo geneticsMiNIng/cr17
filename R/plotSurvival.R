@@ -1,4 +1,3 @@
-#fit <- fitSurvival("time", "risk", "group", data)
 
 #data frame for plotting
 toPlotDf <- function(fit){
@@ -90,18 +89,15 @@ barsDataSimpleSurv <- function(toPlot, target, risks, groups){
 
 #######################
 
-#' @title ploting
+#' @title Survival curves
 #' @name plotSurvival
-#' @description The function plots the survival curves for both risks and within all groups
-#' @param time time must be numeric
-#' @param status can be numeric or factor/character
-#' @param group can be numeric or factor/character
-#' @param data can be data frame or matrix
-#' @param type "kaplan-meier", "fleming-harrington" or "fh2"
-#' @param conf.int level of two sided conf int
-#' @param conf.type "none", "plain", "log" (default), "log-log
-#' @param error "greenwood (default)', "tsiatis", "aalen
+#' @description The function plots survival curves for each risk and group.
+#' @param fit a result of fitSurvival function.
+#' @param target point in time, in which the confidence bounds should be plotted.
+#' @return a ggplot containing n graphs, where n is number of risks. Each graphs represents survival curves for given risk. One curve corresponds to one group.
 #' @export
+#' @examples fitS <- fitSurvival(time = "time", risk = "event", group = "gender", data = LUAD, cens = "alive", type = "kaplan-meier", conf.int = 0.95, conf.type = "log")
+#' plotSurvival(fit = fitS, target = 1200)
 #' @importFrom ggplot2 ggplot
 #' @importFrom dplyr filter
 #' @importFrom scales extended_breaks

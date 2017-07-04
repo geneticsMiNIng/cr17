@@ -1,23 +1,21 @@
-#fit <- fitSurvival("time", "risk", "group", data)
 
-
-#crSummary("time", "event", "gender", LUAD, 1200, "alive")
-#crSummary("time", "risk", "group", data, 4)
-#crSummary("CI_time", "CI_status", "Heart", dt, 10)
-
-#' @title full analysis of data
-#' @name fullAnalysis
-#' @description The functionn
-#' @param time time must be numeric
-#' @param risk can be numeric or factor/character
-#' @param group can be numeric or factor/character
-#' @param data can
-#'  be data frame or matrix
-#' @param type "kaplan-meier", "fleming-harrington" or "fh2"
-#' @param conf.int level of two sided conf int
-#' @param conf.type "none", "plain", "log" (default), "log-log
-#' @param error "greenwood (default)', "tsiatis", "aalen
+#' @title Competing Risks Models Summary.
+#' @name crSummary
+#' @description The function generates summariezed raport including
+#' p-values of testing differences between groups and visualisation of survival
+#' and cumulative incidences curves.
+#' @param time name of a column indicating time of an event or follow-up, must be numeric.
+#' @param risk name of a column indicating type of event, can be numeric or factor/character.
+#' @param group nam of a column indicating grouping variable, can be numeric or factor/character.
+#' @param data data.frame, data.table or matrix containing time, risk and group columns.
+#' @param cens value of 'risk' indicating censored observation (default 0).
+#' @param target point in time, in which the confidence bounds should be plotted.
+#' @param type type of survival curve to be fitted. Possible values are "kaplan-meier" (default), "fleming-harrington" or "fh2".
+#' @param conf.int level of two sided confidence interval.
+#' @param conf.type type of confidence interval. Possilble values: "none", "plain", "log" (default), "log-log".
+#' @return Results of functions implemented in the package summarised in an one-page raport.
 #' @export
+#' @examples crSummary(time = "time", risk = "event", group = "gender", data = LUAD, cens = "alive", target = 1200, type = "kaplan-meier", conf.int = 0.95, conf.type = "log")
 #' @importFrom gridExtra grid.arrange rbind.gtable tableGrob
 #' @importFrom grid textGrob
 
@@ -35,7 +33,7 @@ crSummary <- function(time,
 ){
 
     fit <- fitSurvival(time, risk, group, data, cens, type, conf.int, conf.type)
-    ci <- fitCuminc(time, risk, group, data, cens, rho)
+    ci <- fitCuminc(time, risk, group, data, cens)
 
     lrtSurvTest <- lrtSurvival(time, risk, group, data, cens, rho)
     cumincTest <- testCuminc(ci)

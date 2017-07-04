@@ -1,14 +1,15 @@
 
-#' @title making cuminc data for plotting and testing
+#' @title Regression Models for Competing Risks.
 #' @name compRiskReg
-#' @description cox models for competing risks and differences in them between groups
-#' @param time time must be numeric
-#' @param risk can be numeric or factor/character
-#' @param group can be numeric or factor/character
-#' @param data can be data frame or matrix
-#' @param conf.int level of two sided conf int
-
+#' @description Fitting Cox model (Regression model) for competing risks.
+#' @param time name of a column indicating time of an event or follow-up, must be numeric.
+#' @param risk name of a column indicating type of event, can be numeric or factor/character.
+#' @param group nam of a column indicating group variable, can be numeric or factor/character.
+#' @param data data.frame, data.table or matrix containg time, risk and group columns.
+#' @param cens value of 'risk' indicating censored observation (default 0).
+#' @return a list of length n, where n is number of different types of events. Each element of a list contains a result of crr function from cmprsk package for given type of event.
 #' @export
+#' @examples fitReg(time = "time", risk = "event", group = "gender", data = LUAD, cens = "alive")
 #' @importFrom dplyr filter
 #' @importFrom cmprsk crr
 #' @importFrom gridExtra tableGrob
@@ -45,12 +46,14 @@ fitReg <- function(time,
 }
 
 
-#' @title making cuminc data for plotting and testing
+#' @title Regresion models difference testing
 #' @name regTest
-#' @description cox models for competing risks and differences in them between groups
-#' @param reg time must be numeric
-#' @param conf.int level of two sided conf int
+#' @description Testing differences in Competing Risks Regression Models between groups.
+#' @param conf.int level of two sided confidence interval (default 0.95).
+#' @return a data.frame containing p-values of Modified Log-Rank Test for each type of event. The test compares differences between groups in Competing Risks Cox Models.
 #' @export
+#' @examples fitR <- fitReg(time = "time", risk = "event", group = "gender", data = LUAD, cens = "alive")
+#' regTest(fitR)
 #' @importFrom dplyr filter
 #' @importFrom cmprsk crr
 #' @importFrom gridExtra tableGrob grid.arrange
@@ -82,6 +85,3 @@ regTest <- function(reg, conf.int = 0.95){
     as.data.frame(p)
 
     }
-
-
-#x <- compRiskReg("time", "risk", "group", data)

@@ -1,8 +1,3 @@
-# plotCuminc("time", "risk", "group", data, 10) -> x
-# plotCuminc("time", "event", "gender", LUAD, 500, cens = "alive") -> x
-# plotCuminc("CI_time", "CI_status", "DM", dt, 5) -> x
-
-
 
 boundsCuminc <- function(ri, gr, target, toPlot){
     ri <- as.character(ri)
@@ -40,17 +35,17 @@ barsDataCuminc <- function(risks, groups, target, toPlot){
 
 
 
-#' @title making cuminc data for plotting and testing
+#' @title Cumulative incidences curves
 #' @name plotCuminc
-#' @description list with cumulative incidences and a test of differences between them
-#' @param time time must be numeric
-#' @param risk can be numeric or factor/character
-#' @param group can be numeric or factor/character
-#' @param data can be data frame or matrix
-#' @param conf.int level of two sided conf int
-#' @param target conf intervals point
-#' @param conf.type "none", "plain", "log" (default), "log-log
+#' @description The function plots cumulative incidences curves for each risk and group.
+#' @param ci a result of function fitCuminc.
+#' @param risk name of a column indicating type of event, can be numeric or factor/character.
+#' @param group name of a column indicating group variable, can be numeric or factor/character.
+#' @param target  point in time, in which the confidence bounds should be plotted.
+#' @return a ggplot containing n graphs, where n is number of risks. Each graphs represents cumulative incidence curves for given risk in each group.
 #' @export
+#' @examples fitC <- fitCuminc(time = "time", risk = "event", group = "gender", data = LUAD, cens = "alive")
+#' plotCuminc(ci = fitC, risk = "event", group = "gender", target = 1200)
 #' @importFrom dplyr filter
 #' @importFrom cmprsk cuminc
 

@@ -1,0 +1,4 @@
+"0","to_plot$status <- factor(to_plot$status)
+"
+"2","Error in to_plot$status : $ operator is invalid for atomic vectors
+"

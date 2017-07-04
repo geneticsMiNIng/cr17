@@ -1,18 +1,15 @@
 
-#ci <- fitCuminc("time", "event", "gender", LUAD, "alive")
-#ci <- fitCuminc("time", "risk", "group", data)
-
-
-#' @title fitting cuminc object
+#' @title Cumulative Incidences Curves.
 #' @name fitCumul
-#' @description list with cumulative incidences and a test of differences between them
-#' @param time time must be numeric
-#' @param risk can be numeric or factor/character
-#' @param group can be numeric or factor/character
-#' @param data can be data frame or matrix
-#' @param conf.int level of two sided conf int
-#' @param conf.type "none", "plain", "log" (default), "log-log
+#' @description Fitting cumulative incidence function across different groups and risks.
+#' @param time name of a column indicating time of an event or follow-up, must be numeric.
+#' @param risk name of a column indicating type of event, can be numeric or factor/character.
+#' @param group nam of a column indicating group variable, can be numeric or factor/character.
+#' @param data data.frame, data.table or matrix containg time, risk and group columns.
+#' @param cens value of 'risk' indicating censored observation (default 0).
+#' @return list of length [(number of risks)*(number of groups) + 1], containing estimation of cumulative incidences curves for each risk and group. The last element of a group is a data.frame with results of a K-sample test.
 #' @export
+#' @examples fitCuminc(time = "time", risk = "event", group = "gender", data = LUAD, cens = "alive")
 #' @importFrom dplyr filter
 #' @importFrom cmprsk cuminc
 
@@ -20,8 +17,7 @@ fitCuminc <- function(time,
                      risk,
                      group,
                      data,
-                     cens = 0,
-                     rho = 0){
+                     cens = 0){
 
     data <- as.data.frame(data)
 
@@ -42,7 +38,6 @@ fitCuminc <- function(time,
     ci <- cuminc(ftime = data[, time],
                  fstatus = data[, "uniRisks"],
                  group = data[, "uniGroups"],
-                 rho = rho,
                  cencode = cens)
 
     aggnames <- names(ci)
@@ -64,20 +59,19 @@ fitCuminc <- function(time,
 
     names(ci)[1:length(ci)-1] <- tab$newname
 
+    ci$Tests <- as.data.frame(ci$Tests)
+
     ci
 }
 
 
-#' @title Log rank test for competing risks
+#' @title K-sample Test For Competing Risks.
 #' @name testCuminc
-#' @description Log rank test for competing risks
-#' @param time time must be numeric
-#' @param risk can be numeric or factor/character
-#' @param group can be numeric or factor/character
-#' @param data can be data frame or matrix
-#' @param conf.int level of two sided conf int
-#' @param conf.type "none", "plain", "log" (default), "log-log
-#' @export
+#' @description Testing differences in cumulative incidences function between groups using K-sample test.
+#' @param ci a result of fitCumin function.
+#' @return data.frame containing p-values of K-sample test for each risk.
+#' @examples fitC <- fitCuminc(time = "time", risk = "event", group = "gender", data = LUAD, cens = "alive")
+#' testCuminc(fitC)
 #' @importFrom dplyr filter
 #' @importFrom cmprsk cuminc
 #' @importFrom gridExtra tableGrob
