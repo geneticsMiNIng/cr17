@@ -1,11 +1,10 @@
 Package: cr17
 Type: Package
-Title: What the Package Does (Title Case)
+Title: Testing differences between competing risks models and its visualisations.
 Version: 0.1.0
 Author: Magda Młynarczyk
-Maintainer: The package maintainer <yourself@somewhere.net>
-Description: More about what it does (maybe more than one line)
-    Use four spaces when indenting paragraphs within the Description.
+Maintainer: Magda Młynarczyk <magmlynarczyk@gmail.com>
+Description: Tha package provides user-friendly tool for analyzing competing risks models. The main point of interest is testing differences between groups and visualizations of survival and cumulative incidence curves. 
 License: What license is it under?
 Encoding: UTF-8
 LazyData: true
