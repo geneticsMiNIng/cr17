@@ -3,7 +3,7 @@
 ## Installation
 
 ```
-devtools::install_github("geneticsMiNIng/cr17")
+devtools::install_github("geneticsMiNIng/cr17/package")
 ```
 
 ## Competing Risks with R and ggplot2
