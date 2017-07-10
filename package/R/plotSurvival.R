@@ -93,7 +93,7 @@ barsDataSimpleSurv <- function(toPlot, target, risks, groups){
 #' @name plotSurvival
 #' @description The function plots survival curves for each risk and group.
 #' @param fit a result of fitSurvival function.
-#' @param target point in time, in which the confidence bounds should be plotted.
+#' @param target point in time, in which the confidence bounds should be plotted (default NULL, no confidence bounds plotted).
 #' @return a ggplot containing n graphs, where n is number of risks. Each graph represents survival curves for given risk. One curve corresponds to one group.
 #' @export
 #' @examples fitS <- fitSurvival(time = "time", risk = "event", group = "gender", data = LUAD, cens = "alive", type = "kaplan-meier", conf.int = 0.95, conf.type = "log")
@@ -103,7 +103,7 @@ barsDataSimpleSurv <- function(toPlot, target, risks, groups){
 #' @importFrom scales extended_breaks
 
 
-plotSurvival <- function(fit, target){
+plotSurvival <- function(fit, target = NULL){
 
     toPlot <- toPlotDf(fit)
 
@@ -115,24 +115,24 @@ plotSurvival <- function(fit, target){
     groups <- unique(toPlot$group)
     groups <- factor(groups)
 
-
-    barsData <- barsDataSimpleSurv(toPlot, target, risks, groups)
+    if(!is.null(target) & is.numeric(target)){
+    barsData <- barsDataSimpleSurv(toPlot, target, risks, groups)}
 
 
     pd <- position_dodge(0.9)
     #making a plot
     plot1 <- ggplot(data = toPlot, aes(time, prob, color = group)) +
-        geom_step(size=1) +
-        facet_grid(~risk, scales = "free")
+             geom_step(size=1) +
+             facet_grid(~risk, scales = "free")
 
-    #adding errorbars
-    plot1 <- plot1 +
-        geom_errorbar(data = barsData,
-                      mapping = aes(x = target, ymin = low, ymax = up),
-                      size = 1,
-                      alpha = 0.7,
-                      width = 0.7,
-                      position = pd)
+    if( !is.null(target) & is.numeric(target)){
+        plot1 <- plot1 +
+                 geom_errorbar(data = barsData,
+                               mapping = aes(x = target, ymin = low, ymax = up),
+                               size = 1,
+                               alpha = 0.7,
+                               width = 0.7,
+                               position = pd)}
 
     #making it beauty
     plot1 <- plot1 +

@@ -41,7 +41,7 @@ barsDataCuminc <- function(risks, groups, target, toPlot){
 #' @param ci a result of function fitCuminc.
 #' @param risk name of a column indicating type of event, can be numeric or factor/character.
 #' @param group name of a column indicating group variable, can be numeric or factor/character.
-#' @param target point in time, in which the confidence bounds should be plotted.
+#' @param target point in time, in which the confidence bounds should be plotted (default NULL, no confidence bounds plotted).
 #' @return a ggplot containing n graphs, where n is number of risks. Each graph represents cumulative incidence curves for given risk in each group.
 #' @export
 #' @examples fitC <- fitCuminc(time = "time", risk = "event", group = "gender", data = LUAD, cens = "alive")
@@ -50,7 +50,7 @@ barsDataCuminc <- function(risks, groups, target, toPlot){
 #' @importFrom cmprsk cuminc
 
 
-plotCuminc <-function(ci, risk, group, target){
+plotCuminc <-function(ci, risk, group, target = NULL){
 
     #make long format
     ci <- ci[-length(ci)]
@@ -102,8 +102,9 @@ plotCuminc <-function(ci, risk, group, target){
     colnames(toPlot)[which(colnames(toPlot) == group)] <- "col"
 
 
-    barsData <- barsDataCuminc(risks, groups, target, toPlot)
 
+    if(!is.null(target) & is.numeric(target)){
+    barsData <- barsDataCuminc(risks, groups, target, toPlot)}
 
     pd <- position_dodge(0.9)
 
@@ -113,12 +114,13 @@ plotCuminc <-function(ci, risk, group, target){
         facet_grid(~fac, scales = "free")
 
     #adding errorbars
+    if( !is.null(target) & is.numeric(target)){
     plot1 <- plot1 +
         geom_errorbar(data = barsData, aes(x = target, ymin = low, ymax = up),
                       size = 1,
                       alpha = 0.7,
                       width = 0.7,
-                      position = pd)
+                      position = pd)}
 
     #making it beauty
     plot1 <- plot1 +

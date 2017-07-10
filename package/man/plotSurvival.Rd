@@ -4,12 +4,12 @@
 \alias{plotSurvival}
 \title{Survival curves}
 \usage{
-plotSurvival(fit, target)
+plotSurvival(fit, target = NULL)
 }
 \arguments{
 \item{fit}{a result of fitSurvival function.}
 
-\item{target}{point in time, in which the confidence bounds should be plotted.}
+\item{target}{point in time, in which the confidence bounds should be plotted (default NULL, no confidence bounds plotted).}
 }
 \value{
 a ggplot containing n graphs, where n is number of risks. Each graph represents survival curves for given risk. One curve corresponds to one group.

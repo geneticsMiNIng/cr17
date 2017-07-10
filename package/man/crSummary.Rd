@@ -4,7 +4,7 @@
 \alias{crSummary}
 \title{Competing Risks Models Summary.}
 \usage{
-crSummary(time, risk, group, data, target, cens = 0, rho = 0,
+crSummary(time, risk, group, data, target = NULL, cens = 0, rho = 0,
   type = "kaplan-meier", conf.int = 0.95, conf.type = "log")
 }
 \arguments{
@@ -16,7 +16,7 @@ crSummary(time, risk, group, data, target, cens = 0, rho = 0,
 
 \item{data}{data.frame, data.table or matrix containing time, risk and group columns.}
 
-\item{target}{point in time, in which the confidence bounds should be plotted.}
+\item{target}{point in time, in which the confidence bounds should be plotted (default NULL, no confidence bounds plotted).}
 
 \item{cens}{value of 'risk' indicating censored observation (default 0).}
 

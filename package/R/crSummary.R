@@ -10,7 +10,7 @@
 #' @param rho rho parameter from Fleming-Harrington Test.
 #' @param data data.frame, data.table or matrix containing time, risk and group columns.
 #' @param cens value of 'risk' indicating censored observation (default 0).
-#' @param target point in time, in which the confidence bounds should be plotted.
+#' @param target point in time, in which the confidence bounds should be plotted (default NULL, no confidence bounds plotted).
 #' @param type type of survival curve to be fitted. Possible values are "kaplan-meier" (default), "fleming-harrington" or "fh2".
 #' @param conf.int level of two-sided confidence interval.
 #' @param conf.type type of confidence interval. Possilble values: "none", "plain", "log" (default), "log-log".
@@ -25,7 +25,7 @@ crSummary <- function(time,
                         risk,
                         group,
                         data,
-                        target,
+                        target = NULL,
                         cens = 0,
                         rho = 0,
                         type = "kaplan-meier",
