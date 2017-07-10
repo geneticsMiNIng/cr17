@@ -43,7 +43,7 @@ fitCuminc <- function(time,
     aggnames <- names(ci)
     aggnames <- aggnames[-length(aggnames)]
 
-    tab <- c()
+    tab <- vector()
     for(i in aggnames){
         tmp <- unlist(strsplit(i, " "))
         tab <- rbind(tab, c(i, tmp))
@@ -101,7 +101,7 @@ testCuminc <- function(ci){
     colnames(p) <- risks
 
 
-    tab1 <- c()
+    tab1 <- vector()
     for(i in 1:length(risks)){
         tmp <- p[,which(colnames(p) == risks[i])]
         tmp <- round(tmp, digits = 4)

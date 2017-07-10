@@ -26,7 +26,7 @@ toPlotDf <- function(fit){
 
 
 
-    toPlot <- c()
+    toPlot <- data.frame()
 
     for(i in risks){
 
@@ -144,11 +144,11 @@ barsDataSimpleSurv <- function(toPlot, target, risks, groups){
 
 
 
-    low <- c()
+    low <- vector()
 
-    up <- c()
+    up <- vector()
 
-    prob <- c()
+    prob <- vector()
 
     for(i in 1:nrow(barsData)){
 

@@ -34,7 +34,7 @@ riskTab <- function(fit){
     })
     names(timePoints) <- risks
 
-    forTables <- c()
+    forTables <- data.frame()
     for(i in risks){
         tmp <- cbind(fit[[i]]$time,
                      fit[[i]]$n.risk,
@@ -51,7 +51,7 @@ riskTab <- function(fit){
 
     makeRow <- function(ri, gr){
         tmp <- filter(forTables, risk == ri, group == gr)
-        newRow <- c()
+        newRow <- vector()
         tp <- timePoints[[ri]]
         for(i in tp){
             tmp2 <- filter(tmp, tmp$time >= i)

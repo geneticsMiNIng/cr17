@@ -26,7 +26,7 @@ eventTab <- function(fit,
     ci <- ci[-length(ci)]
     aggNames <- names(ci)
 
-    toPlot <- c()
+    toPlot <- data.frame()
 
     for(i in aggNames){
         tmp <- as.data.frame(ci[[i]])
@@ -88,7 +88,7 @@ eventTab <- function(fit,
 
 
 
-    forTables <- c()
+    forTables <- data.frame()
     for(i in as.character(risks)){
         tmp <- cbind(fit[[i]]$time,
                      fit[[i]]$n.event,
@@ -105,7 +105,7 @@ eventTab <- function(fit,
 
     makeRow <- function(ri, gr){
         tmp <- filter(forTables, risk == ri, group == gr)
-        newRow <- c()
+        newRow <- vector()
         tp <- timePoints[[ri]]
         for(i in tp){
             tmp2 <- filter(tmp, tmp$time <= i)

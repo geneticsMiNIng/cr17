@@ -18,9 +18,9 @@ barsDataCuminc <- function(risks, groups, target, toPlot){
     barsData <- as.data.frame(barsData)
 
 
-    low <- c()
-    up <- c()
-    est <- c()
+    low <- vector()
+    up <- vector()
+    est <- vector()
     for(i in 1:nrow(barsData)){
         tmpBounds <- as.numeric(boundsCuminc(barsData[i,1],barsData[i,2], target, toPlot))
         low <- c(low, tmpBounds[1])
@@ -56,7 +56,7 @@ plotCuminc <-function(ci, risk, group, target = NULL){
     ci <- ci[-length(ci)]
     aggNames <- names(ci)
 
-    toPlot <- c()
+    toPlot <- data.frame()
 
     for(i in aggNames){
         tmp <- as.data.frame(ci[[i]])
