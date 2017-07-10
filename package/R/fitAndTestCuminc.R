@@ -4,8 +4,8 @@
 #' @description Fitting cumulative incidence function across different groups and risks.
 #' @param time name of a column indicating time of an event or follow-up, must be numeric.
 #' @param risk name of a column indicating type of event, can be numeric or factor/character.
-#' @param group nam of a column indicating group variable, can be numeric or factor/character.
-#' @param data data.frame, data.table or matrix containg time, risk and group columns.
+#' @param group name of a column indicating group variable, can be numeric or factor/character.
+#' @param data data.frame, data.table or matrix containing time, risk and group columns.
 #' @param cens value of 'risk' indicating censored observation (default 0).
 #' @return list of length [(number of risks)*(number of groups) + 1], containing estimation of cumulative incidences curves for each risk and group. The last element of a group is a data.frame with results of a K-sample test.
 #' @export
@@ -65,7 +65,7 @@ fitCuminc <- function(time,
 }
 
 
-#' @title K-sample Test For Competing Risks.
+#' @title K-sample Test for Competing Risks.
 #' @name testCuminc
 #' @description Testing differences in cumulative incidences function between groups using K-sample test.
 #' @param ci a result of fitCumin function.

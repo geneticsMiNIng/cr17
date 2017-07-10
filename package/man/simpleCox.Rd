@@ -12,14 +12,14 @@ fitCox(time, risk, group, data, cens = 0)
 
 \item{risk}{name of a column indicating type of event, can be numeric or factor/character.}
 
-\item{group}{nam of a column indicating grouping variable, can be numeric or factor/character.}
+\item{group}{name of a column indicating grouping variable, can be numeric or factor/character.}
 
 \item{data}{data.frame, data.table or matrix containing time, risk and group columns.}
 
 \item{cens}{value of 'risk' indicating censored observation (default 0).}
 }
 \value{
-a list of length n, where n is number of risks. Each element of a list is a result of summary.coxph function from package survival, where there is only one type of event possible (other are treating as consored).
+a list of length n, where n is number of risks. Each element of a list is a result of summary.coxph function from package survival, where there is only one type of event possible (other are treating as censored).
 }
 \description{
 The function fits Cox models for each type of event

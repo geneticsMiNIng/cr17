@@ -1,8 +1,8 @@
-#' @title Number at risk tablew
+#' @title Number at risk table.
 #' @name riskTab
 #' @description The function creates tables for each risk with number of observation at risk in given time in groups.
 #' @param fit a result of fitSurvival function.
-#' @return A grob with n tables, where n is number of risks. Each table contains number of observations ar risk in each group in given time points (the time points correspond to breaks at x-axis of plots with survival curves).
+#' @return A grob with n tables, where n is number of risks. Each table contains number of observations at risk in each group in given time points (the time points correspond to breaks at x-axis of plots with survival curves).
 #' @export
 #' @examples fitS <- fitSurvival(time = "time", risk = "event", group = "gender", data = LUAD, cens = "alive", type = "kaplan-meier", conf.int = 0.95, conf.type = "log")
 #' riskTab(fit = fitS)

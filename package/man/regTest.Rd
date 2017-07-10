@@ -9,7 +9,7 @@ regTest(reg, conf.int = 0.95)
 \arguments{
 \item{reg}{a result of fitReg function.}
 
-\item{conf.int}{level of two sided confidence interval (default 0.95).}
+\item{conf.int}{level of two-sided confidence interval (default 0.95).}
 }
 \value{
 a data.frame containing p-values of Modified Log-Rank Test for each type of event. The test compares differences between groups in Competing Risks Cox Models.

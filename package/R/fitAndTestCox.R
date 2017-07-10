@@ -4,15 +4,17 @@
 #' treating other events as censoring.
 #' @param time name of a column indicating time of an event or follow-up, must be numeric.
 #' @param risk name of a column indicating type of event, can be numeric or factor/character.
-#' @param group nam of a column indicating grouping variable, can be numeric or factor/character.
+#' @param group name of a column indicating grouping variable, can be numeric or factor/character.
 #' @param data data.frame, data.table or matrix containing time, risk and group columns.
 #' @param cens value of 'risk' indicating censored observation (default 0).
-#' @return a list of length n, where n is number of risks. Each element of a list is a result of summary.coxph function from package survival, where there is only one type of event possible (other are treating as consored).
+#' @return a list of length n, where n is number of risks. Each element of a list is a result of summary.coxph function from package survival, where there is only one type of event possible (other are treating as censored).
 #' @export
 #' @examples fitCox(time = "time", risk = "event", group = "gender", data = LUAD, cens = "alive")
 #' @importFrom dplyr filter
 #' @importFrom gridExtra tableGrob
 #' @importFrom survival Surv coxph
+
+
 fitCox <- function(time,
                    risk,
                    group,

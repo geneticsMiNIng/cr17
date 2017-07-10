@@ -1,20 +1,20 @@
 
 #' @title Competing Risks Models Summary.
 #' @name crSummary
-#' @description The function generates summariezed raport including
+#' @description The function generates summarized report including
 #' p-values of testing differences between groups and visualisation of survival
 #' and cumulative incidences curves.
 #' @param time name of a column indicating time of an event or follow-up, must be numeric.
 #' @param risk name of a column indicating type of event, can be numeric or factor/character.
-#' @param group nam of a column indicating grouping variable, can be numeric or factor/character.
+#' @param group name of a column indicating grouping variable, can be numeric or factor/character.
 #' @param rho rho parameter from Fleming-Harrington Test.
 #' @param data data.frame, data.table or matrix containing time, risk and group columns.
 #' @param cens value of 'risk' indicating censored observation (default 0).
 #' @param target point in time, in which the confidence bounds should be plotted.
 #' @param type type of survival curve to be fitted. Possible values are "kaplan-meier" (default), "fleming-harrington" or "fh2".
-#' @param conf.int level of two sided confidence interval.
+#' @param conf.int level of two-sided confidence interval.
 #' @param conf.type type of confidence interval. Possilble values: "none", "plain", "log" (default), "log-log".
-#' @return Results of functions implemented in the package summarised in an one-page raport.
+#' @return Results of functions implemented in the package summarised in a one-page raport.
 #' @export
 #' @examples crSummary(time = "time", risk = "event", group = "gender", data = LUAD, cens = "alive", target = 1200, type = "kaplan-meier", conf.int = 0.95, conf.type = "log")
 #' @importFrom gridExtra grid.arrange rbind.gtable tableGrob

@@ -12,7 +12,7 @@ crSummary(time, risk, group, data, target, cens = 0, rho = 0,
 
 \item{risk}{name of a column indicating type of event, can be numeric or factor/character.}
 
-\item{group}{nam of a column indicating grouping variable, can be numeric or factor/character.}
+\item{group}{name of a column indicating grouping variable, can be numeric or factor/character.}
 
 \item{data}{data.frame, data.table or matrix containing time, risk and group columns.}
 
@@ -24,15 +24,15 @@ crSummary(time, risk, group, data, target, cens = 0, rho = 0,
 
 \item{type}{type of survival curve to be fitted. Possible values are "kaplan-meier" (default), "fleming-harrington" or "fh2".}
 
-\item{conf.int}{level of two sided confidence interval.}
+\item{conf.int}{level of two-sided confidence interval.}
 
 \item{conf.type}{type of confidence interval. Possilble values: "none", "plain", "log" (default), "log-log".}
 }
 \value{
-Results of functions implemented in the package summarised in an one-page raport.
+Results of functions implemented in the package summarised in a one-page raport.
 }
 \description{
-The function generates summariezed raport including
+The function generates summarized report including
 p-values of testing differences between groups and visualisation of survival
 and cumulative incidences curves.
 }

@@ -12,9 +12,9 @@ fitCuminc(time, risk, group, data, cens = 0)
 
 \item{risk}{name of a column indicating type of event, can be numeric or factor/character.}
 
-\item{group}{nam of a column indicating group variable, can be numeric or factor/character.}
+\item{group}{name of a column indicating group variable, can be numeric or factor/character.}
 
-\item{data}{data.frame, data.table or matrix containg time, risk and group columns.}
+\item{data}{data.frame, data.table or matrix containing time, risk and group columns.}
 
 \item{cens}{value of 'risk' indicating censored observation (default 0).}
 }

@@ -14,7 +14,7 @@ eventTab(fit, ci, risk, group)
 
 \item{risk}{name of a column indicating type of event, can be numeric or factor/character.}
 
-\item{group}{nam of a column indicating group variable, can be numeric or factor/character.}
+\item{group}{name of a column indicating group variable, can be numeric or factor/character.}
 }
 \value{
 A grob with n tables, where n is number of risks. Each table contains number of events that have happened in each group up to given time point (the time points correspond to breaks at x-axis of plots with cumulative incidence curves).

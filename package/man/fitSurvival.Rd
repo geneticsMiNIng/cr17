@@ -2,7 +2,7 @@
 % Please edit documentation in R/fitAndTestSurvival.R
 \name{fitSurvival}
 \alias{fitSurvival}
-\title{Estimation of survival curves for each risk separetly.}
+\title{Estimation of survival curves for each risk separately.}
 \usage{
 fitSurvival(time, risk, group, data, cens = 0, type = "kaplan-meier",
   conf.int = 0.95, conf.type = "log")
@@ -12,20 +12,20 @@ fitSurvival(time, risk, group, data, cens = 0, type = "kaplan-meier",
 
 \item{risk}{name of a column indicating type of event, can be numeric or factor/character.}
 
-\item{group}{nam of a column indicating group variable, can be numeric or factor/character.}
+\item{group}{name of a column indicating group variable, can be numeric or factor/character.}
 
-\item{data}{data.frame, data.table or matrix containg time, risk and group columns.}
+\item{data}{data.frame, data.table or matrix containing time, risk and group columns.}
 
 \item{cens}{value of 'risk' indicating censored observation (default 0).}
 
 \item{type}{type of survival curve to be fitted. Possible values are "kaplan-meier" (default), "fleming-harrington" or "fh2".}
 
-\item{conf.int}{level of two sided confidence interval.}
+\item{conf.int}{level of two-sided confidence interval.}
 
-\item{conf.type}{type of confidence interval. Possilble values: "none", "plain", "log" (default), "log-log".}
+\item{conf.type}{type of confidence interval. Possible  values: "none", "plain", "log" (default), "log-log".}
 }
 \value{
-List, which elements are survfit.summary object for each risk separetly.
+List, which elements are survfit.summary object for each risk separately.
 }
 \description{
 The function fits survival curves for each risk treating other events as censoring.

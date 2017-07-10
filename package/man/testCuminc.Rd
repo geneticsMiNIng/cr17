@@ -2,7 +2,7 @@
 % Please edit documentation in R/fitAndTestCuminc.R
 \name{testCuminc}
 \alias{testCuminc}
-\title{K-sample Test For Competing Risks.}
+\title{K-sample Test for Competing Risks.}
 \usage{
 testCuminc(ci)
 }

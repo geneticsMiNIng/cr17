@@ -41,8 +41,8 @@ barsDataCuminc <- function(risks, groups, target, toPlot){
 #' @param ci a result of function fitCuminc.
 #' @param risk name of a column indicating type of event, can be numeric or factor/character.
 #' @param group name of a column indicating group variable, can be numeric or factor/character.
-#' @param target  point in time, in which the confidence bounds should be plotted.
-#' @return a ggplot containing n graphs, where n is number of risks. Each graphs represents cumulative incidence curves for given risk in each group.
+#' @param target point in time, in which the confidence bounds should be plotted.
+#' @return a ggplot containing n graphs, where n is number of risks. Each graph represents cumulative incidence curves for given risk in each group.
 #' @export
 #' @examples fitC <- fitCuminc(time = "time", risk = "event", group = "gender", data = LUAD, cens = "alive")
 #' plotCuminc(ci = fitC, risk = "event", group = "gender", target = 1200)

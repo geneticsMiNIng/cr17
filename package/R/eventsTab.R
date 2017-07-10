@@ -5,7 +5,7 @@
 #' @param fit a result of fitSurvival function.
 #' @param ci a result of fitCuminc function.
 #' @param risk name of a column indicating type of event, can be numeric or factor/character.
-#' @param group nam of a column indicating group variable, can be numeric or factor/character.
+#' @param group name of a column indicating group variable, can be numeric or factor/character.
 #' @return A grob with n tables, where n is number of risks. Each table contains number of events that have happened in each group up to given time point (the time points correspond to breaks at x-axis of plots with cumulative incidence curves).
 #' @export
 #' @examples fitS <- fitSurvival(time = "time", risk = "event", group = "gender", data = LUAD, cens = "alive", type = "kaplan-meier", conf.int = 0.95, conf.type = "log")

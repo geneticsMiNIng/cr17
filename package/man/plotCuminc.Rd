@@ -16,7 +16,7 @@ plotCuminc(ci, risk, group, target)
 \item{target}{point in time, in which the confidence bounds should be plotted.}
 }
 \value{
-a ggplot containing n graphs, where n is number of risks. Each graphs represents cumulative incidence curves for given risk in each group.
+a ggplot containing n graphs, where n is number of risks. Each graph represents cumulative incidence curves for given risk in each group.
 }
 \description{
 The function plots cumulative incidences curves for each risk and group.

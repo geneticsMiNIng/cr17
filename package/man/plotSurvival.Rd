@@ -12,7 +12,7 @@ plotSurvival(fit, target)
 \item{target}{point in time, in which the confidence bounds should be plotted.}
 }
 \value{
-a ggplot containing n graphs, where n is number of risks. Each graphs represents survival curves for given risk. One curve corresponds to one group.
+a ggplot containing n graphs, where n is number of risks. Each graph represents survival curves for given risk. One curve corresponds to one group.
 }
 \description{
 The function plots survival curves for each risk and group.
