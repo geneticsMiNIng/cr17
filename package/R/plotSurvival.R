@@ -110,7 +110,7 @@ barsDataSimpleSurv <- function(toPlot, target, risks, groups){
 #' @param fit a result of fitSurvival function.
 #' @param target point in time, in which the confidence bounds should be plotted.
 #' @param ggtheme ggtheme to be used (default: theme_minimal()).
-#' @param titleSurv a title of a plot (default: "Survival Curves").
+#' @param titleSurv a title of a plot (default: "Survival curves").
 #' @param xtitle a title of x axis (default: "Time").
 #' @param ytitleSurv a title of y axis (default: "Probability of survivng up to time t")
 #' @param legendtitle a title of a legend (default: "Group").
@@ -125,7 +125,7 @@ barsDataSimpleSurv <- function(toPlot, target, risks, groups){
 plotSurvival <- function(fit,
                          target = NULL,
                          ggtheme = theme_minimal(),
-                         titleSurv = "Survival Curves",
+                         titleSurv = "Survival curves",
                          xtitle = "Time",
                          ytitleSurv = "Probability of survivng up to time t",
                          legendtitle = "Group"

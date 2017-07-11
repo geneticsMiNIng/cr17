@@ -5,7 +5,7 @@
 \title{Survival curves}
 \usage{
 plotSurvival(fit, target = NULL, ggtheme = theme_minimal(),
-  titleSurv = "Survival Curves", xtitle = "Time",
+  titleSurv = "Survival curves", xtitle = "Time",
   ytitleSurv = "Probability of survivng up to time t",
   legendtitle = "Group")
 }
@@ -16,7 +16,7 @@ plotSurvival(fit, target = NULL, ggtheme = theme_minimal(),
 
 \item{ggtheme}{ggtheme to be used (default: theme_minimal()).}
 
-\item{titleSurv}{a title of a plot (default: "Survival Curves").}
+\item{titleSurv}{a title of a plot (default: "Survival curves").}
 
 \item{xtitle}{a title of x axis (default: "Time").}
 

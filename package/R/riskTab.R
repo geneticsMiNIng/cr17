@@ -65,7 +65,7 @@ riskTab <- function(time, risk, group, data, cens = 0){
     names(riskTable) <- risks
 
     args <- lapply(riskTable, function(x) arrangeGrob(tableGrob(x, theme = ttheme_minimal())))
-    args$top <- textGrob("Number at Risk", gp=gpar(fontface="bold"), vjust = 1)
+    args$top <- textGrob("Number at risk", gp=gpar(fontface="bold"), vjust = 1)
     args$ncol <- length(risks)
 
     do.call(grid.arrange, args)

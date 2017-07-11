@@ -16,7 +16,7 @@
 #' @param conf.int level of two-sided confidence interval.
 #' @param conf.type type of confidence interval. Possilble values: "none", "plain", "log" (default), "log-log".
 #' @param ggtheme ggtheme to be used in plots (default: theme_minimal()).
-#' @param titleSurv a title of a survival curves plot (default: "Survival Curves").
+#' @param titleSurv a title of a survival curves plot (default: "Survival curves").
 #' @param titleCuminc a title of a cumulative incidences plot (default: "Cumulative incidence function").
 #' @param xtitle a title of x axis of survival curves and cumulative incidences plots(default: "Time").
 #' @param ytitleSurv a title of y axis of survial curves plot (default: "Probability of survivng up to time t").
@@ -24,7 +24,7 @@
 #' @param legendtitle a title of a legend (default: "Group").
 #' @return Results of functions implemented in the package summarised in a one-page raport.
 #' @export
-#' @examples crSummary(time = "time", risk = "event", group = "gender", data = LUAD, cens = "alive", target = 1200, type = "kaplan-meier",  conf.int = 0.95, conf.type = "log", ggtheme = theme_minimal(), titleSurv = "Survival Curves", titleCuminc = "Cumulative incidence function", xtitle = "Time", ytitleSurv = "Probability of survivng up to time t", ytitleCuminc = "Cumulative incidences", legendtitle = "Group")
+#' @examples crSummary(time = "time", risk = "event", group = "gender", data = LUAD, cens = "alive", target = 1200, type = "kaplan-meier",  conf.int = 0.95, conf.type = "log", ggtheme = theme_minimal(), titleSurv = "Survival curves", titleCuminc = "Cumulative incidence function", xtitle = "Time", ytitleSurv = "Probability of survivng up to time t", ytitleCuminc = "Cumulative incidences", legendtitle = "Group")
 #' @importFrom gridExtra grid.arrange rbind.gtable tableGrob
 #' @importFrom grid textGrob
 
@@ -40,7 +40,7 @@ crSummary <- function(time,
                       conf.int = 0.95,
                       conf.type = "log",
                       ggtheme = theme_minimal(),
-                      titleSurv = "Survival Curves",
+                      titleSurv = "Survival curves",
                       titleCuminc = "Cumulative incidence function",
                       xtitle = "Time",
                       ytitleSurv = "Probability of survivng up to time t",
@@ -96,9 +96,6 @@ crSummary <- function(time,
     #Tests
     Tests <- arrangeGrob(tableGrob(Test1, theme = ttheme_minimal()),
                          tableGrob(Test2, theme = ttheme_minimal()),
-                         top =  textGrob("Tests of differences betweeen groups",
-                                         vjust = 3,
-                                         gp = gpar(fontface = "bold")),
                          ncol = 2)
 
 

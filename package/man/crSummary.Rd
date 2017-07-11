@@ -6,7 +6,7 @@
 \usage{
 crSummary(time, risk, group, data, target = NULL, cens = 0, rho = 0,
   type = "kaplan-meier", conf.int = 0.95, conf.type = "log",
-  ggtheme = theme_minimal(), titleSurv = "Survival Curves",
+  ggtheme = theme_minimal(), titleSurv = "Survival curves",
   titleCuminc = "Cumulative incidence function", xtitle = "Time",
   ytitleSurv = "Probability of survivng up to time t",
   ytitleCuminc = "Cumulative incidences", legendtitle = "Group")
@@ -34,7 +34,7 @@ crSummary(time, risk, group, data, target = NULL, cens = 0, rho = 0,
 
 \item{ggtheme}{ggtheme to be used in plots (default: theme_minimal()).}
 
-\item{titleSurv}{a title of a survival curves plot (default: "Survival Curves").}
+\item{titleSurv}{a title of a survival curves plot (default: "Survival curves").}
 
 \item{titleCuminc}{a title of a cumulative incidences plot (default: "Cumulative incidence function").}
 

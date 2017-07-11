@@ -81,7 +81,7 @@ regTest <- function(reg, conf.int = 0.95){
 
 
     colnames(p) <- risks
-    rownames(p) <- "Modified LRT"
+    rownames(p) <- "CompRisk LRT"
 
     as.data.frame(p)
 
