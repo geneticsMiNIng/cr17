@@ -1,4 +1,4 @@
-
+#
 boundsCuminc <- function(ri, gr, target, toPlot){
     ri <- as.character(ri)
     gr <- as.character(gr)
@@ -18,14 +18,14 @@ barsDataCuminc <- function(risks, groups, target, toPlot){
     barsData <- as.data.frame(barsData)
 
 
-    low <- vector()
-    up <- vector()
-    est <- vector()
+    low <- numeric(nrow(barsData))
+    up <- numeric(nrow(barsData))
+    est <- numeric(nrow(barsData))
     for(i in 1:nrow(barsData)){
         tmpBounds <- as.numeric(boundsCuminc(barsData[i,1],barsData[i,2], target, toPlot))
-        low <- c(low, tmpBounds[1])
-        est <- c(est, tmpBounds[2])
-        up <- c(up, tmpBounds[3])
+        low[i] <- tmpBounds[1]
+        est[i] <- tmpBounds[2]
+        up[i] <- tmpBounds[3]
     }
 
     barsData <- cbind(barsData, low, est, up)
@@ -85,6 +85,8 @@ plotCuminc <-function(ci, risk, group, target = NULL){
     toPlot <- toPlot[, !names(toPlot) %in% "name"]
 
 
+
+
     #adding conf intervals
     toPlot$lowerBound <- sapply(1:nrow(toPlot), function(x){
         est <- toPlot[x, "est"]
@@ -108,10 +110,12 @@ plotCuminc <-function(ci, risk, group, target = NULL){
 
     pd <- position_dodge(0.9)
 
+    timePoints <- extended_breaks()(toPlot$time)
+
     #making a plot
     plot1 <- ggplot(data = toPlot, aes(time, est, color = col)) +
         geom_step(size=1) +
-        facet_grid(~fac, scales = "free")
+        facet_grid(~fac)
 
     #adding errorbars
     if( !is.null(target) & is.numeric(target)){
@@ -128,7 +132,7 @@ plotCuminc <-function(ci, risk, group, target = NULL){
         ggtitle("Cumulative incidence function") +
         theme(plot.title = element_text(size=13, face="bold", hjust = 0.5), legend.position = "top") +
         scale_y_continuous("Cumulative incidences", limits = c(0,1)) +
-        scale_x_continuous("Time")+
+        scale_x_continuous("Time", breaks = timePoints)+
         theme(legend.title = element_text(size=10, face="bold"))+
         scale_color_discrete(name="Group", labels = groups)
 

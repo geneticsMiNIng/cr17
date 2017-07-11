@@ -46,6 +46,7 @@ eventTab <- function(fit,
     toPlot <- cbind(toPlot, riskGroup)
     toPlot <- toPlot[, !names(toPlot) %in% "name"]
 
+
     risks <- as.data.frame(unique(toPlot[,risk]))
     risks <- levels(factor(risks[,1]))
 
@@ -53,40 +54,18 @@ eventTab <- function(fit,
     groups <- levels(factor(groups[,1]))
 
 
-
-    #adding conf intervals
-    toPlot$lowerBound <- sapply(1:nrow(toPlot), function(x){
-        est <- toPlot[x, "est"]
-        var <- toPlot[x, "var"]
-        exp(log(est) - 1.96*sqrt(var)/est)
-    })
-
-    toPlot$upperBound <- sapply(1:nrow(toPlot), function(x){
-        est <- toPlot[x, "est"]
-        var <- toPlot[x, "var"]
-        exp(log(est) + 1.96*sqrt(var)/est)
-    })
-
     colnames(toPlot)[which(colnames(toPlot) == risk)] <- "fac"
     colnames(toPlot)[which(colnames(toPlot) == group)] <- "col"
 
     #dealing with factor names of strata
     badGroupNames <- levels(fit[[1]]$strata)
     strataMapping <- 1:length(badGroupNames)
-    #ISSUE nazwy grup nie moga mieć w środku '='
-    groups <- sapply(as.character(badGroupNames), function(x) strsplit(x, split = "=")[[1]][2])
     strataMapping <- cbind(strataMapping, groups)
     colnames(strataMapping) <- c("strata", "group")
 
-
-    timePoints <- lapply(risks, function(x){
-        tmp <- filter(toPlot, fac == x)
-        extended_breaks()(tmp$time)
-    })
+    timePoints <- extended_breaks()(toPlot$time)
 
     names(timePoints) <- risks
-
-
 
     forTables <- data.frame()
     for(i in as.character(risks)){
@@ -105,12 +84,11 @@ eventTab <- function(fit,
 
     makeRow <- function(ri, gr){
         tmp <- filter(forTables, risk == ri, group == gr)
-        newRow <- vector()
-        tp <- timePoints[[ri]]
-        for(i in tp){
-            tmp2 <- filter(tmp, tmp$time <= i)
+        newRow <- numeric(length(timePoints))
+        for(i in 1:length(timePoints)){
+            tmp2 <- filter(tmp, tmp$time <= timePoints[i])
             newValue <- sum(tmp2$n.event)
-            newRow <- c(newRow, newValue)
+            newRow[i] <- newValue
         }
 
         newRow
@@ -120,20 +98,21 @@ eventTab <- function(fit,
         tab <- sapply(groups, function(x) makeRow(ri, x))
         tab <- t(tab)
         tab <- as.data.frame(tab)
-        colnames(tab) <- timePoints[[ri]]
-        rownames(tab) <- groups
+        colnames(tab) <- timePoints
         tab
     }
 
 
     eventTable <- lapply(risks, function(x) makeTable(x))
 
-
     names(eventTable) <- risks
 
-    grid.arrange(arrangeGrob(tableGrob(eventTable[[1]], theme = ttheme_minimal())),
-                 arrangeGrob(tableGrob(eventTable[[2]], theme = ttheme_minimal())),
-                 top = textGrob("Number of events", gp=gpar(fontface="bold"), vjust = 1),ncol= 2)
+    args <- lapply(eventTable, function(x) arrangeGrob(tableGrob(x, theme = ttheme_minimal())))
+    args$top <- textGrob("Number of events", gp=gpar(fontface="bold"), vjust = 1)
+    args$ncol <- length(risks)
 
+    do.call(grid.arrange, args)
 }
+
+
 

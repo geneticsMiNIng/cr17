@@ -4,7 +4,7 @@
 \alias{riskTab}
 \title{Number at risk table.}
 \usage{
-riskTab(fit)
+riskTab(time, risk, group, data, cens = 0)
 }
 \arguments{
 \item{fit}{a result of fitSurvival function.}

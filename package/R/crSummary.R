@@ -1,4 +1,5 @@
 
+
 #' @title Competing Risks Models Summary.
 #' @name crSummary
 #' @description The function generates summarized report including
@@ -22,15 +23,15 @@
 
 
 crSummary <- function(time,
-                        risk,
-                        group,
-                        data,
-                        target = NULL,
-                        cens = 0,
-                        rho = 0,
-                        type = "kaplan-meier",
-                        conf.int = 0.95,
-                        conf.type = "log"
+                      risk,
+                      group,
+                      data,
+                      target = NULL,
+                      cens = 0,
+                      rho = 0,
+                      type = "kaplan-meier",
+                      conf.int = 0.95,
+                      conf.type = "log"
 ){
 
     fit <- fitSurvival(time, risk, group, data, cens, type, conf.int, conf.type)
@@ -51,7 +52,7 @@ crSummary <- function(time,
     plotCumFun <- plotCuminc(ci, risk, group, target)
 
     #tables
-    riskTable <- riskTab(fit)
+    riskTable <- riskTab(time, risk, group, data, cens)
     # for(i in 1:length(riskTable)){
     #     assign(paste("riskTab", i, sep = ""), riskTable[[i]])
     # }
@@ -59,7 +60,6 @@ crSummary <- function(time,
     # for(i in 1:length(eventTable)){
     #     assign(paste("eventTab", i, sep = ""), eventTable[[i]])
     # }
-
 
 
     Test1 <- rbind(lrtSurvTest, CoxSurvTest)

@@ -4,7 +4,7 @@
 \alias{plotSurvival}
 \title{Survival curves}
 \usage{
-plotSurvival(fit, target)
+plotSurvival(fit, target = NULL)
 }
 \arguments{
 \item{fit}{a result of fitSurvival function.}

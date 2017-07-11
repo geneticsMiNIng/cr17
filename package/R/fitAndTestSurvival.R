@@ -60,6 +60,7 @@ fitSurvival <- function(time,
         ))
     })
 
+
     names(fit) <- risks
     fit
 }
