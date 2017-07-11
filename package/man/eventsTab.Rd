@@ -5,16 +5,18 @@
 \alias{eventTab}
 \title{Number of events tables.}
 \usage{
-eventTab(fit, ci, risk, group)
+eventTab(time, risk, group, data, cens = 0)
 }
 \arguments{
-\item{fit}{a result of fitSurvival function.}
-
-\item{ci}{a result of fitCuminc function.}
+\item{time}{name of a column indicating time of an event or follow-up, must be numeric.}
 
 \item{risk}{name of a column indicating type of event, can be numeric or factor/character.}
 
 \item{group}{name of a column indicating group variable, can be numeric or factor/character.}
+
+\item{data}{data.frame, data.table or matrix containing time, risk and group columns.}
+
+\item{cens}{value of 'risk' indicating censored observation (default 0).}
 }
 \value{
 A grob with n tables, where n is number of risks. Each table contains number of events that have happened in each group up to given time point (the time points correspond to breaks at x-axis of plots with cumulative incidence curves).
@@ -23,7 +25,5 @@ A grob with n tables, where n is number of risks. Each table contains number of 
 The function creates tables for each risk with number of events up to given time in groups.
 }
 \examples{
-fitS <- fitSurvival(time = "time", risk = "event", group = "gender", data = LUAD, cens = "alive", type = "kaplan-meier", conf.int = 0.95, conf.type = "log")
-fitC <- fitCuminc(time = "time", risk = "event", group = "gender", data = LUAD, cens = "alive")
-eventTab(fit = fitS, ci = fitC, risk = "event", group = "gender")
+eventTab(time = "time", risk = "event", group = "gender", data = LUAD, cens = "alive")
 }

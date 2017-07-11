@@ -59,6 +59,14 @@ fitCuminc <- function(time,
 
     names(ci)[1:length(ci)-1] <- tab$newname
 
+    #adding info about group and risk to each element of group
+    for(i in 1:nrow(tab)){
+        ci[[i]]$group <- tab$gender[i]
+        ci[[i]]$risk <- tab$event[i]
+    }
+
+
+
     ci$Tests <- as.data.frame(ci$Tests)
 
     ci
@@ -79,22 +87,7 @@ fitCuminc <- function(time,
 
 testCuminc <- function(ci){
 
-    aggNames <- names(ci)
-    aggNames <- aggNames[-length(ci)]
-
-    riskGroup <- sapply(aggNames, function(x){
-        unlist(strsplit(x, split = " "))
-    })
-
-    riskGroup <- as.data.frame(riskGroup)
-    riskGroup <- t(riskGroup)
-    colnames(riskGroup) <- c("risk", "group")
-
-    risks <- unique(riskGroup[,"risk"])
-    risks <- levels(factor(risks))
-
-    groups <- unique(riskGroup[, "group"])
-    groups <- levels(factor(groups))
+    risks <- levels(ci[[1]]$risk)
 
     tab <- as.data.frame(ci[[length(ci)]])
     p <- as.data.frame(t(tab$pv))
@@ -110,7 +103,7 @@ testCuminc <- function(ci){
 
 
     colnames(tab1) <- risks
-    rownames(tab1) <- "CompRisks LRT"
+    rownames(tab1) <- "K-Sample Test"
 
     as.data.frame(tab1)
 }

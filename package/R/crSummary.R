@@ -72,8 +72,6 @@ crSummary <- function(time,
                                    legendtitle)
 
     plotCumFun <- plotCuminc(ci,
-                             risk,
-                             group,
                              target,
                              ggtheme,
                              titleCuminc,
@@ -86,7 +84,7 @@ crSummary <- function(time,
     # for(i in 1:length(riskTable)){
     #     assign(paste("riskTab", i, sep = ""), riskTable[[i]])
     # }
-    eventTable <- eventTab(fit, ci, risk, group)
+    eventTable <- eventTab(time, risk, group, data, cens)
     # for(i in 1:length(eventTable)){
     #     assign(paste("eventTab", i, sep = ""), eventTable[[i]])
     # }

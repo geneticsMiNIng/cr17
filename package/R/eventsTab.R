@@ -2,105 +2,56 @@
 #' @title Number of events tables.
 #' @name eventsTab
 #' @description The function creates tables for each risk with number of events up to given time in groups.
-#' @param fit a result of fitSurvival function.
-#' @param ci a result of fitCuminc function.
+#' @param time name of a column indicating time of an event or follow-up, must be numeric.
 #' @param risk name of a column indicating type of event, can be numeric or factor/character.
 #' @param group name of a column indicating group variable, can be numeric or factor/character.
+#' @param data data.frame, data.table or matrix containing time, risk and group columns.
+#' @param cens value of 'risk' indicating censored observation (default 0).
 #' @return A grob with n tables, where n is number of risks. Each table contains number of events that have happened in each group up to given time point (the time points correspond to breaks at x-axis of plots with cumulative incidence curves).
 #' @export
-#' @examples fitS <- fitSurvival(time = "time", risk = "event", group = "gender", data = LUAD, cens = "alive", type = "kaplan-meier", conf.int = 0.95, conf.type = "log")
-#' fitC <- fitCuminc(time = "time", risk = "event", group = "gender", data = LUAD, cens = "alive")
-#' eventTab(fit = fitS, ci = fitC, risk = "event", group = "gender")
+#' @examples eventTab(time = "time", risk = "event", group = "gender", data = LUAD, cens = "alive")
 #' @importFrom dplyr filter
 #' @importFrom scales extended_breaks
 #' @importFrom grid textGrob
 
 
-eventTab <- function(fit,
-                     ci,
-                     risk,
-                     group){
+eventTab <- function(time, risk, group, data, cens = 0){
 
+    data <- as.data.frame(data)
+    timeCol <- data[, time]
+    groups <- factor(data[, group])
+    risks <- riskVec(data, risk, cens)
+    nrOfRisks <- as.numeric(nrow(risks))
 
-    #make long format
-    ci <- ci[-length(ci)]
-    aggNames <- names(ci)
-
-    toPlot <- data.frame()
-
-    for(i in aggNames){
-        tmp <- as.data.frame(ci[[i]])
-        tmp$name <- i
-        toPlot <- as.data.frame(rbind(toPlot, tmp))
-    }
-
-    riskGroup <- sapply(toPlot$name, function(x){
-        unlist(strsplit(x, split = " "))
+    #extended_breaks
+    fit <- lapply(risks, function(x) {
+        localStatus <- {data[,risk] == x}
+        summary(survfit(Surv(timeCol, localStatus)~groups
+        ))
     })
+    names(fit) <- risks
+    tmp <- toPlotDf(fit)
+    timePoints <- extended_breaks()(tmp$time)
 
-    riskGroup <- as.data.frame(riskGroup)
-    riskGroup <- t(riskGroup)
-    colnames(riskGroup) <- c(risk, group)
-    rownames(riskGroup) <- NULL
-
-    toPlot <- cbind(toPlot, riskGroup)
-    toPlot <- toPlot[, !names(toPlot) %in% "name"]
-
-
-    risks <- as.data.frame(unique(toPlot[,risk]))
-    risks <- levels(factor(risks[,1]))
-
-    groups <- as.data.frame(unique(toPlot[,group]))
-    groups <- levels(factor(groups[,1]))
-
-
-    colnames(toPlot)[which(colnames(toPlot) == risk)] <- "fac"
-    colnames(toPlot)[which(colnames(toPlot) == group)] <- "col"
-
-    #dealing with factor names of strata
-    badGroupNames <- levels(fit[[1]]$strata)
-    strataMapping <- 1:length(badGroupNames)
-    strataMapping <- cbind(strataMapping, groups)
-    colnames(strataMapping) <- c("strata", "group")
-
-    timePoints <- extended_breaks()(toPlot$time)
-
-    names(timePoints) <- risks
-
-    forTables <- data.frame()
-    for(i in as.character(risks)){
-        tmp <- cbind(fit[[i]]$time,
-                     fit[[i]]$n.event,
-                     fit[[i]]$strata,
-                     rep(i, times = length(fit[[i]]$time)))
-
-        tmp <- as.data.frame(tmp)
-        forTables <- as.data.frame(rbind(forTables, tmp))
-
-    }
-    colnames(forTables) <- c("time", "n.event", "strata", "risk")
-    forTables <- merge(forTables, strataMapping, by = "strata")
-    forTables[,1:3] <- sapply(forTables[,1:3], function(x) as.numeric(as.character(x)))
+    uniGroups <- unique(groups)
+    uniGroups <- levels(factor(uniGroups))
 
     makeRow <- function(whichRisk, whichGroup){
-        tmp <- filter(forTables, risk == whichRisk, group == whichGroup)
-        newRow <- numeric(length(timePoints))
-        for(i in 1:length(timePoints)){
-            tmp2 <- filter(tmp, tmp$time <= timePoints[i])
-            newValue <- sum(tmp2$n.event)
-            newRow[i] <- newValue
-        }
-
+        tmp <- filter(data, data[, risk] == whichRisk & data[, group] == whichGroup)
+        newRow <- sapply(1:length(timePoints), function(x){
+            length(which(tmp$time <= timePoints[x]))
+        })
         newRow
     }
 
-    makeTable <- function(ri){
-        tab <- sapply(groups, function(x) makeRow(ri, x))
-        tab <- t(tab)
+    makeTable <- function(whichRisk){
+        tab <- sapply(uniGroups, function(x) makeRow(whichRisk, x))
         tab <- as.data.frame(tab)
+        tab <- t(tab)
         colnames(tab) <- timePoints
         tab
     }
+
 
 
     eventTable <- lapply(risks, function(x) makeTable(x))

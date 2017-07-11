@@ -2,7 +2,7 @@
 boundsCuminc <- function(whichRisk, whichGroup, target, toPlot){
     whichRisk <- as.character(whichRisk)
     whichGroup <- as.character(whichGroup)
-    tmp <- as.data.frame(filter(toPlot, fac == whichRisk & col == whichGroup))
+    tmp <- as.data.frame(filter(toPlot, risk == whichRisk & group == whichGroup))
     whichTime <- which(tmp$time <= target)
     nr <- length(whichTime)
     lower <- tmp$lowerBound[nr]
@@ -14,7 +14,7 @@ boundsCuminc <- function(whichRisk, whichGroup, target, toPlot){
 
 barsDataCuminc <- function(risks, groups, target, toPlot){
     barsData <- expand.grid(risks, groups)
-    colnames(barsData) <- c("fac", "col")
+    colnames(barsData) <- c("risk", "group")
     barsData <- as.data.frame(barsData)
 
 
@@ -39,8 +39,6 @@ barsDataCuminc <- function(risks, groups, target, toPlot){
 #' @name plotCuminc
 #' @description The function plots cumulative incidences curves for each risk and group.
 #' @param ci a result of function fitCuminc.
-#' @param risk name of a column indicating type of event, can be numeric or factor/character.
-#' @param group name of a column indicating group variable, can be numeric or factor/character.
 #' @param target point in time, in which the confidence bounds should be plotted (default NULL, no confidence bounds plotted).
 #' @param ggtheme ggtheme to be used (default: theme_minimal()).
 #' @param titleCuminc a title of a plot (default: "Cumulative incidence function").
@@ -50,14 +48,12 @@ barsDataCuminc <- function(risks, groups, target, toPlot){
 #' @return a ggplot containing n graphs, where n is number of risks. Each graph represents cumulative incidence curves for given risk in each group.
 #' @export
 #' @examples fitC <- fitCuminc(time = "time", risk = "event", group = "gender", data = LUAD, cens = "alive")
-#' plotCuminc(ci = fitC, risk = "event", group = "gender", target = 1200)
+#' plotCuminc(ci = fitC, target = 1200)
 #' @importFrom dplyr filter
 #' @importFrom cmprsk cuminc
 
 
 plotCuminc <-function(ci,
-                      risk,
-                      group,
                       target = NULL,
                       ggtheme = theme_minimal(),
                       titleCuminc = "Cumulative incidence function",
@@ -71,33 +67,28 @@ plotCuminc <-function(ci,
 
     toPlot <- data.frame()
 
-    for(i in aggNames){
-        tmp <- as.data.frame(ci[[i]])
-        tmp$name <- i
+    for(i in 1:length(aggNames)){
+        tmp <- as.data.frame(cbind(ci[[i]]$time, ci[[i]]$est, ci[[i]]$var, rep(aggNames[i], times = length(ci[[i]]$time))))
         toPlot <- as.data.frame(rbind(toPlot, tmp))
     }
 
-    riskGroup <- sapply(toPlot$name, function(x){
-        unlist(strsplit(x, split = " "))
+    colnames(toPlot) <- c("time", "est", "var", "aggname")
+
+    toPlot[,1:3] <- sapply(1:3, function(x) as.numeric(as.character(toPlot[,x])))
+
+    risks <- levels(ci[[1]]$risk)
+    groups <- levels(ci[[1]]$group)
+
+
+
+    riskGroup <- expand.grid(risks, groups)
+    riskGroup$aggname <- sapply(1:nrow(riskGroup), function(x){
+        paste(riskGroup[x,1], riskGroup[x,2])
     })
 
-
-
-    riskGroup <- as.data.frame(riskGroup)
-    riskGroup <- t(riskGroup)
-    colnames(riskGroup) <- c(risk, group)
-    rownames(riskGroup) <- NULL
-
-    risks <- unique(riskGroup[,risk])
-    risks <- levels(factor(risks))
-
-    groups <- unique(riskGroup[,group])
-    groups <- levels(factor(groups))
-
-    toPlot <- cbind(toPlot, riskGroup)
-    toPlot <- toPlot[, !names(toPlot) %in% "name"]
-
-
+    toPlot <- merge(toPlot, riskGroup, by = "aggname")
+    toPlot <- toPlot[, !names(toPlot) %in% "aggname"]
+    colnames(toPlot)[4:5] <- c("risk", "group")
 
 
     #adding conf intervals
@@ -113,10 +104,6 @@ plotCuminc <-function(ci,
         exp(log(est) + 1.96*sqrt(var)/est)
     })
 
-    colnames(toPlot)[which(colnames(toPlot) == risk)] <- "fac"
-    colnames(toPlot)[which(colnames(toPlot) == group)] <- "col"
-
-
 
     if(!is.null(target) & is.numeric(target)){
     barsData <- barsDataCuminc(risks, groups, target, toPlot)}
@@ -126,9 +113,9 @@ plotCuminc <-function(ci,
     timePoints <- extended_breaks()(toPlot$time)
 
     #making a plot
-    plot1 <- ggplot(data = toPlot, aes(time, est, color = col)) +
+    plot1 <- ggplot(data = toPlot, aes(time, est, color = group)) +
         geom_step(size=1) +
-        facet_grid(~fac)
+        facet_grid(~risk)
 
     #adding errorbars
     if( !is.null(target) & is.numeric(target)){

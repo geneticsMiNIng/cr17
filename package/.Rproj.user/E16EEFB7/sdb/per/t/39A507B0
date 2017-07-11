@@ -1,0 +1,20 @@
+{
+    "collab_server" : "",
+    "contents" : "#' @title Number at risk table.\n#' @name riskTab\n#' @description The function creates tables for each risk with number of observation at risk in given time in groups.\n#' @param time name of a column indicating time of an event or follow-up, must be numeric.\n#' @param risk name of a column indicating type of event, can be numeric or factor/character.\n#' @param group name of a column indicating group variable, can be numeric or factor/character.\n#' @param data data.frame, data.table or matrix containing time, risk and group columns.\n#' @param cens value of 'risk' indicating censored observation (default 0).\n#' @return A grob with n tables, where n is number of risks. Each table contains number of observations at risk in each group in given time points (the time points correspond to breaks at x-axis of plots with survival curves).\n#' @export\n#' @examples riskTab(time = \"time\", risk = \"event\", group = \"gender\", data = LUAD, cens = \"alive\")\n#' @importFrom dplyr filter\n#' @importFrom scales extended_breaks\n#' @importFrom grid textGrob\n\n\nriskTab <- function(time, risk, group, data, cens = 0){\n\n    data <- as.data.frame(data)\n    timeCol <- data[, time]\n    groups <- factor(data[, group])\n    risks <- riskVec(data, risk, cens)\n    nrOfRisks <- as.numeric(nrow(risks))\n\n    #extended_breaks\n    fit <- lapply(risks, function(x) {\n        localStatus <- {data[,risk] == x}\n        summary(survfit(Surv(timeCol, localStatus)~groups\n        ))\n    })\n    names(fit) <- risks\n    tmp <- toPlotDf(fit)\n    timePoints <- extended_breaks()(tmp$time)\n\n    uniGroups <- unique(groups)\n    uniGroups <- levels(factor(uniGroups))\n\n    initialValues <- as.data.frame(sapply(uniGroups, function(x) length(groups[groups == x])))\n    colnames(initialValues) <- timePoints[1]\n\n    #countEvents counts how many events is now less in risk set for given risk\n    makeRow <- function(whichRisk, whichGroup){\n        nrOfEvents <- filter(data, data[, group] == whichGroup & data[, risk]%in% c(whichRisk, cens))\n        nrOfEvents <- as.data.frame(nrOfEvents)\n        countEvents <- sapply(timePoints[-1], function(x){\n            tmp <- which(nrOfEvents[,time] < x)\n            length(tmp)\n        })\n        newRow <- c(initialValues[whichGroup,], initialValues[whichGroup,] - countEvents)\n\n        newRow\n    }\n\n\n    makeTab <- function(whichRisk){\n        tab <- sapply(uniGroups, function(x) makeRow(whichRisk, x))\n        tab <- as.data.frame(tab)\n        tab <- t(tab)\n        colnames(tab) <- timePoints\n        tab\n    }\n\n\n    riskTable <- lapply(risks, makeTab)\n    names(riskTable) <- risks\n\n    args <- lapply(riskTable, function(x) arrangeGrob(tableGrob(x, theme = ttheme_minimal())))\n    args$top <- textGrob(\"Number at Risk\", gp=gpar(fontface=\"bold\"), vjust = 1)\n    args$ncol <- length(risks)\n\n    do.call(grid.arrange, args)\n}\n",
+    "created" : 1499806816099.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "1127506596",
+    "id" : "39A507B0",
+    "lastKnownWriteTime" : 1499809727,
+    "last_content_update" : 1499809727492,
+    "path" : "~/GitHub/cr17/package/R/riskTab.R",
+    "project_path" : "R/riskTab.R",
+    "properties" : {
+    },
+    "relative_order" : 8,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}

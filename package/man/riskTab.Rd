@@ -7,7 +7,15 @@
 riskTab(time, risk, group, data, cens = 0)
 }
 \arguments{
-\item{fit}{a result of fitSurvival function.}
+\item{time}{name of a column indicating time of an event or follow-up, must be numeric.}
+
+\item{risk}{name of a column indicating type of event, can be numeric or factor/character.}
+
+\item{group}{name of a column indicating group variable, can be numeric or factor/character.}
+
+\item{data}{data.frame, data.table or matrix containing time, risk and group columns.}
+
+\item{cens}{value of 'risk' indicating censored observation (default 0).}
 }
 \value{
 A grob with n tables, where n is number of risks. Each table contains number of observations at risk in each group in given time points (the time points correspond to breaks at x-axis of plots with survival curves).
@@ -16,6 +24,5 @@ A grob with n tables, where n is number of risks. Each table contains number of 
 The function creates tables for each risk with number of observation at risk in given time in groups.
 }
 \examples{
-fitS <- fitSurvival(time = "time", risk = "event", group = "gender", data = LUAD, cens = "alive", type = "kaplan-meier", conf.int = 0.95, conf.type = "log")
-riskTab(fit = fitS)
+riskTab(time = "time", risk = "event", group = "gender", data = LUAD, cens = "alive")
 }
