@@ -4,7 +4,9 @@
 \alias{plotCuminc}
 \title{Cumulative incidences curves}
 \usage{
-plotCuminc(ci, risk, group, target = NULL)
+plotCuminc(ci, risk, group, target = NULL, ggtheme = theme_minimal(),
+  titleCuminc = "Cumulative incidence function", xtitle = "Time",
+  ytitleCuminc = "Cumulative incidences", legendtitle = "Group")
 }
 \arguments{
 \item{ci}{a result of function fitCuminc.}
@@ -14,6 +16,16 @@ plotCuminc(ci, risk, group, target = NULL)
 \item{group}{name of a column indicating group variable, can be numeric or factor/character.}
 
 \item{target}{point in time, in which the confidence bounds should be plotted (default NULL, no confidence bounds plotted).}
+
+\item{ggtheme}{ggtheme to be used (default: theme_minimal()).}
+
+\item{titleCuminc}{a title of a plot (default: "Cumulative incidence function").}
+
+\item{xtitle}{a title of x axis (default: "Time").}
+
+\item{ytitleCuminc}{a title of y axis (default: "Cumulative incidences")}
+
+\item{legendtitle}{a title of a legend (default: "Group").}
 }
 \value{
 a ggplot containing n graphs, where n is number of risks. Each graph represents cumulative incidence curves for given risk in each group.

@@ -1,8 +1,8 @@
 #
-boundsCuminc <- function(ri, gr, target, toPlot){
-    ri <- as.character(ri)
-    gr <- as.character(gr)
-    tmp <- as.data.frame(filter(toPlot, fac == ri & col == gr))
+boundsCuminc <- function(whichRisk, whichGroup, target, toPlot){
+    whichRisk <- as.character(whichRisk)
+    whichGroup <- as.character(whichGroup)
+    tmp <- as.data.frame(filter(toPlot, fac == whichRisk & col == whichGroup))
     whichTime <- which(tmp$time <= target)
     nr <- length(whichTime)
     lower <- tmp$lowerBound[nr]
@@ -42,6 +42,11 @@ barsDataCuminc <- function(risks, groups, target, toPlot){
 #' @param risk name of a column indicating type of event, can be numeric or factor/character.
 #' @param group name of a column indicating group variable, can be numeric or factor/character.
 #' @param target point in time, in which the confidence bounds should be plotted (default NULL, no confidence bounds plotted).
+#' @param ggtheme ggtheme to be used (default: theme_minimal()).
+#' @param titleCuminc a title of a plot (default: "Cumulative incidence function").
+#' @param xtitle a title of x axis (default: "Time").
+#' @param ytitleCuminc a title of y axis (default: "Cumulative incidences")
+#' @param legendtitle a title of a legend (default: "Group").
 #' @return a ggplot containing n graphs, where n is number of risks. Each graph represents cumulative incidence curves for given risk in each group.
 #' @export
 #' @examples fitC <- fitCuminc(time = "time", risk = "event", group = "gender", data = LUAD, cens = "alive")
@@ -50,7 +55,15 @@ barsDataCuminc <- function(risks, groups, target, toPlot){
 #' @importFrom cmprsk cuminc
 
 
-plotCuminc <-function(ci, risk, group, target = NULL){
+plotCuminc <-function(ci,
+                      risk,
+                      group,
+                      target = NULL,
+                      ggtheme = theme_minimal(),
+                      titleCuminc = "Cumulative incidence function",
+                      xtitle = "Time",
+                      ytitleCuminc = "Cumulative incidences",
+                      legendtitle = "Group"){
 
     #make long format
     ci <- ci[-length(ci)]
@@ -129,12 +142,12 @@ plotCuminc <-function(ci, risk, group, target = NULL){
     #making it beauty
     plot1 <- plot1 +
         theme_minimal() +
-        ggtitle("Cumulative incidence function") +
+        ggtitle(titleCuminc) +
         theme(plot.title = element_text(size=13, face="bold", hjust = 0.5), legend.position = "top") +
-        scale_y_continuous("Cumulative incidences", limits = c(0,1)) +
-        scale_x_continuous("Time", breaks = timePoints)+
+        scale_y_continuous(ytitleCuminc, limits = c(0,1)) +
+        scale_x_continuous(xtitle, breaks = timePoints)+
         theme(legend.title = element_text(size=10, face="bold"))+
-        scale_color_discrete(name="Group", labels = groups)
+        scale_color_discrete(name=legendtitle, labels = groups)
 
     plot1
 }

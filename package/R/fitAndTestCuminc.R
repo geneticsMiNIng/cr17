@@ -43,7 +43,7 @@ fitCuminc <- function(time,
     aggnames <- names(ci)
     aggnames <- aggnames[-length(aggnames)]
 
-    tab <- vector()
+    tab <- c()
     for(i in aggnames){
         tmp <- unlist(strsplit(i, " "))
         tab <- rbind(tab, c(i, tmp))

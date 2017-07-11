@@ -1,7 +1,5 @@
 
-
 #data frame for plotting
-
 toPlotDf <- function(fit){
 
     risks <- names(fit)
@@ -13,7 +11,7 @@ toPlotDf <- function(fit){
     strataMapping <- 1:length(badGroupNames)
 
     #ISSUE nazwy grup nie moga mieć w środku '='
-    groups <- sapply(as.character(badGroupNames), function(x) strsplit(x, split = "=")[[1]][2])
+    groups <- sapply(as.character(badGroupNames), function(x) gsub("groups=", replacement = "", x))
     strataMapping <- cbind(strataMapping, groups)
 
     colnames(strataMapping) <- c("strata", "group")
@@ -64,10 +62,10 @@ toPlotDf <- function(fit){
 
 #confidence intervals for simple analysis
 
-boundsSimpleSurv <- function(ri, gr, target, toPlot){
-    ri <- as.character(ri)
-    gr <- as.character(gr)
-    tmp <- as.data.frame(filter(toPlot, toPlot$risk == ri & toPlot$group == gr))
+boundsSimpleSurv <- function(whichRisk, whichGroup, target, toPlot){
+    whichRisk <- as.character(whichRisk)
+    whichGroup <- as.character(whichGroup)
+    tmp <- as.data.frame(filter(toPlot, toPlot$risk == whichRisk & toPlot$group == whichGroup))
     tmp <- tmp[order(tmp$time),]
     whichTime <- which(tmp$time < target)
     nr <- length(whichTime)
@@ -87,14 +85,14 @@ boundsSimpleSurv <- function(ri, gr, target, toPlot){
 
 barsDataSimpleSurv <- function(toPlot, target, risks, groups){
     barsData <- expand.grid(risks, groups)
-    low <- vector()
-    up <- vector()
-    prob <- vector()
+    low <- numeric(nrow(barsData))
+    up <-  numeric(nrow(barsData))
+    prob <-  numeric(nrow(barsData))
     for(i in 1:nrow(barsData)){
         tmpBounds <- as.numeric(boundsSimpleSurv(barsData[i,1],barsData[i,2],target, toPlot))
-        low <- c(low, tmpBounds[1])
-        prob <- c(prob, tmpBounds[2])
-        up <- c(up, tmpBounds[3])
+        low[i] <- tmpBounds[1]
+        prob[i] <- tmpBounds[2]
+        up[i] <- tmpBounds[3]
     }
 
     barsData <- cbind(barsData, low, prob, up)
@@ -111,6 +109,11 @@ barsDataSimpleSurv <- function(toPlot, target, risks, groups){
 #' @description The function plots survival curves for each risk and group.
 #' @param fit a result of fitSurvival function.
 #' @param target point in time, in which the confidence bounds should be plotted.
+#' @param ggtheme ggtheme to be used (default: theme_minimal()).
+#' @param titleSurv a title of a plot (default: "Survival Curves").
+#' @param xtitle a title of x axis (default: "Time").
+#' @param ytitleSurv a title of y axis (default: "Probability of survivng up to time t")
+#' @param legendtitle a title of a legend (default: "Group").
 #' @return a ggplot containing n graphs, where n is number of risks. Each graph represents survival curves for given risk. One curve corresponds to one group.
 #' @export
 #' @examples fitS <- fitSurvival(time = "time", risk = "event", group = "gender", data = LUAD, cens = "alive", type = "kaplan-meier", conf.int = 0.95, conf.type = "log")
@@ -119,7 +122,15 @@ barsDataSimpleSurv <- function(toPlot, target, risks, groups){
 #' @importFrom dplyr filter
 #' @importFrom scales extended_breaks
 
-plotSurvival <- function(fit, target = NULL){
+plotSurvival <- function(fit,
+                         target = NULL,
+                         ggtheme = theme_minimal(),
+                         titleSurv = "Survival Curves",
+                         xtitle = "Time",
+                         ytitleSurv = "Probability of survivng up to time t",
+                         legendtitle = "Group"
+
+                         ){
 
     toPlot <- toPlotDf(fit)
 
@@ -155,15 +166,17 @@ plotSurvival <- function(fit, target = NULL){
                       width = 0.7,
                       position = pd)}
 
+    #theme
+    plot1 <- plot1 + ggtheme
+
     #making it beauty
     plot1 <- plot1 +
-        theme_minimal() +
-        ggtitle("Survival curves") +
+        ggtitle(titleSurv) +
         theme(plot.title = element_text(size=13, face="bold", hjust = 0.5), legend.position = "top") +
-        scale_y_continuous("Probability of survivng up to time t", limits = c(0,1)) +
-        scale_x_continuous("Time", breaks = timePoints)+
+        scale_y_continuous(ytitleSurv, limits = c(0,1)) +
+        scale_x_continuous(xtitle, breaks = timePoints)+
         theme(legend.title = element_text(size=10, face="bold"))+
-        scale_color_discrete(name="Group", labels = groups)
+        scale_color_discrete(name=legendtitle, labels = groups)
 
     plot1
 

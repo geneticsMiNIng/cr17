@@ -4,12 +4,25 @@
 \alias{plotSurvival}
 \title{Survival curves}
 \usage{
-plotSurvival(fit, target = NULL)
+plotSurvival(fit, target = NULL, ggtheme = theme_minimal(),
+  titleSurv = "Survival Curves", xtitle = "Time",
+  ytitleSurv = "Probability of survivng up to time t",
+  legendtitle = "Group")
 }
 \arguments{
 \item{fit}{a result of fitSurvival function.}
 
 \item{target}{point in time, in which the confidence bounds should be plotted.}
+
+\item{ggtheme}{ggtheme to be used (default: theme_minimal()).}
+
+\item{titleSurv}{a title of a plot (default: "Survival Curves").}
+
+\item{xtitle}{a title of x axis (default: "Time").}
+
+\item{ytitleSurv}{a title of y axis (default: "Probability of survivng up to time t")}
+
+\item{legendtitle}{a title of a legend (default: "Group").}
 }
 \value{
 a ggplot containing n graphs, where n is number of risks. Each graph represents survival curves for given risk. One curve corresponds to one group.

@@ -5,7 +5,11 @@
 \title{Competing Risks Models Summary.}
 \usage{
 crSummary(time, risk, group, data, target = NULL, cens = 0, rho = 0,
-  type = "kaplan-meier", conf.int = 0.95, conf.type = "log")
+  type = "kaplan-meier", conf.int = 0.95, conf.type = "log",
+  ggtheme = theme_minimal(), titleSurv = "Survival Curves",
+  titleCuminc = "Cumulative incidence function", xtitle = "Time",
+  ytitleSurv = "Probability of survivng up to time t",
+  ytitleCuminc = "Cumulative incidences", legendtitle = "Group")
 }
 \arguments{
 \item{time}{name of a column indicating time of an event or follow-up, must be numeric.}
@@ -27,6 +31,20 @@ crSummary(time, risk, group, data, target = NULL, cens = 0, rho = 0,
 \item{conf.int}{level of two-sided confidence interval.}
 
 \item{conf.type}{type of confidence interval. Possilble values: "none", "plain", "log" (default), "log-log".}
+
+\item{ggtheme}{ggtheme to be used in plots (default: theme_minimal()).}
+
+\item{titleSurv}{a title of a survival curves plot (default: "Survival Curves").}
+
+\item{titleCuminc}{a title of a cumulative incidences plot (default: "Cumulative incidence function").}
+
+\item{xtitle}{a title of x axis of survival curves and cumulative incidences plots(default: "Time").}
+
+\item{ytitleSurv}{a title of y axis of survial curves plot (default: "Probability of survivng up to time t").}
+
+\item{ytitleCuminc}{a title of y axis (default: "Cumulative incidences").}
+
+\item{legendtitle}{a title of a legend (default: "Group").}
 }
 \value{
 Results of functions implemented in the package summarised in a one-page raport.
@@ -37,5 +55,5 @@ p-values of testing differences between groups and visualisation of survival
 and cumulative incidences curves.
 }
 \examples{
-crSummary(time = "time", risk = "event", group = "gender", data = LUAD, cens = "alive", target = 1200, type = "kaplan-meier", conf.int = 0.95, conf.type = "log")
+crSummary(time = "time", risk = "event", group = "gender", data = LUAD, cens = "alive", target = 1200, type = "kaplan-meier",  conf.int = 0.95, conf.type = "log", ggtheme = theme_minimal(), titleSurv = "Survival Curves", titleCuminc = "Cumulative incidence function", xtitle = "Time", ytitleSurv = "Probability of survivng up to time t", ytitleCuminc = "Cumulative incidences", legendtitle = "Group")
 }

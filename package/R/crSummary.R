@@ -15,9 +15,16 @@
 #' @param type type of survival curve to be fitted. Possible values are "kaplan-meier" (default), "fleming-harrington" or "fh2".
 #' @param conf.int level of two-sided confidence interval.
 #' @param conf.type type of confidence interval. Possilble values: "none", "plain", "log" (default), "log-log".
+#' @param ggtheme ggtheme to be used in plots (default: theme_minimal()).
+#' @param titleSurv a title of a survival curves plot (default: "Survival Curves").
+#' @param titleCuminc a title of a cumulative incidences plot (default: "Cumulative incidence function").
+#' @param xtitle a title of x axis of survival curves and cumulative incidences plots(default: "Time").
+#' @param ytitleSurv a title of y axis of survial curves plot (default: "Probability of survivng up to time t").
+#' @param ytitleCuminc a title of y axis (default: "Cumulative incidences").
+#' @param legendtitle a title of a legend (default: "Group").
 #' @return Results of functions implemented in the package summarised in a one-page raport.
 #' @export
-#' @examples crSummary(time = "time", risk = "event", group = "gender", data = LUAD, cens = "alive", target = 1200, type = "kaplan-meier", conf.int = 0.95, conf.type = "log")
+#' @examples crSummary(time = "time", risk = "event", group = "gender", data = LUAD, cens = "alive", target = 1200, type = "kaplan-meier",  conf.int = 0.95, conf.type = "log", ggtheme = theme_minimal(), titleSurv = "Survival Curves", titleCuminc = "Cumulative incidence function", xtitle = "Time", ytitleSurv = "Probability of survivng up to time t", ytitleCuminc = "Cumulative incidences", legendtitle = "Group")
 #' @importFrom gridExtra grid.arrange rbind.gtable tableGrob
 #' @importFrom grid textGrob
 
@@ -31,7 +38,15 @@ crSummary <- function(time,
                       rho = 0,
                       type = "kaplan-meier",
                       conf.int = 0.95,
-                      conf.type = "log"
+                      conf.type = "log",
+                      ggtheme = theme_minimal(),
+                      titleSurv = "Survival Curves",
+                      titleCuminc = "Cumulative incidence function",
+                      xtitle = "Time",
+                      ytitleSurv = "Probability of survivng up to time t",
+                      ytitleCuminc = "Cumulative incidences",
+                      legendtitle = "Group"
+
 ){
 
     fit <- fitSurvival(time, risk, group, data, cens, type, conf.int, conf.type)
@@ -48,8 +63,23 @@ crSummary <- function(time,
     CoxCompTest <-  regTest(fitReg, conf.int)
 
     #Plots
-    plotSurvCurves <- plotSurvival(fit, target)
-    plotCumFun <- plotCuminc(ci, risk, group, target)
+    plotSurvCurves <- plotSurvival(fit,
+                                   target,
+                                   ggtheme,
+                                   titleSurv,
+                                   xtitle,
+                                   ytitleSurv,
+                                   legendtitle)
+
+    plotCumFun <- plotCuminc(ci,
+                             risk,
+                             group,
+                             target,
+                             ggtheme,
+                             titleCuminc,
+                             xtitle,
+                             ytitleCuminc,
+                             legendtitle)
 
     #tables
     riskTable <- riskTab(time, risk, group, data, cens)

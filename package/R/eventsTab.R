@@ -82,8 +82,8 @@ eventTab <- function(fit,
     forTables <- merge(forTables, strataMapping, by = "strata")
     forTables[,1:3] <- sapply(forTables[,1:3], function(x) as.numeric(as.character(x)))
 
-    makeRow <- function(ri, gr){
-        tmp <- filter(forTables, risk == ri, group == gr)
+    makeRow <- function(whichRisk, whichGroup){
+        tmp <- filter(forTables, risk == whichRisk, group == whichGroup)
         newRow <- numeric(length(timePoints))
         for(i in 1:length(timePoints)){
             tmp2 <- filter(tmp, tmp$time <= timePoints[i])
