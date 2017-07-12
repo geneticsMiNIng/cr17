@@ -67,10 +67,7 @@ plotCuminc <-function(ci,
     nrTests <- which(names(ci) == "Tests")
     ci <- ci[-nrTests]
 
-    timePoints <- ci$timePoints
-    nrPoints <- which(names(ci) == "timePoints")
-    ci <- ci[-nrPoints]
-
+    timePoints <- ci[[1]]$timePoints
 
     aggNames <- names(ci)
 

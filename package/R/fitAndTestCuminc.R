@@ -1,6 +1,6 @@
 
 #' @title Cumulative Incidences Curves.
-#' @name fitCumul
+#' @name fitCuminc
 #' @description Fitting cumulative incidence function across different groups and risks.
 #' @param time vector with times of the first event or follow-up, must be numeric.
 #' @param risk vector with type of event, can be numeric or factor/character.
@@ -66,16 +66,6 @@ fitCuminc <- function(time,
     tab$risk <- factor(as.character(tab$risk))
     tab$group <- factor(as.character(tab$group))
 
-    #adding info about group and risk to each element of group
-    for(i in 1:nrow(tab)){
-        ci[[i]]$group <- tab[i, "group"]
-        ci[[i]]$risk <- tab[i, "risk"]
-    }
-
-
-
-    ci$Tests <- as.data.frame(ci$Tests)
-
     #extended_breaks
     fit <- lapply(risks, function(x) {
         localStatus <- {risk == x}
@@ -86,8 +76,15 @@ fitCuminc <- function(time,
     tmp <- toPlotDf(fit)
     timePoints <- extended_breaks()(tmp$time)
 
-    ci$timePoints <- timePoints
 
+    #adding info about group and risk to each element of group
+    for(i in 1:nrow(tab)){
+        ci[[i]]$group <- tab[i, "group"]
+        ci[[i]]$risk <- tab[i, "risk"]
+        ci[[i]]$timePoints <- timePoints
+    }
+
+    ci$Tests <- as.data.frame(ci$Tests)
 
     ci
 }
