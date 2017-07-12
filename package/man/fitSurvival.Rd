@@ -4,17 +4,15 @@
 \alias{fitSurvival}
 \title{Estimation of survival curves for each risk separately.}
 \usage{
-fitSurvival(time, risk, group, data, cens = 0, type = "kaplan-meier",
+fitSurvival(time, risk, group, cens = 0, type = "kaplan-meier",
   conf.int = 0.95, conf.type = "log")
 }
 \arguments{
-\item{time}{name of a column indicating time of an event or follow-up, must be numeric.}
+\item{time}{vector with times of the first event or follow-up, must be numeric.}
 
-\item{risk}{name of a column indicating type of event, can be numeric or factor/character.}
+\item{risk}{vector with type of event, can be numeric or factor/character.}
 
-\item{group}{name of a column indicating group variable, can be numeric or factor/character.}
-
-\item{data}{data.frame, data.table or matrix containing time, risk and group columns.}
+\item{group}{vector with group variable, can be numeric or factor/character.}
 
 \item{cens}{value of 'risk' indicating censored observation (default 0).}
 
@@ -31,5 +29,5 @@ List, which elements are survfit.summary object for each risk separately.
 The function fits survival curves for each risk treating other events as censoring.
 }
 \examples{
-fitSurvival(time = "time", risk = "event", group = "gender", data = LUAD, cens = "alive", type = "kaplan-meier", conf.int = 0.95, conf.type = "log")
+fitSurvival(time = LUAD$time, risk = LUAD$event, group = LUAD$gender, cens = "alive", type = "kaplan-meier", conf.int = 0.95, conf.type = "log")
 }

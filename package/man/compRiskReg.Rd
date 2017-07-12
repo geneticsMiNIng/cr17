@@ -5,16 +5,14 @@
 \alias{fitReg}
 \title{Regression Models for Competing Risks.}
 \usage{
-fitReg(time, risk, group, data, cens = 0)
+fitReg(time, risk, group, cens = 0)
 }
 \arguments{
-\item{time}{name of a column indicating time of an event or follow-up, must be numeric.}
+\item{time}{vector with times of the first event or follow-up, must be numeric.}
 
-\item{risk}{name of a column indicating type of event, can be numeric or factor/character.}
+\item{risk}{vector with type of event, can be numeric or factor/character.}
 
-\item{group}{name of a column indicating group variable, can be numeric or factor/character.}
-
-\item{data}{data.frame, data.table or matrix containing time, risk and group columns.}
+\item{group}{vector with group variable, can be numeric or factor/character.}
 
 \item{cens}{value of 'risk' indicating censored observation (default 0).}
 }
@@ -23,7 +21,9 @@ a list of length n, where n is number of different types of events. Each element
 }
 \description{
 Fitting Cox model (Regression model) for competing risks.
+
+The function fits survival curves for each risk treating other events as censoring.
 }
 \examples{
-fitReg(time = "time", risk = "event", group = "gender", data = LUAD, cens = "alive")
+fitReg(time = LUAD$time, risk = LUAD$event, group = LUAD$gender, cens = "alive")
 }

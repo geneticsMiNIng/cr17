@@ -5,16 +5,14 @@
 \alias{eventTab}
 \title{Number of events tables.}
 \usage{
-eventTab(time, risk, group, data, cens = 0)
+eventTab(time, risk, group, cens = 0)
 }
 \arguments{
-\item{time}{name of a column indicating time of an event or follow-up, must be numeric.}
+\item{time}{vector with times of the first event or follow-up, must be numeric.}
 
-\item{risk}{name of a column indicating type of event, can be numeric or factor/character.}
+\item{risk}{vector with type of event, can be numeric or factor/character.}
 
-\item{group}{name of a column indicating group variable, can be numeric or factor/character.}
-
-\item{data}{data.frame, data.table or matrix containing time, risk and group columns.}
+\item{group}{vector with group variable, can be numeric or factor/character.}
 
 \item{cens}{value of 'risk' indicating censored observation (default 0).}
 }
@@ -25,5 +23,5 @@ A grob with n tables, where n is number of risks. Each table contains number of 
 The function creates tables for each risk with number of events up to given time in groups.
 }
 \examples{
-eventTab(time = "time", risk = "event", group = "gender", data = LUAD, cens = "alive")
+eventTab(time = LUAD$time, risk = LUAD$event, group = LUAD$gender, cens = "alive")
 }

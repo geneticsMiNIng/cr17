@@ -2,43 +2,47 @@
 #' @title Cumulative Incidences Curves.
 #' @name fitCumul
 #' @description Fitting cumulative incidence function across different groups and risks.
-#' @param time name of a column indicating time of an event or follow-up, must be numeric.
-#' @param risk name of a column indicating type of event, can be numeric or factor/character.
-#' @param group name of a column indicating group variable, can be numeric or factor/character.
-#' @param data data.frame, data.table or matrix containing time, risk and group columns.
+#' @param time vector with times of the first event or follow-up, must be numeric.
+#' @param risk vector with type of event, can be numeric or factor/character.
+#' @param group vector with group variable, can be numeric or factor/character.
 #' @param cens value of 'risk' indicating censored observation (default 0).
 #' @return list of length [(number of risks)*(number of groups) + 1], containing estimation of cumulative incidences curves for each risk and group. The last element of a group is a data.frame with results of a K-sample test.
 #' @export
-#' @examples fitCuminc(time = "time", risk = "event", group = "gender", data = LUAD, cens = "alive")
+#' @examples fitCuminc(time = LUAD$time, risk = LUAD$event, group = LUAD$gender, cens = "alive")
 #' @importFrom dplyr filter
 #' @importFrom cmprsk cuminc
 
 fitCuminc <- function(time,
                      risk,
                      group,
-                     data,
                      cens = 0){
 
-    data <- as.data.frame(data)
-
-    risks <- riskVec(data, risk, cens)
+    risks <- riskVec(risk, cens)
     uniRisks <- 1:length(risks)
     mapRisks <- cbind(risks, uniRisks)
-    colnames(mapRisks)[1] <- risk
+    mapRisks <- rbind(mapRisks, c(cens, 0))
+    mapRisks <- as.data.frame(mapRisks)
+    colnames(mapRisks)[1] <- "risk"
 
-    groups <- as.data.frame(unique(data[, group]))
+    groups <- as.data.frame(unique(group))
     groups <- filter(groups, !is.na(groups))
     uniGroups <- letters[1:nrow(groups)]
     mapGroups <- cbind(groups, uniGroups)
-    colnames(mapGroups)[1] <- group
+    colnames(mapGroups)[1] <- "group"
 
-    data <- merge(data, mapRisks, by = risk)
-    data <- merge(data, mapGroups, by = group)
+    dt <- cbind(time, as.character(risk), group)
+    dt <- as.data.frame(dt)
+    colnames(dt) <- c("time", "risk", "group")
+    dt$time <- as.numeric(as.character(dt$time))
 
-    ci <- cuminc(ftime = data[, time],
-                 fstatus = data[, "uniRisks"],
-                 group = data[, "uniGroups"],
-                 cencode = cens)
+
+    dt <- merge(dt, mapRisks, by = "risk")
+    dt <- merge(dt, mapGroups, by = "group")
+
+    ci <- cuminc(ftime = dt[, "time"],
+                 fstatus = dt[, "uniRisks"],
+                 group = dt[, "uniGroups"],
+                 cencode = 0)
 
     aggnames <- names(ci)
     aggnames <- aggnames[-length(aggnames)]
@@ -55,19 +59,35 @@ fitCuminc <- function(time,
     tab <- merge(tab, mapRisks, by = "uniRisks")
     tab <- merge(tab, mapGroups, by = "uniGroups")
 
-    tab$newname <- paste(tab[, risk], tab[,group])
+    tab$newname <- paste( tab[, "risk"], tab[,"group"])
 
     names(ci)[1:length(ci)-1] <- tab$newname
 
+    tab$risk <- factor(as.character(tab$risk))
+    tab$group <- factor(as.character(tab$group))
+
     #adding info about group and risk to each element of group
     for(i in 1:nrow(tab)){
-        ci[[i]]$group <- tab$gender[i]
-        ci[[i]]$risk <- tab$event[i]
+        ci[[i]]$group <- tab[i, "group"]
+        ci[[i]]$risk <- tab[i, "risk"]
     }
 
 
 
     ci$Tests <- as.data.frame(ci$Tests)
+
+    #extended_breaks
+    fit <- lapply(risks, function(x) {
+        localStatus <- {risk == x}
+        summary(survfit(Surv(time, localStatus)~group
+        ))
+    })
+    names(fit) <- risks
+    tmp <- toPlotDf(fit)
+    timePoints <- extended_breaks()(tmp$time)
+
+    ci$timePoints <- timePoints
+
 
     ci
 }
@@ -78,7 +98,7 @@ fitCuminc <- function(time,
 #' @description Testing differences in cumulative incidences function between groups using K-sample test.
 #' @param ci a result of fitCumin function.
 #' @return data.frame containing p-values of K-sample test for each risk.
-#' @examples fitC <- fitCuminc(time = "time", risk = "event", group = "gender", data = LUAD, cens = "alive")
+#' @examples fitC <- fitCuminc(time = LUAD$time, risk = LUAD$event, group = LUAD$gender, cens = "alive")
 #' testCuminc(fitC)
 #' @export
 #' @importFrom dplyr filter
@@ -89,7 +109,7 @@ testCuminc <- function(ci){
 
     risks <- levels(ci[[1]]$risk)
 
-    tab <- as.data.frame(ci[[length(ci)]])
+    tab <- as.data.frame(ci[["Tests"]])
     p <- as.data.frame(t(tab$pv))
     colnames(p) <- risks
 

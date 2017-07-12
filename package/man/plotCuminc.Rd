@@ -4,12 +4,14 @@
 \alias{plotCuminc}
 \title{Cumulative incidences curves}
 \usage{
-plotCuminc(ci, target = NULL, ggtheme = theme_minimal(),
+plotCuminc(ci, cens = 0, target = NULL, ggtheme = theme_minimal(),
   titleCuminc = "Cumulative incidence function", xtitle = "Time",
   ytitleCuminc = "Cumulative incidences", legendtitle = "Group")
 }
 \arguments{
 \item{ci}{a result of function fitCuminc.}
+
+\item{cens}{value of 'risk' indicating censored observation (default 0).}
 
 \item{target}{point in time, in which the confidence bounds should be plotted (default NULL, no confidence bounds plotted).}
 
@@ -30,6 +32,6 @@ a ggplot containing n graphs, where n is number of risks. Each graph represents 
 The function plots cumulative incidences curves for each risk and group.
 }
 \examples{
-fitC <- fitCuminc(time = "time", risk = "event", group = "gender", data = LUAD, cens = "alive")
-plotCuminc(ci = fitC, target = 1200)
+fitC <- fitCuminc(time = LUAD$time, risk = LUAD$event, group = LUAD$gender, cens = "alive")
+plotCuminc(ci = fitC, cens = "alive", target = 1200)
 }

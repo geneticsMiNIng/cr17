@@ -2,14 +2,13 @@
 #' @name simpleCox
 #' @description The function fits Cox models for each type of event
 #' treating other events as censoring.
-#' @param time name of a column indicating time of an event or follow-up, must be numeric.
-#' @param risk name of a column indicating type of event, can be numeric or factor/character.
-#' @param group name of a column indicating grouping variable, can be numeric or factor/character.
-#' @param data data.frame, data.table or matrix containing time, risk and group columns.
+#' @param time vector with times of the first event or follow-up, must be numeric.
+#' @param risk vector with type of event, can be numeric or factor/character.
+#' @param group vector with group variable, can be numeric or factor/character.
 #' @param cens value of 'risk' indicating censored observation (default 0).
 #' @return a list of length n, where n is number of risks. Each element of a list is a result of summary.coxph function from package survival, where there is only one type of event possible (other are treating as censored).
 #' @export
-#' @examples fitCox(time = "time", risk = "event", group = "gender", data = LUAD, cens = "alive")
+#' @examples fitCox(time = LUAD$time, risk = LUAD$event, group = LUAD$gender, cens = "alive")
 #' @importFrom dplyr filter
 #' @importFrom gridExtra tableGrob
 #' @importFrom survival Surv coxph
@@ -18,24 +17,19 @@
 fitCox <- function(time,
                    risk,
                    group,
-                   data,
                    cens = 0)
     {
 
     options(scipen=999)
 
-    #data preparation
-    data <- as.data.frame(data)
-    timeVec <- data[,time]
-
     #risks - a vector indicating possible risk values
-    risks <- riskVec(data, risk, cens)
+    risks <- riskVec(risk, cens)
     nr_of_risks <- as.numeric(length(risks))
 
     fit <- lapply(risks, function(x){
-        localrisk <- as.numeric(data[,risk] == x)
-        localGroup <- factor(data[,group])
-        summary(coxph(Surv(timeVec, localrisk)~localGroup))
+        localrisk <- as.numeric(risk == x)
+        localGroup <- factor(group)
+        summary(coxph(Surv(time, localrisk)~localGroup))
         }
     )
     names(fit) <- risks
@@ -48,7 +42,7 @@ fitCox <- function(time,
 #' @param fitCox a result of function fitCox.
 #' @return a data.frame with p-values of 3 tests for each risk.
 #' @export
-#' @examples fitC <- fitCox(time = "time", risk = "event", group = "gender", data = LUAD, cens = "alive")
+#' @examples fitC <- fitCox(time = LUAD$time, risk = LUAD$event, group = LUAD$gender, cens = "alive")
 #' testCox(fitC)
 #' @importFrom dplyr filter
 #' @importFrom gridExtra tableGrob

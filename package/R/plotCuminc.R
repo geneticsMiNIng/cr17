@@ -39,6 +39,7 @@ barsDataCuminc <- function(risks, groups, target, toPlot){
 #' @name plotCuminc
 #' @description The function plots cumulative incidences curves for each risk and group.
 #' @param ci a result of function fitCuminc.
+#' @param cens value of 'risk' indicating censored observation (default 0).
 #' @param target point in time, in which the confidence bounds should be plotted (default NULL, no confidence bounds plotted).
 #' @param ggtheme ggtheme to be used (default: theme_minimal()).
 #' @param titleCuminc a title of a plot (default: "Cumulative incidence function").
@@ -47,13 +48,14 @@ barsDataCuminc <- function(risks, groups, target, toPlot){
 #' @param legendtitle a title of a legend (default: "Group").
 #' @return a ggplot containing n graphs, where n is number of risks. Each graph represents cumulative incidence curves for given risk in each group.
 #' @export
-#' @examples fitC <- fitCuminc(time = "time", risk = "event", group = "gender", data = LUAD, cens = "alive")
-#' plotCuminc(ci = fitC, target = 1200)
+#' @examples fitC <- fitCuminc(time = LUAD$time, risk = LUAD$event, group = LUAD$gender, cens = "alive")
+#' plotCuminc(ci = fitC, cens = "alive", target = 1200)
 #' @importFrom dplyr filter
 #' @importFrom cmprsk cuminc
 
 
 plotCuminc <-function(ci,
+                      cens = 0,
                       target = NULL,
                       ggtheme = theme_minimal(),
                       titleCuminc = "Cumulative incidence function",
@@ -62,7 +64,14 @@ plotCuminc <-function(ci,
                       legendtitle = "Group"){
 
     #make long format
-    ci <- ci[-length(ci)]
+    nrTests <- which(names(ci) == "Tests")
+    ci <- ci[-nrTests]
+
+    timePoints <- ci$timePoints
+    nrPoints <- which(names(ci) == "timePoints")
+    ci <- ci[-nrPoints]
+
+
     aggNames <- names(ci)
 
     toPlot <- data.frame()
@@ -110,7 +119,7 @@ plotCuminc <-function(ci,
 
     pd <- position_dodge(0.9)
 
-    timePoints <- extended_breaks()(toPlot$time)
+
 
     #making a plot
     plot1 <- ggplot(data = toPlot, aes(time, est, color = group)) +

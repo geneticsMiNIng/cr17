@@ -18,6 +18,6 @@ a data.frame containing p-values of Modified Log-Rank Test for each type of even
 Testing differences in Competing Risks Regression Models between groups.
 }
 \examples{
-fitR <- fitReg(time = "time", risk = "event", group = "gender", data = LUAD, cens = "alive")
+fitR <- fitReg(time = LUAD$time, risk = LUAD$event, group = LUAD$gender, cens = "alive")
 regTest(fitR)
 }

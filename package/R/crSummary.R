@@ -1,16 +1,14 @@
 
-
 #' @title Competing Risks Models Summary.
 #' @name crSummary
 #' @description The function generates summarized report including
-#' p-values of testing differences between groups and visualisation of survival
+#' p-values of testing differenzes between groups and visualisation of survival
 #' and cumulative incidences curves.
-#' @param time name of a column indicating time of an event or follow-up, must be numeric.
-#' @param risk name of a column indicating type of event, can be numeric or factor/character.
-#' @param group name of a column indicating grouping variable, can be numeric or factor/character.
-#' @param rho rho parameter from Fleming-Harrington Test.
-#' @param data data.frame, data.table or matrix containing time, risk and group columns.
+#' @param time vector with times of an event or follow-up, must be numeric.
+#' @param risk vector with type of event, can be numeric or factor/character.
+#' @param group vector with group variable, can be numeric or factor/character.
 #' @param cens value of 'risk' indicating censored observation (default 0).
+#' @param rho rho parameter from Fleming-Harrington Test.
 #' @param target point in time, in which the confidence bounds should be plotted (default NULL, no confidence bounds plotted).
 #' @param type type of survival curve to be fitted. Possible values are "kaplan-meier" (default), "fleming-harrington" or "fh2".
 #' @param conf.int level of two-sided confidence interval.
@@ -24,7 +22,7 @@
 #' @param legendtitle a title of a legend (default: "Group").
 #' @return Results of functions implemented in the package summarised in a one-page raport.
 #' @export
-#' @examples crSummary(time = "time", risk = "event", group = "gender", data = LUAD, cens = "alive", target = 1200, type = "kaplan-meier",  conf.int = 0.95, conf.type = "log", ggtheme = theme_minimal(), titleSurv = "Survival curves", titleCuminc = "Cumulative incidence function", xtitle = "Time", ytitleSurv = "Probability of survivng up to time t", ytitleCuminc = "Cumulative incidences", legendtitle = "Group")
+#' @examples crSummary(time = LUAD$time, risk = LUAD$event, group = LUAD$gender, cens = "alive", target = 1200, type = "kaplan-meier",  conf.int = 0.95, conf.type = "log", ggtheme = theme_minimal(), titleSurv = "Survival curves", titleCuminc = "Cumulative incidence function", xtitle = "Time", ytitleSurv = "Probability of survivng up to time t", ytitleCuminc = "Cumulative incidences", legendtitle = "Group")
 #' @importFrom gridExtra grid.arrange rbind.gtable tableGrob
 #' @importFrom grid textGrob
 
@@ -32,10 +30,9 @@
 crSummary <- function(time,
                       risk,
                       group,
-                      data,
-                      target = NULL,
                       cens = 0,
                       rho = 0,
+                      target = NULL,
                       type = "kaplan-meier",
                       conf.int = 0.95,
                       conf.type = "log",
@@ -49,17 +46,17 @@ crSummary <- function(time,
 
 ){
 
-    fit <- fitSurvival(time, risk, group, data, cens, type, conf.int, conf.type)
-    ci <- fitCuminc(time, risk, group, data, cens)
+    fit <- fitSurvival(time, risk, group, cens, type, conf.int, conf.type)
+    ci <- fitCuminc(time, risk, group, cens)
 
-    lrtSurvTest <- lrtSurvival(time, risk, group, data, cens, rho)
+    lrtSurvTest <- lrtSurvival(time, risk, group, cens, rho)
     cumincTest <- testCuminc(ci)
 
 
-    fitCox <- fitCox(time, risk, group, data, cens)
+    fitCox <- fitCox(time, risk, group, cens)
     CoxSurvTest <- testCox(fitCox)
 
-    fitReg <- fitReg(time, risk, group, data, cens)
+    fitReg <- fitReg(time, risk, group, cens)
     CoxCompTest <-  regTest(fitReg, conf.int)
 
     #Plots
@@ -72,6 +69,7 @@ crSummary <- function(time,
                                    legendtitle)
 
     plotCumFun <- plotCuminc(ci,
+                             cens,
                              target,
                              ggtheme,
                              titleCuminc,
@@ -80,11 +78,11 @@ crSummary <- function(time,
                              legendtitle)
 
     #tables
-    riskTable <- riskTab(time, risk, group, data, cens)
+    riskTable <- riskTab(time, risk, group, cens)
     # for(i in 1:length(riskTable)){
     #     assign(paste("riskTab", i, sep = ""), riskTable[[i]])
     # }
-    eventTable <- eventTab(time, risk, group, data, cens)
+    eventTable <- eventTab(time, risk, group, cens)
     # for(i in 1:length(eventTable)){
     #     assign(paste("eventTab", i, sep = ""), eventTable[[i]])
     # }

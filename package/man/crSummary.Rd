@@ -4,7 +4,7 @@
 \alias{crSummary}
 \title{Competing Risks Models Summary.}
 \usage{
-crSummary(time, risk, group, data, target = NULL, cens = 0, rho = 0,
+crSummary(time, risk, group, cens = 0, rho = 0, target = NULL,
   type = "kaplan-meier", conf.int = 0.95, conf.type = "log",
   ggtheme = theme_minimal(), titleSurv = "Survival curves",
   titleCuminc = "Cumulative incidence function", xtitle = "Time",
@@ -12,19 +12,17 @@ crSummary(time, risk, group, data, target = NULL, cens = 0, rho = 0,
   ytitleCuminc = "Cumulative incidences", legendtitle = "Group")
 }
 \arguments{
-\item{time}{name of a column indicating time of an event or follow-up, must be numeric.}
+\item{time}{vector with times of an event or follow-up, must be numeric.}
 
-\item{risk}{name of a column indicating type of event, can be numeric or factor/character.}
+\item{risk}{vector with type of event, can be numeric or factor/character.}
 
-\item{group}{name of a column indicating grouping variable, can be numeric or factor/character.}
-
-\item{data}{data.frame, data.table or matrix containing time, risk and group columns.}
-
-\item{target}{point in time, in which the confidence bounds should be plotted (default NULL, no confidence bounds plotted).}
+\item{group}{vector with group variable, can be numeric or factor/character.}
 
 \item{cens}{value of 'risk' indicating censored observation (default 0).}
 
 \item{rho}{rho parameter from Fleming-Harrington Test.}
+
+\item{target}{point in time, in which the confidence bounds should be plotted (default NULL, no confidence bounds plotted).}
 
 \item{type}{type of survival curve to be fitted. Possible values are "kaplan-meier" (default), "fleming-harrington" or "fh2".}
 
@@ -51,9 +49,9 @@ Results of functions implemented in the package summarised in a one-page raport.
 }
 \description{
 The function generates summarized report including
-p-values of testing differences between groups and visualisation of survival
+p-values of testing differenzes between groups and visualisation of survival
 and cumulative incidences curves.
 }
 \examples{
-crSummary(time = "time", risk = "event", group = "gender", data = LUAD, cens = "alive", target = 1200, type = "kaplan-meier",  conf.int = 0.95, conf.type = "log", ggtheme = theme_minimal(), titleSurv = "Survival Curves", titleCuminc = "Cumulative incidence function", xtitle = "Time", ytitleSurv = "Probability of survivng up to time t", ytitleCuminc = "Cumulative incidences", legendtitle = "Group")
+crSummary(time = LUAD$time, risk = LUAD$event, group = LUAD$gender, cens = "alive", target = 1200, type = "kaplan-meier",  conf.int = 0.95, conf.type = "log", ggtheme = theme_minimal(), titleSurv = "Survival curves", titleCuminc = "Cumulative incidence function", xtitle = "Time", ytitleSurv = "Probability of survivng up to time t", ytitleCuminc = "Cumulative incidences", legendtitle = "Group")
 }

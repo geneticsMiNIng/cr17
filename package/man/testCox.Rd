@@ -16,6 +16,6 @@ a data.frame with p-values of 3 tests for each risk.
 The function provides 3 tests for comparing models estimated from fitCox function. The tests are: Likelihood Ratio Test, Wald Test and Logrank Test.
 }
 \examples{
-fitC <- fitCox(time = "time", risk = "event", group = "gender", data = LUAD, cens = "alive")
+fitC <- fitCox(time = LUAD$time, risk = LUAD$event, group = LUAD$gender, cens = "alive")
 testCox(fitC)
 }

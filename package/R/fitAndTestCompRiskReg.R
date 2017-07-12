@@ -2,14 +2,14 @@
 #' @title Regression Models for Competing Risks.
 #' @name compRiskReg
 #' @description Fitting Cox model (Regression model) for competing risks.
-#' @param time name of a column indicating time of an event or follow-up, must be numeric.
-#' @param risk name of a column indicating type of event, can be numeric or factor/character.
-#' @param group name of a column indicating group variable, can be numeric or factor/character.
-#' @param data data.frame, data.table or matrix containing time, risk and group columns.
+#' @description The function fits survival curves for each risk treating other events as censoring.
+#' @param time vector with times of the first event or follow-up, must be numeric.
+#' @param risk vector with type of event, can be numeric or factor/character.
+#' @param group vector with group variable, can be numeric or factor/character.
 #' @param cens value of 'risk' indicating censored observation (default 0).
 #' @return a list of length n, where n is number of different types of events. Each element of a list contains a result of crr function from cmprsk package for given type of event.
 #' @export
-#' @examples fitReg(time = "time", risk = "event", group = "gender", data = LUAD, cens = "alive")
+#' @examples fitReg(time = LUAD$time, risk = LUAD$event, group = LUAD$gender, cens = "alive")
 #' @importFrom dplyr filter
 #' @importFrom cmprsk crr
 #' @importFrom gridExtra tableGrob
@@ -17,27 +17,20 @@
 fitReg <- function(time,
                    risk,
                    group,
-                   data,
                    cens = 0){
 
     #preparing data
-    data <- as.data.frame(data)
-    timeVec <- data[,time]
-
-
-    gr <- as.matrix(data[,group])
-    cov <- model.matrix(~gr)[,-1]
-
-    risks <- riskVec(data, risk, cens)
-
+    risks <- riskVec(risk, cens)
     nrOfRisks <- as.numeric(length(risks))
 
+    groupMatrix <- as.matrix(group)
+    covMatrix <- model.matrix(~groupMatrix)[,-1]
+
     reg <- lapply(1:nrOfRisks, function(x) {
-               localStatus <- data[,risk]
                localCode <- risks[x]
-               crr(ftime = timeVec,
-               fstatus = localStatus,
-               cov1 = cov,
+               crr(ftime = time,
+               fstatus = risk,
+               cov1 = covMatrix,
                failcode = localCode)}
                )
 
@@ -53,7 +46,7 @@ fitReg <- function(time,
 #' @param conf.int level of two-sided confidence interval (default 0.95).
 #' @return a data.frame containing p-values of Modified Log-Rank Test for each type of event. The test compares differences between groups in Competing Risks Cox Models.
 #' @export
-#' @examples fitR <- fitReg(time = "time", risk = "event", group = "gender", data = LUAD, cens = "alive")
+#' @examples fitR <- fitReg(time = LUAD$time, risk = LUAD$event, group = LUAD$gender, cens = "alive")
 #' regTest(fitR)
 #' @importFrom dplyr filter
 #' @importFrom cmprsk crr

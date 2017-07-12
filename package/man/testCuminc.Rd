@@ -16,6 +16,6 @@ data.frame containing p-values of K-sample test for each risk.
 Testing differences in cumulative incidences function between groups using K-sample test.
 }
 \examples{
-fitC <- fitCuminc(time = "time", risk = "event", group = "gender", data = LUAD, cens = "alive")
+fitC <- fitCuminc(time = LUAD$time, risk = LUAD$event, group = LUAD$gender, cens = "alive")
 testCuminc(fitC)
 }

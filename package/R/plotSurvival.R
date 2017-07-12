@@ -116,7 +116,7 @@ barsDataSimpleSurv <- function(toPlot, target, risks, groups){
 #' @param legendtitle a title of a legend (default: "Group").
 #' @return a ggplot containing n graphs, where n is number of risks. Each graph represents survival curves for given risk. One curve corresponds to one group.
 #' @export
-#' @examples fitS <- fitSurvival(time = "time", risk = "event", group = "gender", data = LUAD, cens = "alive", type = "kaplan-meier", conf.int = 0.95, conf.type = "log")
+#' @examples fitS <- fitSurvival(time = LUAD$time, risk = LUAD$event, group = LUAD$gender, cens = "alive")
 #' plotSurvival(fit = fitS, target = 1200)
 #' @importFrom ggplot2 ggplot
 #' @importFrom dplyr filter
@@ -133,6 +133,7 @@ plotSurvival <- function(fit,
                          ){
 
     toPlot <- toPlotDf(fit)
+    toPlot$group <- gsub("group=", "", toPlot$group)
 
     timePoints <- extended_breaks()(toPlot$time)
 
