@@ -9,7 +9,8 @@ crSummary(time, risk, group, cens = 0, rho = 0, target = NULL,
   ggtheme = theme_minimal(), titleSurv = "Survival curves",
   titleCuminc = "Cumulative incidence function", xtitle = "Time",
   ytitleSurv = "Probability of survivng up to time t",
-  ytitleCuminc = "Cumulative incidences", legendtitle = "Group")
+  ytitleCuminc = "Cumulative incidences", legendtitle = "Group",
+  riskTabTitle = "Number at risk", eventTabTitle = "Number of events")
 }
 \arguments{
 \item{time}{vector with times of an event or follow-up, must be numeric.}
@@ -26,7 +27,7 @@ crSummary(time, risk, group, cens = 0, rho = 0, target = NULL,
 
 \item{type}{type of survival curve to be fitted. Possible values are "kaplan-meier" (default), "fleming-harrington" or "fh2".}
 
-\item{conf.int}{level of two-sided confidence interval.}
+\item{conf.int}{conf.int level of two-sided confidence interval (default = 0.95).}
 
 \item{conf.type}{type of confidence interval. Possilble values: "none", "plain", "log" (default), "log-log".}
 
@@ -43,6 +44,10 @@ crSummary(time, risk, group, cens = 0, rho = 0, target = NULL,
 \item{ytitleCuminc}{a title of y axis (default: "Cumulative incidences").}
 
 \item{legendtitle}{a title of a legend (default: "Group").}
+
+\item{riskTabTitle}{a title of table with number at risk.}
+
+\item{eventTabTitle}{a title of table with number of events.}
 }
 \value{
 Results of functions implemented in the package summarised in a one-page raport.
@@ -53,5 +58,5 @@ p-values of testing differenzes between groups and visualisation of survival
 and cumulative incidences curves.
 }
 \examples{
-crSummary(time = LUAD$time, risk = LUAD$event, group = LUAD$gender, cens = "alive", target = 1200, type = "kaplan-meier",  conf.int = 0.95, conf.type = "log", ggtheme = theme_minimal(), titleSurv = "Survival curves", titleCuminc = "Cumulative incidence function", xtitle = "Time", ytitleSurv = "Probability of survivng up to time t", ytitleCuminc = "Cumulative incidences", legendtitle = "Group")
+crSummary(time = LUAD$time, risk = LUAD$event, group = LUAD$gender, cens = "alive", target = 1200, type = "kaplan-meier",  conf.int = 0.95, conf.type = "log", ggtheme = theme_minimal(), titleSurv = "Survival curves", titleCuminc = "Cumulative incidence function", xtitle = "Time", ytitleSurv = "Probability of survivng up to time t", ytitleCuminc = "Cumulative incidences", legendtitle = "Group", riskTabTitle = "Number at risk", eventTabTitle = "Number of events")
 }

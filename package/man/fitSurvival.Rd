@@ -18,7 +18,7 @@ fitSurvival(time, risk, group, cens = 0, type = "kaplan-meier",
 
 \item{type}{type of survival curve to be fitted. Possible values are "kaplan-meier" (default), "fleming-harrington" or "fh2".}
 
-\item{conf.int}{level of two-sided confidence interval.}
+\item{conf.int}{level of two-sided confidence interval (default = 0.95).}
 
 \item{conf.type}{type of confidence interval. Possible  values: "none", "plain", "log" (default), "log-log".}
 }

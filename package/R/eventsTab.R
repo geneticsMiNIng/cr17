@@ -6,15 +6,16 @@
 #' @param risk vector with type of event, can be numeric or factor/character.
 #' @param group vector with group variable, can be numeric or factor/character.
 #' @param cens value of 'risk' indicating censored observation (default 0).
+#' @param title title of a table.
 #' @return A grob with n tables, where n is number of risks. Each table contains number of events that have happened in each group up to given time point (the time points correspond to breaks at x-axis of plots with cumulative incidence curves).
 #' @export
-#' @examples eventTab(time = LUAD$time, risk = LUAD$event, group = LUAD$gender, cens = "alive")
+#' @examples eventTab(time = LUAD$time, risk = LUAD$event, group = LUAD$gender, cens = "alive", title = "Number of events")
 #' @importFrom dplyr filter
 #' @importFrom scales extended_breaks
 #' @importFrom grid textGrob
 
 
-eventTab <- function(time, risk, group, cens = 0){
+eventTab <- function(time, risk, group, cens = 0, title = "Number of Events"){
 
 
     risks <- riskVec(risk, cens)
@@ -60,8 +61,8 @@ eventTab <- function(time, risk, group, cens = 0){
 
     names(eventTable) <- risks
 
-    args <- lapply(eventTable, function(x) arrangeGrob(tableGrob(x, theme = ttheme_minimal())))
-    args$top <- textGrob("Number of events", gp=gpar(fontface="bold"), vjust = 0.5)
+    args <- lapply(1:length(eventTable), function(x) arrangeGrob(tableGrob(eventTable[[x]], theme = ttheme_minimal()), top = names(eventTable)[x]))
+    args$top <- textGrob(title, gp=gpar(fontface="bold"), vjust = 0.5)
     args$ncol <- length(risks)
 
     do.call(grid.arrange, args)

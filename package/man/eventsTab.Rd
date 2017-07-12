@@ -5,7 +5,7 @@
 \alias{eventTab}
 \title{Number of events tables.}
 \usage{
-eventTab(time, risk, group, cens = 0)
+eventTab(time, risk, group, cens = 0, title = "Number of Events")
 }
 \arguments{
 \item{time}{vector with times of the first event or follow-up, must be numeric.}
@@ -15,6 +15,8 @@ eventTab(time, risk, group, cens = 0)
 \item{group}{vector with group variable, can be numeric or factor/character.}
 
 \item{cens}{value of 'risk' indicating censored observation (default 0).}
+
+\item{title}{title of a table.}
 }
 \value{
 A grob with n tables, where n is number of risks. Each table contains number of events that have happened in each group up to given time point (the time points correspond to breaks at x-axis of plots with cumulative incidence curves).
@@ -23,5 +25,5 @@ A grob with n tables, where n is number of risks. Each table contains number of 
 The function creates tables for each risk with number of events up to given time in groups.
 }
 \examples{
-eventTab(time = LUAD$time, risk = LUAD$event, group = LUAD$gender, cens = "alive")
+eventTab(time = LUAD$time, risk = LUAD$event, group = LUAD$gender, cens = "alive", title = "Number of events")
 }

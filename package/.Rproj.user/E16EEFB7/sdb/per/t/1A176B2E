@@ -1,0 +1,29 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1499890773372.000,
+    "dirty" : false,
+    "encoding" : "",
+    "folds" : "",
+    "hash" : "0",
+    "id" : "1A176B2E",
+    "lastKnownWriteTime" : 7308604914264011873,
+    "last_content_update" : 1499890773372,
+    "path" : null,
+    "project_path" : null,
+    "properties" : {
+        "cacheKey" : "10E03E44",
+        "caption" : "infazaW",
+        "contentUrl" : "grid_resource/gridviewer.html?env=&obj=infazaW&cache_key=10E03E44",
+        "displayedObservations" : 223,
+        "environment" : "",
+        "object" : "infazaW",
+        "preview" : 0,
+        "totalObservations" : 223,
+        "variables" : 3
+    },
+    "relative_order" : 3,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_dataframe"
+}

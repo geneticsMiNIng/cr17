@@ -11,7 +11,7 @@
 #' @param rho rho parameter from Fleming-Harrington Test.
 #' @param target point in time, in which the confidence bounds should be plotted (default NULL, no confidence bounds plotted).
 #' @param type type of survival curve to be fitted. Possible values are "kaplan-meier" (default), "fleming-harrington" or "fh2".
-#' @param conf.int level of two-sided confidence interval.
+#' @param conf.int conf.int level of two-sided confidence interval (default = 0.95).
 #' @param conf.type type of confidence interval. Possilble values: "none", "plain", "log" (default), "log-log".
 #' @param ggtheme ggtheme to be used in plots (default: theme_minimal()).
 #' @param titleSurv a title of a survival curves plot (default: "Survival curves").
@@ -20,9 +20,11 @@
 #' @param ytitleSurv a title of y axis of survial curves plot (default: "Probability of survivng up to time t").
 #' @param ytitleCuminc a title of y axis (default: "Cumulative incidences").
 #' @param legendtitle a title of a legend (default: "Group").
+#' @param riskTabTitle a title of table with number at risk.
+#' @param eventTabTitle a title of table with number of events.
 #' @return Results of functions implemented in the package summarised in a one-page raport.
 #' @export
-#' @examples crSummary(time = LUAD$time, risk = LUAD$event, group = LUAD$gender, cens = "alive", target = 1200, type = "kaplan-meier",  conf.int = 0.95, conf.type = "log", ggtheme = theme_minimal(), titleSurv = "Survival curves", titleCuminc = "Cumulative incidence function", xtitle = "Time", ytitleSurv = "Probability of survivng up to time t", ytitleCuminc = "Cumulative incidences", legendtitle = "Group")
+#' @examples crSummary(time = LUAD$time, risk = LUAD$event, group = LUAD$gender, cens = "alive", target = 1200, type = "kaplan-meier",  conf.int = 0.95, conf.type = "log", ggtheme = theme_minimal(), titleSurv = "Survival curves", titleCuminc = "Cumulative incidence function", xtitle = "Time", ytitleSurv = "Probability of survivng up to time t", ytitleCuminc = "Cumulative incidences", legendtitle = "Group", riskTabTitle = "Number at risk", eventTabTitle = "Number of events")
 #' @importFrom gridExtra grid.arrange rbind.gtable tableGrob
 #' @importFrom grid textGrob
 
@@ -42,7 +44,9 @@ crSummary <- function(time,
                       xtitle = "Time",
                       ytitleSurv = "Probability of survivng up to time t",
                       ytitleCuminc = "Cumulative incidences",
-                      legendtitle = "Group"
+                      legendtitle = "Group",
+                      riskTabTitle = "Number at risk",
+                      eventTabTitle = "Number of events"
 
 ){
 
@@ -53,7 +57,7 @@ crSummary <- function(time,
     cumincTest <- testCuminc(ci)
 
 
-    fitCox <- fitCox(time, risk, group, cens)
+    fitCox <- fitCox(time, risk, group, cens, conf.int = conf.int)
     CoxSurvTest <- testCox(fitCox)
 
     fitReg <- fitReg(time, risk, group, cens)
@@ -78,11 +82,11 @@ crSummary <- function(time,
                              legendtitle)
 
     #tables
-    riskTable <- riskTab(time, risk, group, cens)
+    riskTable <- riskTab(time, risk, group, cens, riskTabTitle)
     # for(i in 1:length(riskTable)){
     #     assign(paste("riskTab", i, sep = ""), riskTable[[i]])
     # }
-    eventTable <- eventTab(time, risk, group, cens)
+    eventTable <- eventTab(time, risk, group, cens, eventTabTitle)
     # for(i in 1:length(eventTable)){
     #     assign(paste("eventTab", i, sep = ""), eventTable[[i]])
     # }
@@ -101,7 +105,6 @@ crSummary <- function(time,
                  c(1,2),
                  c(1,2),
                  c(3,4),
-                 c(5,5),
                  c(5,5))
 
     grid.arrange(plotSurvCurves,

@@ -6,9 +6,10 @@
 #' @param risk vector with type of event, can be numeric or factor/character.
 #' @param group vector with group variable, can be numeric or factor/character.
 #' @param cens value of 'risk' indicating censored observation (default 0).
+#' @param conf.int conf.int level of two-sided confidence interval (default = 0.95).
 #' @return a list of length n, where n is number of risks. Each element of a list is a result of summary.coxph function from package survival, where there is only one type of event possible (other are treating as censored).
 #' @export
-#' @examples fitCox(time = LUAD$time, risk = LUAD$event, group = LUAD$gender, cens = "alive")
+#' @examples fitCox(time = LUAD$time, risk = LUAD$event, group = LUAD$gender, cens = "alive", conf.int = 0.95)
 #' @importFrom dplyr filter
 #' @importFrom gridExtra tableGrob
 #' @importFrom survival Surv coxph
@@ -17,7 +18,8 @@
 fitCox <- function(time,
                    risk,
                    group,
-                   cens = 0)
+                   cens = 0,
+                   conf.int = 0.95)
     {
 
     options(scipen=999)
@@ -29,7 +31,7 @@ fitCox <- function(time,
     fit <- lapply(risks, function(x){
         localrisk <- as.numeric(risk == x)
         localGroup <- factor(group)
-        summary(coxph(Surv(time, localrisk)~localGroup))
+        summary(coxph(Surv(time, localrisk)~localGroup), conf.int= conf.int)
         }
     )
     names(fit) <- risks

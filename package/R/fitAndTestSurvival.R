@@ -14,7 +14,7 @@ riskVec <- function(risk, cens){
 #' @param group vector with group variable, can be numeric or factor/character.
 #' @param cens value of 'risk' indicating censored observation (default 0).
 #' @param type type of survival curve to be fitted. Possible values are "kaplan-meier" (default), "fleming-harrington" or "fh2".
-#' @param conf.int level of two-sided confidence interval.
+#' @param conf.int level of two-sided confidence interval (default = 0.95).
 #' @param conf.type type of confidence interval. Possible  values: "none", "plain", "log" (default), "log-log".
 #' @return List, which elements are survfit.summary object for each risk separately.
 #' @export
