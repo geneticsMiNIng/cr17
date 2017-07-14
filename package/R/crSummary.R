@@ -15,7 +15,7 @@
 #' @param conf.type type of confidence interval. Possilble values: "none", "plain", "log" (default), "log-log".
 #' @param ggtheme ggtheme to be used in plots (default: theme_minimal()).
 #' @param titleSurv a title of a survival curves plot (default: "Survival curves").
-#' @param titleCuminc a title of a cumulative incidences plot (default: "Cumulative incidence function").
+#' @param titleCuminc a title of a cumulative incidences plot (default: "Cumulative incidence functions").
 #' @param xtitle a title of x axis of survival curves and cumulative incidences plots(default: "Time").
 #' @param ytitleSurv a title of y axis of survial curves plot (default: "Probability of survivng up to time t").
 #' @param ytitleCuminc a title of y axis (default: "Cumulative incidences").
@@ -40,7 +40,7 @@ crSummary <- function(time,
                       conf.type = "log",
                       ggtheme = theme_minimal(),
                       titleSurv = "Survival curves",
-                      titleCuminc = "Cumulative incidence function",
+                      titleCuminc = "Cumulative incidence functions",
                       xtitle = "Time",
                       ytitleSurv = "Probability of survivng up to time t",
                       ytitleCuminc = "Cumulative incidences",
