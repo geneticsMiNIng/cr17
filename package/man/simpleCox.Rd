@@ -5,7 +5,7 @@
 \alias{fitCox}
 \title{Cox model for each type of event separately.}
 \usage{
-fitCox(time, risk, group, cens = 0, conf.int = 0.95)
+fitCox(time, risk, group, cens = NULL, conf.int = 0.95)
 }
 \arguments{
 \item{time}{vector with times of the first event or follow-up, must be numeric.}
@@ -14,7 +14,7 @@ fitCox(time, risk, group, cens = 0, conf.int = 0.95)
 
 \item{group}{vector with group variable, can be numeric or factor/character.}
 
-\item{cens}{value of 'risk' indicating censored observation (default 0).}
+\item{cens}{value of 'risk' indicating censored observation (if NULL, the first value of 'risk' vector will be taken).}
 
 \item{conf.int}{conf.int level of two-sided confidence interval (default = 0.95).}
 }

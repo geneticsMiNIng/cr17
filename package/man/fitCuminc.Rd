@@ -4,7 +4,7 @@
 \alias{fitCuminc}
 \title{Cumulative Incidences Curves.}
 \usage{
-fitCuminc(time, risk, group, cens = 0)
+fitCuminc(time, risk, group, cens = NULL)
 }
 \arguments{
 \item{time}{vector with times of the first event or follow-up, must be numeric.}
@@ -13,7 +13,7 @@ fitCuminc(time, risk, group, cens = 0)
 
 \item{group}{vector with group variable, can be numeric or factor/character.}
 
-\item{cens}{value of 'risk' indicating censored observation (default 0).}
+\item{cens}{value of 'risk' indicating censored observation (if NULL, the first value of 'risk' vector will be taken).}
 }
 \value{
 list of length [(number of risks)*(number of groups) + 1], containing estimation of cumulative incidences curves for each risk and group. The last element of a group is a data.frame with results of a K-sample test.

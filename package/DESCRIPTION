@@ -1,6 +1,6 @@
 Package: cr17
 Type: Package
-Title: Testing differences between competing risks models and its visualisations.
+Title: Testing differences between competing risks models and its visualisations
 Version: 0.1.0
 Authors@R: c(
             person("Magda", "Młynarczyk", email = "magmlynarczyk@gmail.com", role = c("aut", "cre")),
@@ -14,9 +14,11 @@ Depends:
     ggplot2 (>= 2.2.1),
     survival (>= 2.41-3),
     cmprsk (>= 2.2-7),
-    dplyr (>= 0.5.0),
     gridExtra (>= 2.2.1),
+    R (>= 3.3.2)
+Imports: 
+    dplyr (>= 0.5.0),
     scales (>= 0.4.1),
     grid (>= 3.3.0),
-    R (>= 3.3.2)
+    gtable (>= 0.2.0)
 RoxygenNote: 6.0.1

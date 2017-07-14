@@ -118,9 +118,10 @@ barsDataSimpleSurv <- function(toPlot, target, risks, groups){
 #' @export
 #' @examples fitS <- fitSurvival(time = LUAD$time, risk = LUAD$event, group = LUAD$gender, cens = "alive")
 #' plotSurvival(fit = fitS, target = 1200)
-#' @importFrom ggplot2 ggplot
+#' @importFrom ggplot2 ggplot position_dodge geom_step geom_errorbar facet_grid ggtitle theme_minimal theme element_text scale_y_continuous scale_x_continuous scale_color_discrete aes
 #' @importFrom dplyr filter
 #' @importFrom scales extended_breaks
+#' @importFrom stats time
 
 plotSurvival <- function(fit,
                          target = NULL,
@@ -131,6 +132,13 @@ plotSurvival <- function(fit,
                          legendtitle = "Group"
 
                          ){
+
+    low <- NULL
+    up <- NULL
+    prob <- NULL
+    group <- NULL
+    est <- NULL
+    time <-NULL
 
     toPlot <- toPlotDf(fit)
     toPlot$group <- gsub("group=", "", toPlot$group)
@@ -175,7 +183,7 @@ plotSurvival <- function(fit,
         ggtitle(titleSurv) +
         theme(plot.title = element_text(size=13, face="bold", hjust = 0.5), legend.position = "top") +
         scale_y_continuous(ytitleSurv, limits = c(0,1)) +
-        scale_x_continuous(xtitle, breaks = timePoints)+
+        scale_x_continuous(xtitle, breaks = timePoints, limits = range(timePoints))+
         theme(legend.title = element_text(size=10, face="bold"))+
         scale_color_discrete(name=legendtitle, labels = groups)
 

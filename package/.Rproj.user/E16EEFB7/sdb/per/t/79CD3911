@@ -1,0 +1,20 @@
+{
+    "collab_server" : "",
+    "contents" : "#' @title Cox model for each type of event separately.\n#' @name simpleCox\n#' @description The function fits Cox models for each type of event\n#' treating other events as censoring.\n#' @param time vector with times of the first event or follow-up, must be numeric.\n#' @param risk vector with type of event, can be numeric or factor/character.\n#' @param group vector with group variable, can be numeric or factor/character.\n#' @param cens value of 'risk' indicating censored observation (if NULL, the first value of 'risk' vector will be taken).\n#' @param conf.int conf.int level of two-sided confidence interval (default = 0.95).\n#' @return a list of length n, where n is number of risks. Each element of a list is a result of summary.coxph function from package survival, where there is only one type of event possible (other are treating as censored).\n#' @export\n#' @examples fitCox(time = LUAD$time, risk = LUAD$event, group = LUAD$gender, cens = \"alive\", conf.int = 0.95)\n#' @importFrom dplyr filter\n#' @importFrom survival Surv coxph\n\n\nfitCox <- function(time,\n                   risk,\n                   group,\n                   cens = NULL,\n                   conf.int = 0.95)\n    {\n\n    options(scipen=999)\n\n    if(is.null(cens)) cens <- risk[1]\n\n    #risks - a vector indicating possible risk values\n    risks <- riskVec(risk, cens)\n    nr_of_risks <- as.numeric(length(risks))\n\n    fit <- lapply(risks, function(x){\n        localrisk <- as.numeric(risk == x)\n        localGroup <- factor(group)\n        summary(coxph(Surv(time, localrisk)~localGroup), conf.int= conf.int)\n        }\n    )\n    names(fit) <- risks\n    fit\n\n}\n#' @title Testing differences between groups in Cox models.\n#' @name testCox\n#' @description The function provides 3 tests for comparing models estimated from fitCox function. The tests are: Likelihood Ratio Test, Wald Test and Logrank Test.\n#' @param fitCox a result of function fitCox.\n#' @return a data.frame with p-values of 3 tests for each risk.\n#' @export\n#' @examples fitC <- fitCox(time = LUAD$time, risk = LUAD$event, group = LUAD$gender, cens = \"alive\")\n#' testCox(fitC)\n\ntestCox <- function(fitCox){\n\n    nr_of_risks <- length(fitCox)\n\n    tab <- sapply(1:nr_of_risks, function(x){\n       c(fitCox[[x]]$logtest[3], fitCox[[x]]$waldtest[3], fitCox[[x]]$sctest[3])\n    })\n\n    tab <- signif(tab, digits = 2)\n\n\n    colnames(tab) <- names(fitCox)\n    rownames(tab) <- c(\"Likelihood ratio test\", \"Wald test\", \"Logrank test\")\n\n    as.data.frame(tab)\n\n\n}\n",
+    "created" : 1500047770801.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "21467718",
+    "id" : "79CD3911",
+    "lastKnownWriteTime" : 1500054649,
+    "last_content_update" : 1500054649217,
+    "path" : "~/GitHub/cr17/package/R/fitAndTestCox.R",
+    "project_path" : "R/fitAndTestCox.R",
+    "properties" : {
+    },
+    "relative_order" : 1,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}

@@ -1,13 +1,13 @@
 
 #' @title Competing Risks Models Summary.
-#' @name crSummary
+#' @name summarizeCR
 #' @description The function generates summarized report including
 #' p-values of testing differenzes between groups and visualisation of survival
 #' and cumulative incidences curves.
 #' @param time vector with times of an event or follow-up, must be numeric.
 #' @param risk vector with type of event, can be numeric or factor/character.
 #' @param group vector with group variable, can be numeric or factor/character.
-#' @param cens value of 'risk' indicating censored observation (default 0).
+#' @param cens value of 'risk' indicating censored observation (if NULL, the first value of 'risk' vector will be taken).
 #' @param rho rho parameter from Fleming-Harrington Test.
 #' @param target point in time, in which the confidence bounds should be plotted (default NULL, no confidence bounds plotted).
 #' @param type type of survival curve to be fitted. Possible values are "kaplan-meier" (default), "fleming-harrington" or "fh2".
@@ -24,15 +24,30 @@
 #' @param eventTabTitle a title of table with number of events.
 #' @return Results of functions implemented in the package summarised in a one-page raport.
 #' @export
-#' @examples crSummary(time = LUAD$time, risk = LUAD$event, group = LUAD$gender, cens = "alive", target = 1200, type = "kaplan-meier",  conf.int = 0.95, conf.type = "log", ggtheme = theme_minimal(), titleSurv = "Survival curves", titleCuminc = "Cumulative incidence function", xtitle = "Time", ytitleSurv = "Probability of survivng up to time t", ytitleCuminc = "Cumulative incidences", legendtitle = "Group", riskTabTitle = "Number at risk", eventTabTitle = "Number of events")
-#' @importFrom gridExtra grid.arrange rbind.gtable tableGrob
-#' @importFrom grid textGrob
+#' @examples
+#' summarizeCR(time = LUAD$time, risk = LUAD$event, group = LUAD$gender, cens = "alive")
+#'
+#' summarizeCR(time = LUAD$time, risk = LUAD$event, group = LUAD$gender, cens = "alive",
+#' target = 1200, type = "fleming-harrington",  conf.int = 0.99, conf.type = "log-log",
+#' ggtheme = theme_bw())
+#'
+#' summarizeCR(time = LUAD$time/365, risk = LUAD$event, group = LUAD$gender, cens = "alive",
+#' conf.type = "plain", rho = 1)
+#'
+#' summarizeCR(time = LUAD$time, risk = LUAD$event, group = LUAD$gender, cens = "alive",
+#' target = 800, type = "kaplan-meier", ggtheme = theme_gray(), titleSurv = "Survival analysis",
+#' titleCuminc = "Competing risks models", xtitle = "Days", ytitleSurv = "Survival curves",
+#' ytitleCuminc = "Cumulative incidence functions", legendtitle = "Gender")
+#'
+#' @importFrom gridExtra grid.arrange tableGrob arrangeGrob
+#' @importFrom gtable gtable_add_grob
+#' @importFrom grid segmentsGrob unit
 
 
-crSummary <- function(time,
+summarizeCR <- function(time,
                       risk,
                       group,
-                      cens = 0,
+                      cens = NULL,
                       rho = 0,
                       target = NULL,
                       type = "kaplan-meier",
@@ -50,10 +65,11 @@ crSummary <- function(time,
 
 ){
 
+
     fit <- fitSurvival(time, risk, group, cens, type, conf.int, conf.type)
     ci <- fitCuminc(time, risk, group, cens)
 
-    lrtSurvTest <- lrtSurvival(time, risk, group, cens, rho)
+    lrtSurvTest <- testSurvival(time, risk, group, cens, rho)
     cumincTest <- testCuminc(ci)
 
 
@@ -61,7 +77,7 @@ crSummary <- function(time,
     CoxSurvTest <- testCox(fitCox)
 
     fitReg <- fitReg(time, risk, group, cens)
-    CoxCompTest <-  regTest(fitReg, conf.int)
+    CoxCompTest <-  testReg(fitReg, conf.int)
 
     #Plots
     plotSurvCurves <- plotSurvival(fit,
@@ -92,26 +108,32 @@ crSummary <- function(time,
     # }
 
 
-    Test1 <- rbind(lrtSurvTest, CoxSurvTest)
-    Test2 <- rbind(cumincTest, CoxCompTest)
+    Tests <- rbind(lrtSurvTest, CoxSurvTest, cumincTest, CoxCompTest)
 
     #Tests
-    Tests <- arrangeGrob(tableGrob(Test1, theme = ttheme_minimal()),
-                         tableGrob(Test2, theme = ttheme_minimal()),
-                         ncol = 2)
+    Tests <- tableGrob(Tests, theme = ttheme_minimal())
+
+    Tests <- gtable_add_grob(Tests,
+                             grobs = segmentsGrob(
+                                 x0 = unit(0, "npc"),
+                                 y0 = unit(0, "npc"),
+                                 x1 = unit(1, "npc"),
+                                 y1 = unit(0, "npc"),
+                                 gp = gpar(lwd = 2)),
+                             t = 5, b = 5, l = 1, r = 3)
 
 
     lay <- rbind(c(1,2),
                  c(1,2),
                  c(1,2),
                  c(3,4),
-                 c(5,5))
+                 c(3,5))
 
     grid.arrange(plotSurvCurves,
                  plotCumFun,
+                 Tests,
                  riskTable,
                  eventTable,
-                 Tests,
                  layout_matrix = lay)
 
 }

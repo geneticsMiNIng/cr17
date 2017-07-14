@@ -5,17 +5,20 @@
 #' @param time vector with times of the first event or follow-up, must be numeric.
 #' @param risk vector with type of event, can be numeric or factor/character.
 #' @param group vector with group variable, can be numeric or factor/character.
-#' @param cens value of 'risk' indicating censored observation (default 0).
+#' @param cens value of 'risk' indicating censored observation (if NULL, the first value of 'risk' vector will be taken).
 #' @return list of length [(number of risks)*(number of groups) + 1], containing estimation of cumulative incidences curves for each risk and group. The last element of a group is a data.frame with results of a K-sample test.
 #' @export
 #' @examples fitCuminc(time = LUAD$time, risk = LUAD$event, group = LUAD$gender, cens = "alive")
 #' @importFrom dplyr filter
 #' @importFrom cmprsk cuminc
+#' @importFrom survival Surv survfit
 
 fitCuminc <- function(time,
                      risk,
                      group,
-                     cens = 0){
+                     cens = NULL){
+
+    if(is.null(cens)) cens <- risk[1]
 
     risks <- riskVec(risk, cens)
     uniRisks <- 1:length(risks)
@@ -98,9 +101,6 @@ fitCuminc <- function(time,
 #' @examples fitC <- fitCuminc(time = LUAD$time, risk = LUAD$event, group = LUAD$gender, cens = "alive")
 #' testCuminc(fitC)
 #' @export
-#' @importFrom dplyr filter
-#' @importFrom cmprsk cuminc
-#' @importFrom gridExtra tableGrob
 
 testCuminc <- function(ci){
 
@@ -114,13 +114,13 @@ testCuminc <- function(ci){
     tab1 <- vector()
     for(i in 1:length(risks)){
         tmp <- p[,which(colnames(p) == risks[i])]
-        tmp <- round(tmp, digits = 4)
+        tmp <- signif(tmp, digits = 2)
         tab1 <- as.data.frame(cbind(tab1,tmp))
     }
 
 
     colnames(tab1) <- risks
-    rownames(tab1) <- "K-Sample Test"
+    rownames(tab1) <- "K-Sample test"
 
     as.data.frame(tab1)
 }

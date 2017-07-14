@@ -5,7 +5,7 @@
 \alias{fitReg}
 \title{Regression Models for Competing Risks.}
 \usage{
-fitReg(time, risk, group, cens = 0)
+fitReg(time, risk, group, cens = NULL)
 }
 \arguments{
 \item{time}{vector with times of the first event or follow-up, must be numeric.}
@@ -14,7 +14,7 @@ fitReg(time, risk, group, cens = 0)
 
 \item{group}{vector with group variable, can be numeric or factor/character.}
 
-\item{cens}{value of 'risk' indicating censored observation (default 0).}
+\item{cens}{value of 'risk' indicating censored observation (if NULL, the first value of 'risk' vector will be taken).}
 }
 \value{
 a list of length n, where n is number of different types of events. Each element of a list contains a result of crr function from cmprsk package for given type of event.

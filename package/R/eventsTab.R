@@ -5,18 +5,21 @@
 #' @param time vector with times of the first event or follow-up, must be numeric.
 #' @param risk vector with type of event, can be numeric or factor/character.
 #' @param group vector with group variable, can be numeric or factor/character.
-#' @param cens value of 'risk' indicating censored observation (default 0).
+#' @param cens value of 'risk' indicating censored observation (if NULL, the first value of 'risk' vector will be taken).
 #' @param title title of a table.
 #' @return A grob with n tables, where n is number of risks. Each table contains number of events that have happened in each group up to given time point (the time points correspond to breaks at x-axis of plots with cumulative incidence curves).
 #' @export
-#' @examples eventTab(time = LUAD$time, risk = LUAD$event, group = LUAD$gender, cens = "alive", title = "Number of events")
+#' @examples eventTab(time = LUAD$time, risk = LUAD$event, group = LUAD$gender, cens = "alive",
+#' title = "Number of events")
 #' @importFrom dplyr filter
 #' @importFrom scales extended_breaks
-#' @importFrom grid textGrob
+#' @importFrom grid textGrob gpar
+#' @importFrom gridExtra tableGrob grid.arrange arrangeGrob ttheme_minimal
+#' @importFrom survival Surv survfit
 
+eventTab <- function(time, risk, group, cens = NULL, title = "Number of Events"){
 
-eventTab <- function(time, risk, group, cens = 0, title = "Number of Events"){
-
+    if(is.null(cens)) cens <- risk[1]
 
     risks <- riskVec(risk, cens)
     nrOfRisks <- as.numeric(nrow(risks))

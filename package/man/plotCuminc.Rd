@@ -4,8 +4,8 @@
 \alias{plotCuminc}
 \title{Cumulative incidences curves}
 \usage{
-plotCuminc(ci, cens = 0, target = NULL, ggtheme = theme_minimal(),
-  titleCuminc = "Cumulative incidence function", xtitle = "Time",
+plotCuminc(ci, cens = NULL, target = NULL, ggtheme = theme_minimal(),
+  titleCuminc = "Cumulative incidence functions", xtitle = "Time",
   ytitleCuminc = "Cumulative incidences", legendtitle = "Group")
 }
 \arguments{
@@ -17,7 +17,7 @@ plotCuminc(ci, cens = 0, target = NULL, ggtheme = theme_minimal(),
 
 \item{ggtheme}{ggtheme to be used (default: theme_minimal()).}
 
-\item{titleCuminc}{a title of a plot (default: "Cumulative incidence function").}
+\item{titleCuminc}{a title of a plot (default: "Cumulative incidence functions").}
 
 \item{xtitle}{a title of x axis (default: "Time").}
 

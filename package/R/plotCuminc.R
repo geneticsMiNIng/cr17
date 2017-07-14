@@ -1,5 +1,7 @@
 #
 boundsCuminc <- function(whichRisk, whichGroup, target, toPlot){
+    risk <- NULL
+    group <- NULL
     whichRisk <- as.character(whichRisk)
     whichGroup <- as.character(whichGroup)
     tmp <- as.data.frame(filter(toPlot, risk == whichRisk & group == whichGroup))
@@ -42,7 +44,7 @@ barsDataCuminc <- function(risks, groups, target, toPlot){
 #' @param cens value of 'risk' indicating censored observation (default 0).
 #' @param target point in time, in which the confidence bounds should be plotted (default NULL, no confidence bounds plotted).
 #' @param ggtheme ggtheme to be used (default: theme_minimal()).
-#' @param titleCuminc a title of a plot (default: "Cumulative incidence function").
+#' @param titleCuminc a title of a plot (default: "Cumulative incidence functions").
 #' @param xtitle a title of x axis (default: "Time").
 #' @param ytitleCuminc a title of y axis (default: "Cumulative incidences")
 #' @param legendtitle a title of a legend (default: "Group").
@@ -51,17 +53,26 @@ barsDataCuminc <- function(risks, groups, target, toPlot){
 #' @examples fitC <- fitCuminc(time = LUAD$time, risk = LUAD$event, group = LUAD$gender, cens = "alive")
 #' plotCuminc(ci = fitC, cens = "alive", target = 1200)
 #' @importFrom dplyr filter
-#' @importFrom cmprsk cuminc
-
+#' @importFrom ggplot2 ggplot position_dodge geom_step geom_errorbar facet_grid ggtitle theme scale_y_continuous scale_x_continuous scale_color_discrete theme_minimal
+#' @importFrom stats model.matrix na.omit pchisq
 
 plotCuminc <-function(ci,
-                      cens = 0,
+                      cens = NULL,
                       target = NULL,
                       ggtheme = theme_minimal(),
-                      titleCuminc = "Cumulative incidence function",
+                      titleCuminc = "Cumulative incidence functions",
                       xtitle = "Time",
                       ytitleCuminc = "Cumulative incidences",
                       legendtitle = "Group"){
+
+    low <- NULL
+    up <- NULL
+    est <- NULL
+    time <-NULL
+    group <- NULL
+    risk <- NULL
+
+    if(is.null(cens)) cens <- risk[1]
 
     #make long format
     nrTests <- which(names(ci) == "Tests")
@@ -132,13 +143,14 @@ plotCuminc <-function(ci,
                       width = 0.7,
                       position = pd)}
 
+    plot1 <- plot1 + ggtheme
+
     #making it beauty
     plot1 <- plot1 +
-        theme_minimal() +
         ggtitle(titleCuminc) +
         theme(plot.title = element_text(size=13, face="bold", hjust = 0.5), legend.position = "top") +
         scale_y_continuous(ytitleCuminc, limits = c(0,1)) +
-        scale_x_continuous(xtitle, breaks = timePoints)+
+        scale_x_continuous(xtitle, breaks = timePoints, limits = range(timePoints))+
         theme(legend.title = element_text(size=10, face="bold"))+
         scale_color_discrete(name=legendtitle, labels = groups)
 
