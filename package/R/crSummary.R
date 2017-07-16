@@ -120,7 +120,7 @@ summarizeCR <- function(time,
                                  x1 = unit(1, "npc"),
                                  y1 = unit(0, "npc"),
                                  gp = gpar(lwd = 2)),
-                             t = 5, b = 5, l = 1, r = 3)
+                             t = 5, b = 5, l = 1, r = ncol(Tests))
 
 
     lay <- rbind(c(1,2),

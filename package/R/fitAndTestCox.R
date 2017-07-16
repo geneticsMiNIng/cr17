@@ -23,7 +23,7 @@ fitCox <- function(time,
 
     options(scipen=999)
 
-    if(is.null(cens)) cens <- risk[1]
+    if(is.null(cens)) cens <- as.character(risk[1])
 
     #risks - a vector indicating possible risk values
     risks <- riskVec(risk, cens)

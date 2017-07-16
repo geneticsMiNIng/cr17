@@ -18,7 +18,7 @@ fitReg <- function(time,
                    group,
                    cens = NULL){
 
-    if(is.null(cens)) cens <- risk[1]
+    if(is.null(cens)) cens <- as.character(risk[1])
 
     #preparing data
     risks <- riskVec(risk, cens)

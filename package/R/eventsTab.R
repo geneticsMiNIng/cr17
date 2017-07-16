@@ -19,7 +19,7 @@
 
 eventTab <- function(time, risk, group, cens = NULL, title = "Number of Events"){
 
-    if(is.null(cens)) cens <- risk[1]
+    if(is.null(cens)) cens <- as.character(risk[1])
 
     risks <- riskVec(risk, cens)
     nrOfRisks <- as.numeric(nrow(risks))

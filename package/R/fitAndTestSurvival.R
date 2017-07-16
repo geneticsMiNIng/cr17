@@ -3,8 +3,9 @@ riskVec <- function(risk, cens){
     risks <- as.data.frame(unique(risk))
     risks <- filter(risks, risks != cens)
     risks <- risks[,1]
-    risks <- levels(factor(risks))
-}
+    risks <- levels(factor(risks, ordered = FALSE))
+    risks <- sort(risks)
+    }
 
 #' @title Estimation of survival curves for each risk separately.
 #' @name fitSurvival
@@ -33,7 +34,7 @@ fitSurvival <- function(time,
 )
 
 {
-    if(is.null(cens)) cens <- risk[1]
+    if(is.null(cens)) cens <- ss.character(risk[1])
 
     #errors
     stopifnot(type %in% c("kaplan-meier", "fleming-harrington", "fh2"))
@@ -84,6 +85,8 @@ testSurvival <- function(time,
 {
 
     options(scipen=999)
+
+    if(is.null(cens)) cens <- as.character(risk[1])
 
 
     #risks - a vector indicating possible risk values

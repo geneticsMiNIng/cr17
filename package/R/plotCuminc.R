@@ -72,7 +72,7 @@ plotCuminc <-function(ci,
     group <- NULL
     risk <- NULL
 
-    if(is.null(cens)) cens <- risk[1]
+    if(is.null(cens)) cens <- as.character(risk[1])
 
     #make long format
     nrTests <- which(names(ci) == "Tests")

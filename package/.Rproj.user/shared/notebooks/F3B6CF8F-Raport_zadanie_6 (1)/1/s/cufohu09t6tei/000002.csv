@@ -1,4 +1,0 @@
-"0","setwd(""C:\\Users\\Magda\\Documents\\GitHub\\Projekt-Pisa2015\\faza 5"")
-"
-"2","The working directory was changed to C:/Users/Magda/Documents/GitHub/Projekt-Pisa2015/faza 5 inside a notebook chunk. The working directory will be reset when the chunk is finished running. Use the knitr root.dir option in the setup chunk to change the the working directory for notebook chunks."
-"0","load(""dane_nowe.rda"")"

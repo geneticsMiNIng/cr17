@@ -35,7 +35,7 @@ summarizeCR(time, risk, group, cens = NULL, rho = 0, target = NULL,
 
 \item{titleSurv}{a title of a survival curves plot (default: "Survival curves").}
 
-\item{titleCuminc}{a title of a cumulative incidences plot (default: "Cumulative incidence function").}
+\item{titleCuminc}{a title of a cumulative incidences plot (default: "Cumulative incidence functions").}
 
 \item{xtitle}{a title of x axis of survival curves and cumulative incidences plots(default: "Time").}
 

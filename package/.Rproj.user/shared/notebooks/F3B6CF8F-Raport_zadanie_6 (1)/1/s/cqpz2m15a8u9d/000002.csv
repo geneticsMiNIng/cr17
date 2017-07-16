@@ -1,2 +1,0 @@
-"0","post_hoc_o <- LSD.test(Model, ""wyk_o"")"
-"0","kable(post_hoc_o$groups)"

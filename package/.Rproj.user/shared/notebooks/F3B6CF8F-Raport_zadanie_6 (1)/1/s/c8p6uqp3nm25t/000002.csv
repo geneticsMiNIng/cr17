@@ -1,8 +1,0 @@
-"0","dane_nowe$wyk_m_ch <- as.character(dane_nowe$wyk_m)"
-"0","dane_nowe$wyk_o_ch <- as.character(dane_nowe$wyk_o)"
-"0","dane_nowe <-dane_nowe %>% mutate(wyk_o_lsd = case_when(.$wyk_o %in% c("" 3A,   4"","" 5A,  6"") ~ ""a"","
-"0","                                            .$wyk_o %in% c("" 5B"","" 3B,  C"","" 2"") ~ ""b"","
-"0","                                            .$wyk_o %in% c("" 1"",""None"") ~""c"""
-"0","                                            ),"
-"0","                                wyk_m_lsd = case_when(.$wyk_m %in% c(""None"","" 5A,  6"","" 3A,  4"") ~ ""a"","
-"0","                                            .$wyk_m %in% c("" 1"","" 5B"","" 3B,  C"","" 2"") ~ ""b""))"

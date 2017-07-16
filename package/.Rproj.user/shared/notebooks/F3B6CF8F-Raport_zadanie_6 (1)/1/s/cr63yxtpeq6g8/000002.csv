@@ -1,4 +1,0 @@
-"0","rsq <- c(""Model"", ""LogModel"", ""BoxModel"", ""LogTransModel"")"
-"0","rsq <- cbind(rsq, c(summary(Model)$r.squared, summary(LogModel)$r.squared,summary(BoxModel2)$r.squared, summary(LogTransModel)$r.squared))"
-"0","colnames(rsq) <- c(""nazwa modelu"", ""R squared"")"
-"0","kable(rsq, caption=""Wartości R-squared dla rozważanych modeli"")"
