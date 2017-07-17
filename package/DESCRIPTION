@@ -1,6 +1,6 @@
 Package: cr17
 Type: Package
-Title: Testing differences between competing risks models and its visualisations
+Title: Testing and visualisations of group differences with competing risks models
 Version: 0.1.0
 Authors@R: c(
             person("Magda", "Młynarczyk", email = "magmlynarczyk@gmail.com", role = c("aut", "cre")),
