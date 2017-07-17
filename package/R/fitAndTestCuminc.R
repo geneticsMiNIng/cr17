@@ -1,13 +1,14 @@
 
-#' @title Cumulative Incidences Curves.
+#' @title Cumulative Incidences Curves
 #' @name fitCuminc
-#' @description Fitting cumulative incidence function across different groups and risks.
+#' @description Fits cumulative incidence function across different groups and risks.
 #' @param time vector with times of the first event or follow-up, must be numeric.
 #' @param risk vector with type of event, can be numeric or factor/character.
 #' @param group vector with group variable, can be numeric or factor/character.
 #' @param cens value of 'risk' indicating censored observation (if NULL, the first value of 'risk' vector will be taken).
-#' @return list of length [(number of risks)*(number of groups) + 1], containing estimation of cumulative incidences curves for each risk and group. The last element of a group is a data.frame with results of a K-sample test.
+#' @return list of length [(number of risks)*(number of groups) + 1], containing estimation of cumulative incidences curves for each risk and group. The last element of a list is a data.frame with results of a K-sample test, containing test statistic, p-value and degrees od freedom for each risk.
 #' @export
+#' @seealso \code{\link[cmprsk]{cuminc}}
 #' @examples fitCuminc(time = LUAD$time, risk = LUAD$event, group = LUAD$gender, cens = "alive")
 #' @importFrom dplyr filter
 #' @importFrom cmprsk cuminc
@@ -93,14 +94,15 @@ fitCuminc <- function(time,
 }
 
 
-#' @title K-sample Test for Competing Risks.
+#' @title K-sample Test for Competing Risks
 #' @name testCuminc
-#' @description Testing differences in cumulative incidences function between groups using K-sample test.
+#' @description tests differences in cumulative incidences function between groups using K-sample test.
 #' @param ci a result of fitCumin function.
 #' @return data.frame containing p-values of K-sample test for each risk.
 #' @examples fitC <- fitCuminc(time = LUAD$time, risk = LUAD$event, group = LUAD$gender, cens = "alive")
 #' testCuminc(fitC)
 #' @export
+#' @seealso \code{\link[cr17]{fitCuminc}}
 
 testCuminc <- function(ci){
 

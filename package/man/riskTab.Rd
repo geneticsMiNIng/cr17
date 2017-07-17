@@ -2,7 +2,7 @@
 % Please edit documentation in R/riskTab.R
 \name{riskTab}
 \alias{riskTab}
-\title{Number at risk table.}
+\title{Number at risk table}
 \usage{
 riskTab(time, risk, group, cens = NULL, title = "Number at risk")
 }
@@ -21,9 +21,12 @@ riskTab(time, risk, group, cens = NULL, title = "Number at risk")
 A grob with n tables, where n is number of risks. Each table contains number of observations at risk in each group in given time points (the time points correspond to breaks at x-axis of plots with survival curves).
 }
 \description{
-The function creates tables for each risk with number of observation at risk in given time in groups.
+Creates a table for each risk, containing number of observation at risk in given time points in groups.
 }
 \examples{
 riskTab(time = LUAD$time, risk = LUAD$event, group = LUAD$gender, cens = "alive",
 title = "Number at risk")
+}
+\seealso{
+\code{\link[cr17]{plotSurvival}}
 }

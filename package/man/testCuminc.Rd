@@ -2,7 +2,7 @@
 % Please edit documentation in R/fitAndTestCuminc.R
 \name{testCuminc}
 \alias{testCuminc}
-\title{K-sample Test for Competing Risks.}
+\title{K-sample Test for Competing Risks}
 \usage{
 testCuminc(ci)
 }
@@ -13,9 +13,12 @@ testCuminc(ci)
 data.frame containing p-values of K-sample test for each risk.
 }
 \description{
-Testing differences in cumulative incidences function between groups using K-sample test.
+tests differences in cumulative incidences function between groups using K-sample test.
 }
 \examples{
 fitC <- fitCuminc(time = LUAD$time, risk = LUAD$event, group = LUAD$gender, cens = "alive")
 testCuminc(fitC)
+}
+\seealso{
+\code{\link[cr17]{fitCuminc}}
 }

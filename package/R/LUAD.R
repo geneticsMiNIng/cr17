@@ -1,5 +1,5 @@
-#' @title LUAD dataset from The Cancer Genome Atlas Project.
-#' @description LUAD dataset contains following information about patients with lung cancer:
+#' @title LUAD dataset from The Cancer Genome Atlas Project
+#' @description Contains following information about patients with lung cancer:
 #' @description - "time" is a time from beginning of an observation to an event or follow-up,
 #' @description - "event" is a type of event that have happened ("death", "new_tumor" or "alive" when the observation was censored),
 #' @description - "gender" is a gender of a patient (grouping variable).

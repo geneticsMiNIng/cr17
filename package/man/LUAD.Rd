@@ -3,9 +3,9 @@
 \docType{data}
 \name{LUAD}
 \alias{LUAD}
-\title{LUAD dataset from The Cancer Genome Atlas Project.}
+\title{LUAD dataset from The Cancer Genome Atlas Project}
 \description{
-LUAD dataset contains following information about patients with lung cancer:
+Contains following information about patients with lung cancer:
 
 - "time" is a time from beginning of an observation to an event or follow-up,
 

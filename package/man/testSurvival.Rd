@@ -2,7 +2,7 @@
 % Please edit documentation in R/fitAndTestSurvival.R
 \name{testSurvival}
 \alias{testSurvival}
-\title{Fleming-Harrington test for differences between groups.}
+\title{Fleming-Harrington test for differences between groups}
 \usage{
 testSurvival(time, risk, group, cens = 0, rho = 0)
 }
@@ -21,8 +21,11 @@ testSurvival(time, risk, group, cens = 0, rho = 0)
 a data.frame containing p-values of Fleming-Harrington Test for each risk.
 }
 \description{
-The function tests, if there are differences between groups for survival curves estimating for all risks separately (treating other events as censoring).
+Tests, if there are differences between groups for survival curves estimating for all risks separately (treating other events as censoring).
 }
 \examples{
 testSurvival(time = LUAD$time, risk = LUAD$event, group = LUAD$gender, cens = "alive", rho = 0)
+}
+\seealso{
+\code{\link[survival]{survdiff}}
 }

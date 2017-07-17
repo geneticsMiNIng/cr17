@@ -26,12 +26,15 @@ plotCuminc(ci, cens = NULL, target = NULL, ggtheme = theme_minimal(),
 \item{legendtitle}{a title of a legend (default: "Group").}
 }
 \value{
-a ggplot containing n graphs, where n is number of risks. Each graph represents cumulative incidence curves for given risk in each group.
+a ggplot containing n graphs, where n is number of risks. Each graph represents cumulative incidence curves for given risk.  One curve corresponds to one group.
 }
 \description{
-The function plots cumulative incidences curves for each risk and group.
+Plots cumulative incidences curves for each risk and group.
 }
 \examples{
 fitC <- fitCuminc(time = LUAD$time, risk = LUAD$event, group = LUAD$gender, cens = "alive")
 plotCuminc(ci = fitC, cens = "alive", target = 1200)
+}
+\seealso{
+\code{\link[ggplot2]{ggplot}} \code{\link[ggplot2]{ggtheme}}
 }

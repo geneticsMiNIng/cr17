@@ -2,7 +2,7 @@
 % Please edit documentation in R/crSummary.R
 \name{summarizeCR}
 \alias{summarizeCR}
-\title{Competing Risks Models Summary.}
+\title{Competing Risks Models Summary}
 \usage{
 summarizeCR(time, risk, group, cens = NULL, rho = 0, target = NULL,
   type = "kaplan-meier", conf.int = 0.95, conf.type = "log",
@@ -50,24 +50,20 @@ summarizeCR(time, risk, group, cens = NULL, rho = 0, target = NULL,
 \item{eventTabTitle}{a title of table with number of events.}
 }
 \value{
-Results of functions implemented in the package summarised in a one-page raport.
+Results of all functions implemented in the package summarised in an one-page report.
 }
 \description{
-The function generates summarized report including
-p-values of testing differenzes between groups and visualisation of survival
-and cumulative incidences curves.
+Generates summarized report, including visualisation of survival
+and cumulative incidences curves, diagnostic tables and p-values of tests comparing models between groups.
 }
 \examples{
-summarizeCR(time = LUAD$time, risk = LUAD$event, group = LUAD$gender, cens = "alive")
+summarizeCR(time = LUAD$time/365, risk = LUAD$event, group = LUAD$gender, cens = "alive")
 
 summarizeCR(time = LUAD$time, risk = LUAD$event, group = LUAD$gender, cens = "alive",
 target = 1200, type = "fleming-harrington",  conf.int = 0.99, conf.type = "log-log",
 ggtheme = theme_bw())
 
-summarizeCR(time = LUAD$time/365, risk = LUAD$event, group = LUAD$gender, cens = "alive",
-conf.type = "plain", rho = 1)
-
-summarizeCR(time = LUAD$time, risk = LUAD$event, group = LUAD$gender, cens = "alive",
+summarizeCR(time = LUAD$time, risk = LUAD$event, group = LUAD$gender, cens = "alive", rho = 1,
 target = 800, type = "kaplan-meier", ggtheme = theme_gray(), titleSurv = "Survival analysis",
 titleCuminc = "Competing risks models", xtitle = "Days", ytitleSurv = "Survival curves",
 ytitleCuminc = "Cumulative incidence functions", legendtitle = "Gender")

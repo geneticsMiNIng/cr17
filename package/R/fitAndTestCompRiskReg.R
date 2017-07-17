@@ -1,16 +1,16 @@
 
-#' @title Regression Models for Competing Risks.
-#' @name compRiskReg
-#' @description Fitting Cox model (Regression model) for competing risks.
-#' @description The function fits survival curves for each risk treating other events as censoring.
+#' @title Regression Models for Competing Risks
+#' @name fitReg
+#' @description fits Cox model for every type of an event including occuring of competing risks.
 #' @param time vector with times of the first event or follow-up, must be numeric.
 #' @param risk vector with type of event, can be numeric or factor/character.
 #' @param group vector with group variable, can be numeric or factor/character.
 #' @param cens value of 'risk' indicating censored observation (if NULL, the first value of 'risk' vector will be taken).
-#' @return a list of length n, where n is number of different types of events. Each element of a list contains a result of crr function from cmprsk package for given type of event.
+#' @return a list of length n, where n is number of different types of events. Each element of a list is a result of crr function from cmprsk package for given type of event.
 #' @export
 #' @examples fitReg(time = LUAD$time, risk = LUAD$event, group = LUAD$gender, cens = "alive")
 #' @importFrom cmprsk crr
+#' @seealso \code{\link[cmprsk]{crr}}
 
 
 fitReg <- function(time,
@@ -50,6 +50,7 @@ fitReg <- function(time,
 #' @examples fitR <- fitReg(time = LUAD$time, risk = LUAD$event, group = LUAD$gender, cens = "alive")
 #' testReg(fitR)
 #' @importFrom cmprsk summary.crr
+#' @seealso \code{\link[cr17]{fitReg}}
 
 testReg <- function(reg, conf.int = 0.95){
     #counting lrt statistic for each risk

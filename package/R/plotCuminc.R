@@ -39,7 +39,7 @@ barsDataCuminc <- function(risks, groups, target, toPlot){
 
 #' @title Cumulative incidences curves
 #' @name plotCuminc
-#' @description The function plots cumulative incidences curves for each risk and group.
+#' @description Plots cumulative incidences curves for each risk and group.
 #' @param ci a result of function fitCuminc.
 #' @param cens value of 'risk' indicating censored observation (default 0).
 #' @param target point in time, in which the confidence bounds should be plotted (default NULL, no confidence bounds plotted).
@@ -48,8 +48,8 @@ barsDataCuminc <- function(risks, groups, target, toPlot){
 #' @param xtitle a title of x axis (default: "Time").
 #' @param ytitleCuminc a title of y axis (default: "Cumulative incidences")
 #' @param legendtitle a title of a legend (default: "Group").
-#' @return a ggplot containing n graphs, where n is number of risks. Each graph represents cumulative incidence curves for given risk in each group.
-#' @export
+#' @return a ggplot containing n graphs, where n is number of risks. Each graph represents cumulative incidence curves for given risk.  One curve corresponds to one group.
+#' @seealso \code{\link[ggplot2]{ggplot}} \code{\link[ggplot2]{ggtheme}}
 #' @examples fitC <- fitCuminc(time = LUAD$time, risk = LUAD$event, group = LUAD$gender, cens = "alive")
 #' plotCuminc(ci = fitC, cens = "alive", target = 1200)
 #' @importFrom dplyr filter

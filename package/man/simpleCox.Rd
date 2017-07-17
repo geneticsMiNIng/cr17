@@ -3,7 +3,7 @@
 \name{simpleCox}
 \alias{simpleCox}
 \alias{fitCox}
-\title{Cox model for each type of event separately.}
+\title{Cox model for each type of event separately}
 \usage{
 fitCox(time, risk, group, cens = NULL, conf.int = 0.95)
 }
@@ -22,9 +22,11 @@ fitCox(time, risk, group, cens = NULL, conf.int = 0.95)
 a list of length n, where n is number of risks. Each element of a list is a result of summary.coxph function from package survival, where there is only one type of event possible (other are treating as censored).
 }
 \description{
-The function fits Cox models for each type of event
-treating other events as censoring.
+fits Cox models for each risk and group, treating other type of events as censoring.
 }
 \examples{
 fitCox(time = LUAD$time, risk = LUAD$event, group = LUAD$gender, cens = "alive", conf.int = 0.95)
+}
+\seealso{
+\code{\link[survival]{coxph}}  \code{\link[survival]{summary.coxph}}
 }

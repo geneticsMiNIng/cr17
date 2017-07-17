@@ -2,7 +2,7 @@
 % Please edit documentation in R/fitAndTestCuminc.R
 \name{fitCuminc}
 \alias{fitCuminc}
-\title{Cumulative Incidences Curves.}
+\title{Cumulative Incidences Curves}
 \usage{
 fitCuminc(time, risk, group, cens = NULL)
 }
@@ -16,11 +16,14 @@ fitCuminc(time, risk, group, cens = NULL)
 \item{cens}{value of 'risk' indicating censored observation (if NULL, the first value of 'risk' vector will be taken).}
 }
 \value{
-list of length [(number of risks)*(number of groups) + 1], containing estimation of cumulative incidences curves for each risk and group. The last element of a group is a data.frame with results of a K-sample test.
+list of length [(number of risks)*(number of groups) + 1], containing estimation of cumulative incidences curves for each risk and group. The last element of a list is a data.frame with results of a K-sample test, containing test statistic, p-value and degrees od freedom for each risk.
 }
 \description{
-Fitting cumulative incidence function across different groups and risks.
+Fits cumulative incidence function across different groups and risks.
 }
 \examples{
 fitCuminc(time = LUAD$time, risk = LUAD$event, group = LUAD$gender, cens = "alive")
+}
+\seealso{
+\code{\link[cmprsk]{cuminc}}
 }

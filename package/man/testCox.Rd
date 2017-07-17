@@ -19,3 +19,6 @@ The function provides 3 tests for comparing models estimated from fitCox functio
 fitC <- fitCox(time = LUAD$time, risk = LUAD$event, group = LUAD$gender, cens = "alive")
 testCox(fitC)
 }
+\seealso{
+\code{\link[cr17]{fitCox}}
+}

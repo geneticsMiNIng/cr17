@@ -12,7 +12,7 @@ plotSurvival(fit, target = NULL, ggtheme = theme_minimal(),
 \arguments{
 \item{fit}{a result of fitSurvival function.}
 
-\item{target}{point in time, in which the confidence bounds should be plotted.}
+\item{target}{point in time, in which the confidence bounds should be plotted (if NULL, no confidence bounds will be plotted).}
 
 \item{ggtheme}{ggtheme to be used (default: theme_minimal()).}
 
@@ -28,9 +28,12 @@ plotSurvival(fit, target = NULL, ggtheme = theme_minimal(),
 a ggplot containing n graphs, where n is number of risks. Each graph represents survival curves for given risk. One curve corresponds to one group.
 }
 \description{
-The function plots survival curves for each risk and group.
+Plots survival curves for each risk and group.
 }
 \examples{
 fitS <- fitSurvival(time = LUAD$time, risk = LUAD$event, group = LUAD$gender, cens = "alive")
 plotSurvival(fit = fitS, target = 1200)
+}
+\seealso{
+\code{\link[ggplot2]{ggplot}} \code{\link[ggplot2]{ggtheme}}
 }

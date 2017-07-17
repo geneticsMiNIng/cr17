@@ -1,6 +1,6 @@
-#' @title Number at risk table.
+#' @title Number at risk table
 #' @name riskTab
-#' @description The function creates tables for each risk with number of observation at risk in given time in groups.
+#' @description Creates a table for each risk, containing number of observation at risk in given time points in groups.
 #' @param time vector with times of the first event or follow-up, must be numeric.
 #' @param risk vector with type of event, can be numeric or factor/character.
 #' @param group vector with group variable, can be numeric or factor/character.
@@ -8,6 +8,7 @@
 #' @param title title of a table
 #' @return A grob with n tables, where n is number of risks. Each table contains number of observations at risk in each group in given time points (the time points correspond to breaks at x-axis of plots with survival curves).
 #' @export
+#' @seealso \code{\link[cr17]{plotSurvival}}
 #' @examples riskTab(time = LUAD$time, risk = LUAD$event, group = LUAD$gender, cens = "alive",
 #' title = "Number at risk")
 #' @importFrom dplyr filter

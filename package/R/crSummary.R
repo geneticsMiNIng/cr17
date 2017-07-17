@@ -1,9 +1,8 @@
 
-#' @title Competing Risks Models Summary.
+#' @title Competing Risks Models Summary
 #' @name summarizeCR
-#' @description The function generates summarized report including
-#' p-values of testing differenzes between groups and visualisation of survival
-#' and cumulative incidences curves.
+#' @description Generates summarized report, including visualisation of survival
+#' and cumulative incidences curves, diagnostic tables and p-values of tests comparing models between groups.
 #' @param time vector with times of an event or follow-up, must be numeric.
 #' @param risk vector with type of event, can be numeric or factor/character.
 #' @param group vector with group variable, can be numeric or factor/character.
@@ -22,19 +21,16 @@
 #' @param legendtitle a title of a legend (default: "Group").
 #' @param riskTabTitle a title of table with number at risk.
 #' @param eventTabTitle a title of table with number of events.
-#' @return Results of functions implemented in the package summarised in a one-page raport.
+#' @return Results of all functions implemented in the package summarised in an one-page report.
 #' @export
 #' @examples
-#' summarizeCR(time = LUAD$time, risk = LUAD$event, group = LUAD$gender, cens = "alive")
+#' summarizeCR(time = LUAD$time/365, risk = LUAD$event, group = LUAD$gender, cens = "alive")
 #'
 #' summarizeCR(time = LUAD$time, risk = LUAD$event, group = LUAD$gender, cens = "alive",
 #' target = 1200, type = "fleming-harrington",  conf.int = 0.99, conf.type = "log-log",
 #' ggtheme = theme_bw())
 #'
-#' summarizeCR(time = LUAD$time/365, risk = LUAD$event, group = LUAD$gender, cens = "alive",
-#' conf.type = "plain", rho = 1)
-#'
-#' summarizeCR(time = LUAD$time, risk = LUAD$event, group = LUAD$gender, cens = "alive",
+#' summarizeCR(time = LUAD$time, risk = LUAD$event, group = LUAD$gender, cens = "alive", rho = 1,
 #' target = 800, type = "kaplan-meier", ggtheme = theme_gray(), titleSurv = "Survival analysis",
 #' titleCuminc = "Competing risks models", xtitle = "Days", ytitleSurv = "Survival curves",
 #' ytitleCuminc = "Cumulative incidence functions", legendtitle = "Gender")

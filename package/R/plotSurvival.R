@@ -106,9 +106,9 @@ barsDataSimpleSurv <- function(toPlot, target, risks, groups){
 
 #' @title Survival curves
 #' @name plotSurvival
-#' @description The function plots survival curves for each risk and group.
+#' @description Plots survival curves for each risk and group.
 #' @param fit a result of fitSurvival function.
-#' @param target point in time, in which the confidence bounds should be plotted.
+#' @param target point in time, in which the confidence bounds should be plotted (if NULL, no confidence bounds will be plotted).
 #' @param ggtheme ggtheme to be used (default: theme_minimal()).
 #' @param titleSurv a title of a plot (default: "Survival curves").
 #' @param xtitle a title of x axis (default: "Time").
@@ -116,6 +116,7 @@ barsDataSimpleSurv <- function(toPlot, target, risks, groups){
 #' @param legendtitle a title of a legend (default: "Group").
 #' @return a ggplot containing n graphs, where n is number of risks. Each graph represents survival curves for given risk. One curve corresponds to one group.
 #' @export
+#' @seealso \code{\link[ggplot2]{ggplot}} \code{\link[ggplot2]{ggtheme}}
 #' @examples fitS <- fitSurvival(time = LUAD$time, risk = LUAD$event, group = LUAD$gender, cens = "alive")
 #' plotSurvival(fit = fitS, target = 1200)
 #' @importFrom ggplot2 ggplot position_dodge geom_step geom_errorbar facet_grid ggtitle theme_minimal theme element_text scale_y_continuous scale_x_continuous scale_color_discrete aes

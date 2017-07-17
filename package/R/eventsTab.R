@@ -1,7 +1,7 @@
 
-#' @title Number of events tables.
-#' @name eventsTab
-#' @description The function creates tables for each risk with number of events up to given time in groups.
+#' @title Number of events tables
+#' @name eventTab
+#' @description Creates a table for each risk, containing number of events up to given time in groups.
 #' @param time vector with times of the first event or follow-up, must be numeric.
 #' @param risk vector with type of event, can be numeric or factor/character.
 #' @param group vector with group variable, can be numeric or factor/character.
@@ -9,6 +9,7 @@
 #' @param title title of a table.
 #' @return A grob with n tables, where n is number of risks. Each table contains number of events that have happened in each group up to given time point (the time points correspond to breaks at x-axis of plots with cumulative incidence curves).
 #' @export
+#' @seealso \code{\link[cr17]{plotCuminc}}
 #' @examples eventTab(time = LUAD$time, risk = LUAD$event, group = LUAD$gender, cens = "alive",
 #' title = "Number of events")
 #' @importFrom dplyr filter

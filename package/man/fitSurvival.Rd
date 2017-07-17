@@ -2,7 +2,7 @@
 % Please edit documentation in R/fitAndTestSurvival.R
 \name{fitSurvival}
 \alias{fitSurvival}
-\title{Estimation of survival curves for each risk separately.}
+\title{Estimation of survival curves for each risk separately}
 \usage{
 fitSurvival(time, risk, group, cens = NULL, type = "kaplan-meier",
   conf.int = 0.95, conf.type = "log")
@@ -23,12 +23,15 @@ fitSurvival(time, risk, group, cens = NULL, type = "kaplan-meier",
 \item{conf.type}{type of confidence interval. Possible  values: "none", "plain", "log" (default), "log-log".}
 }
 \value{
-List, which elements are survfit.summary object for each risk separately.
+List, which elements are survfit.summary objects from the package Survival for each risk separately.
 }
 \description{
-The function fits survival curves for each risk treating other events as censoring.
+Fits survival curves for each risk and group, treating other types of events as censoring.
 }
 \examples{
 fitSurvival(time = LUAD$time, risk = LUAD$event, group = LUAD$gender, cens = "alive",
 type = "kaplan-meier", conf.int = 0.95, conf.type = "log")
+}
+\seealso{
+\code{\link[survival]{survfit}} \code{\link[survival]{summary.survfit}}
 }

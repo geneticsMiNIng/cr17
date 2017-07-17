@@ -1,7 +1,6 @@
-#' @title Cox model for each type of event separately.
+#' @title Cox model for each type of event separately
 #' @name simpleCox
-#' @description The function fits Cox models for each type of event
-#' treating other events as censoring.
+#' @description fits Cox models for each risk and group, treating other type of events as censoring.
 #' @param time vector with times of the first event or follow-up, must be numeric.
 #' @param risk vector with type of event, can be numeric or factor/character.
 #' @param group vector with group variable, can be numeric or factor/character.
@@ -9,6 +8,7 @@
 #' @param conf.int conf.int level of two-sided confidence interval (default = 0.95).
 #' @return a list of length n, where n is number of risks. Each element of a list is a result of summary.coxph function from package survival, where there is only one type of event possible (other are treating as censored).
 #' @export
+#' @seealso \code{\link[survival]{coxph}}  \code{\link[survival]{summary.coxph}}
 #' @examples fitCox(time = LUAD$time, risk = LUAD$event, group = LUAD$gender, cens = "alive", conf.int = 0.95)
 #' @importFrom dplyr filter
 #' @importFrom survival Surv coxph
@@ -45,6 +45,7 @@ fitCox <- function(time,
 #' @param fitCox a result of function fitCox.
 #' @return a data.frame with p-values of 3 tests for each risk.
 #' @export
+#' @seealso \code{\link[cr17]{fitCox}}
 #' @examples fitC <- fitCox(time = LUAD$time, risk = LUAD$event, group = LUAD$gender, cens = "alive")
 #' testCox(fitC)
 

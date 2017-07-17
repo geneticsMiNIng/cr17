@@ -21,3 +21,6 @@ Testing differences in Competing Risks Regression Models between groups.
 fitR <- fitReg(time = LUAD$time, risk = LUAD$event, group = LUAD$gender, cens = "alive")
 testReg(fitR)
 }
+\seealso{
+\code{\link[cr17]{fitReg}}
+}
