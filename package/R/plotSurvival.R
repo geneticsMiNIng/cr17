@@ -184,7 +184,8 @@ plotSurvival <- function(fit,
         ggtitle(titleSurv) +
         theme(plot.title = element_text(size=13, face="bold", hjust = 0.5), legend.position = "top") +
         scale_y_continuous(ytitleSurv, limits = c(0,1)) +
-        scale_x_continuous(xtitle, breaks = timePoints, limits = range(timePoints))+
+        scale_x_continuous(xtitle, breaks = timePoints)+
+        coord_cartesian(xlim = range(timePoints)) +
         theme(legend.title = element_text(size=10, face="bold"))+
         scale_color_discrete(name=legendtitle, labels = groups)
 

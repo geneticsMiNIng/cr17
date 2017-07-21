@@ -1,11 +1,10 @@
 
 riskVec <- function(risk, cens){
-    risks <- as.data.frame(unique(risk))
-    risks <- filter(risks, risks != cens)
-    risks <- risks[,1]
-    risks <- levels(factor(risks, ordered = FALSE))
-    risks <- sort(risks)
+   sort(setdiff(unique(risk), cens))
     }
+
+
+
 
 #' @title Estimation of survival curves for each risk separately
 #' @name fitSurvival

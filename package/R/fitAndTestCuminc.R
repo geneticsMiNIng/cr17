@@ -22,53 +22,62 @@ fitCuminc <- function(time,
     if(is.null(cens)) cens <- as.character(risk[1])
 
     risks <- riskVec(risk, cens)
-    uniRisks <- 1:length(risks)
-    mapRisks <- cbind(risks, uniRisks)
-    mapRisks <- rbind(mapRisks, c(cens, 0))
-    mapRisks <- as.data.frame(mapRisks)
-    colnames(mapRisks)[1] <- "risk"
+    # uniRisks <- 1:length(risks)
+    # mapRisks <- cbind(risks, uniRisks)
+    # mapRisks <- rbind(mapRisks, c(cens, 0))
+    # mapRisks <- as.data.frame(mapRisks)
+    # colnames(mapRisks)[1] <- "risk"
+    #
+    # groups <- as.data.frame(unique(group))
+    # groups <- filter(groups, !is.na(groups))
+    # uniGroups <- letters[1:nrow(groups)]
+    # mapGroups <- cbind(groups, uniGroups)
+    # colnames(mapGroups)[1] <- "group"
+    #
+    # dt <- cbind(time, as.character(risk), group)
+    # dt <- as.data.frame(dt)
+    # colnames(dt) <- c("time", "risk", "group")
+    # dt$time <- as.numeric(as.character(dt$time))
+    #
+    #
+    # dt <- merge(dt, mapRisks, by = "risk")
+    # dt <- merge(dt, mapGroups, by = "group")
 
-    groups <- as.data.frame(unique(group))
-    groups <- filter(groups, !is.na(groups))
-    uniGroups <- letters[1:nrow(groups)]
-    mapGroups <- cbind(groups, uniGroups)
-    colnames(mapGroups)[1] <- "group"
-
-    dt <- cbind(time, as.character(risk), group)
-    dt <- as.data.frame(dt)
-    colnames(dt) <- c("time", "risk", "group")
-    dt$time <- as.numeric(as.character(dt$time))
+    # ci <- cuminc(ftime = dt[, "time"],
+    #              fstatus = dt[, "uniRisks"],
+    #              group = dt[, "uniGroups"],
+    #              cencode = cens)
 
 
-    dt <- merge(dt, mapRisks, by = "risk")
-    dt <- merge(dt, mapGroups, by = "group")
+    risk <- gsub(pattern = " ", replacement = "_", risk, fixed = TRUE)
+    group <- gsub(pattern = " ", replacement = "_", group, fixed = TRUE)
 
-    ci <- cuminc(ftime = dt[, "time"],
-                 fstatus = dt[, "uniRisks"],
-                 group = dt[, "uniGroups"],
-                 cencode = 0)
+    ci <-  cuminc(ftime = time,
+                  fstatus = risk,
+                  group = group,
+                  cencode = cens)
 
     aggnames <- names(ci)
     aggnames <- aggnames[-length(aggnames)]
-
-    tab <- c()
-    for(i in aggnames){
-        tmp <- unlist(strsplit(i, " "))
-        tab <- rbind(tab, c(i, tmp))
-    }
-    tab <- as.data.frame(tab)
-
-    colnames(tab) <- c("aggnames", "uniGroups", "uniRisks")
-
-    tab <- merge(tab, mapRisks, by = "uniRisks")
-    tab <- merge(tab, mapGroups, by = "uniGroups")
-
-    tab$newname <- paste( tab[, "risk"], tab[,"group"])
-
-    names(ci)[1:length(ci)-1] <- tab$newname
-
-    tab$risk <- factor(as.character(tab$risk))
-    tab$group <- factor(as.character(tab$group))
+#
+#     tab <- c()
+#     for(i in aggnames){
+#         tmp <- unlist(strsplit(i, " "))
+#         tab <- rbind(tab, c(i, tmp))
+#     }
+#     tab <- as.data.frame(tab)
+#
+#     colnames(tab) <- c("aggnames", "uniGroups", "uniRisks")
+#
+#     tab <- merge(tab, mapRisks, by = "uniRisks")
+#     tab <- merge(tab, mapGroups, by = "uniGroups")
+#
+#     tab$newname <- paste( tab[, "risk"], tab[,"group"])
+#
+#     names(ci)[1:length(ci)-1] <- tab$newname
+#
+#     tab$risk <- factor(as.character(tab$risk))
+#     tab$group <- factor(as.character(tab$group))
 
     #extended_breaks
     fit <- lapply(risks, function(x) {
@@ -81,12 +90,7 @@ fitCuminc <- function(time,
     timePoints <- extended_breaks()(tmp$time)
 
 
-    #adding info about group and risk to each element of group
-    for(i in 1:nrow(tab)){
-        ci[[i]]$group <- tab[i, "group"]
-        ci[[i]]$risk <- tab[i, "risk"]
-        ci[[i]]$timePoints <- timePoints
-    }
+    attr(ci, "timePoints") <- timePoints
 
     ci$Tests <- as.data.frame(ci$Tests)
 
@@ -106,7 +110,11 @@ fitCuminc <- function(time,
 
 testCuminc <- function(ci){
 
-    risks <- levels(ci[[1]]$risk)
+
+    aggNames <- names(ci[1:(length(ci)-1)])
+    risks <- sapply(aggNames, function(x) strsplit(x, " ", fixed = TRUE)[[1]][2])
+    risks <- sort(unique(risks))
+
 
     tab <- as.data.frame(ci[["Tests"]])
     p <- as.data.frame(t(tab$pv))

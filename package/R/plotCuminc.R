@@ -52,6 +52,7 @@ barsDataCuminc <- function(risks, groups, target, toPlot){
 #' @seealso \code{\link[ggplot2]{ggplot}} \code{\link[ggplot2]{ggtheme}}
 #' @examples fitC <- fitCuminc(time = LUAD$time, risk = LUAD$event, group = LUAD$gender, cens = "alive")
 #' plotCuminc(ci = fitC, cens = "alive", target = 1200)
+#' @export
 #' @importFrom dplyr filter
 #' @importFrom ggplot2 ggplot position_dodge geom_step geom_errorbar facet_grid ggtitle theme scale_y_continuous scale_x_continuous scale_color_discrete theme_minimal
 #' @importFrom stats model.matrix na.omit pchisq
@@ -74,38 +75,37 @@ plotCuminc <-function(ci,
 
     if(is.null(cens)) cens <- as.character(risk[1])
 
+
+    timePoints <- attr(ci, "timePoints", exact = FALSE)
+
     #make long format
     nrTests <- which(names(ci) == "Tests")
     ci <- ci[-nrTests]
 
-    timePoints <- ci[[1]]$timePoints
+
 
     aggNames <- names(ci)
 
-    toPlot <- data.frame()
 
-    for(i in 1:length(aggNames)){
-        tmp <- as.data.frame(cbind(ci[[i]]$time, ci[[i]]$est, ci[[i]]$var, rep(aggNames[i], times = length(ci[[i]]$time))))
-        toPlot <- as.data.frame(rbind(toPlot, tmp))
-    }
-
-    colnames(toPlot) <- c("time", "est", "var", "aggname")
-
-    toPlot[,1:3] <- sapply(1:3, function(x) as.numeric(as.character(toPlot[,x])))
-
-    risks <- levels(ci[[1]]$risk)
-    groups <- levels(ci[[1]]$group)
+    toPlot <- lapply(aggNames, function(i) data.frame(time = ci[[i]]$time,
+                                                                 est = ci[[i]]$est,
+                                                                 var = ci[[i]]$var,
+                                                                 group = strsplit(i," ")[[1]][1],
+                                                                 risk = strsplit(i, " ")[[1]][2]))
+    toPlot <- do.call(rbind, toPlot)
 
 
+    risks <- sort(unique(toPlot$risk))
+    groups <- sort(unique(toPlot$group))
 
-    riskGroup <- expand.grid(risks, groups)
-    riskGroup$aggname <- sapply(1:nrow(riskGroup), function(x){
-        paste(riskGroup[x,1], riskGroup[x,2])
-    })
-
-    toPlot <- merge(toPlot, riskGroup, by = "aggname")
-    toPlot <- toPlot[, !names(toPlot) %in% "aggname"]
-    colnames(toPlot)[4:5] <- c("risk", "group")
+    # riskGroup <- expand.grid(risks, groups)
+    # riskGroup$aggname <- sapply(1:nrow(riskGroup), function(x){
+    #     paste(riskGroup[x,1], riskGroup[x,2])
+    # })
+    #
+    # toPlot <- merge(toPlot, riskGroup, by = "aggname")
+    # toPlot <- toPlot[, !names(toPlot) %in% "aggname"]
+    # colnames(toPlot)[4:5] <- c("risk", "group")
 
 
     #adding conf intervals
@@ -150,7 +150,8 @@ plotCuminc <-function(ci,
         ggtitle(titleCuminc) +
         theme(plot.title = element_text(size=13, face="bold", hjust = 0.5), legend.position = "top") +
         scale_y_continuous(ytitleCuminc, limits = c(0,1)) +
-        scale_x_continuous(xtitle, breaks = timePoints, limits = range(timePoints))+
+        scale_x_continuous(xtitle, breaks = timePoints)+
+        coord_cartesian(xlim = range(timePoints)) +
         theme(legend.title = element_text(size=10, face="bold"))+
         scale_color_discrete(name=legendtitle, labels = groups)
 
