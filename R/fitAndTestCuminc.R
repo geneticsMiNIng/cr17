@@ -50,6 +50,7 @@ fitCuminc <- function(time,
 
 
     risk <- gsub(pattern = " ", replacement = "_", risk, fixed = TRUE)
+    cens <- gsub(pattern = " ", replacement = "_", cens, fixed = TRUE)
     group <- gsub(pattern = " ", replacement = "_", group, fixed = TRUE)
 
     ci <-  cuminc(ftime = time,

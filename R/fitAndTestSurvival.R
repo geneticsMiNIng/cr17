@@ -59,6 +59,10 @@ fitSurvival <- function(time,
     })
 
 
+    for(i in 1:length(fit)){
+        fit[[i]]$strata <- factor(gsub("group=", "", fit[[i]]$strata))
+    }
+
     names(fit) <- risks
     fit
 }
