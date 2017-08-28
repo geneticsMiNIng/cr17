@@ -12,3 +12,4 @@ devtools::install_github("geneticsMiNIng/cr17")
 ```
 
 * example data from RTCGA package [LUAD cancer](https://github.com/geneticsMiNIng/cr07/blob/master/materials/getLUADdata.R)
+* [vignette](https://rawgit.com/geneticsMiNIng/cr17/master/vignettes/vignette.html)
