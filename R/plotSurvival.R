@@ -119,7 +119,7 @@ barsDataSimpleSurv <- function(toPlot, target, risks, groups){
 #' @seealso \code{\link[ggplot2]{ggplot}} \code{\link[ggplot2]{ggtheme}}
 #' @examples fitS <- fitSurvival(time = LUAD$time, risk = LUAD$event, group = LUAD$gender, cens = "alive")
 #' plotSurvival(fit = fitS, target = 1200)
-#' @importFrom ggplot2 ggplot position_dodge geom_step geom_errorbar facet_grid ggtitle theme_minimal theme element_text scale_y_continuous scale_x_continuous scale_color_discrete aes
+#' @importFrom ggplot2 ggplot coord_cartesian position_dodge geom_step geom_errorbar facet_grid ggtitle theme_minimal theme element_text scale_y_continuous scale_x_continuous scale_color_discrete aes
 #' @importFrom dplyr filter
 #' @importFrom scales extended_breaks
 #' @importFrom stats time

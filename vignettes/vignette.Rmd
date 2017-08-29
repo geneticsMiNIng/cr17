@@ -1,6 +1,6 @@
 ---
 title: Package cr17 - competing risks models and its visualization
-Author: Magda Młynarczyk
+author: Magda Młynarczyk
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
@@ -287,5 +287,14 @@ The package cr17 provides multiple methods for analysing competing risks data. I
 
 
 #Bibliography
-* https://cran.r-project.org/web/packages/survival/survival.pdf
-* https://cran.r-project.org/web/packages/cmprsk/cmprsk.pdf
+
+* Therneau T (2015). _A Package for Survival Analysis in S_. version
+2.38, 
+<URL: https://CRAN.R-project.org/package=survival>.
+Terry M. Therneau and Patricia M. Grambsch (2000). _Modeling Survival
+Data: Extending the Cox Model_. Springer, New York. ISBN
+0-387-98784-3.
+
+* Bob Gray (2014). cmprsk: Subdistribution Analysis of Competing
+Risks. R package version 2.2-7.
+https://CRAN.R-project.org/package=cmprsk
