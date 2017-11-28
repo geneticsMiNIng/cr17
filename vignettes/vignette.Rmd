@@ -227,7 +227,7 @@ and we can test the differences between groups with modified likelihood ratio te
 testReg(reg)
 ```
 
-#Diagnosic tables
+#Diagnostic tables
 The package contains two functions returning diagnostic tables. A result of **riskTab** function is a table with number of subjects at risk in given groups, and a result of **eventTab** function is a table with number of events that have happened up to the given time points. 
 ```{r, eval=FALSE}
 riskTab(time = LUAD$time,
